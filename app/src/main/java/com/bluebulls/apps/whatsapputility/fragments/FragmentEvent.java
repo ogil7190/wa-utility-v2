@@ -17,9 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +35,12 @@ import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.twotoasters.jazzylistview.JazzyListView;
+import com.twotoasters.jazzylistview.effects.FanEffect;
+import com.varunest.sparkbutton.SparkButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +50,6 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
-import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
 import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGISTER_EVENT_URL;
 import static com.facebook.accountkit.internal.AccountKitController.getApplicationContext;
 
@@ -59,11 +58,11 @@ import static com.facebook.accountkit.internal.AccountKitController.getApplicati
  */
 
 public class FragmentEvent extends Fragment {
-    ListView listView2;
+    JazzyListView listView2;
     ArrayList<Event> eventArrayList = new ArrayList<>();
     private static AlertDialog alertDialog;
     static FragmentManager manager;
-    private ImageView addEvent;
+    private SparkButton addEvent;
     private static int date1,year1;
     private static String month1;
     private static TextView datetxt,timetxt;
@@ -106,11 +105,12 @@ public class FragmentEvent extends Fragment {
         timetxt=(TextView)l.findViewById(R.id.time);
         final EditText event = (EditText) l.findViewById(R.id.event);
         final EditText description = (EditText) l.findViewById(R.id.description);
-        addEvent = (ImageView) v.findViewById(R.id.eventbtn);
-        listView2 = (ListView) v.findViewById(R.id.list_view2);
+        addEvent = (SparkButton) v.findViewById(R.id.eventbtn);
+        addEvent.setAnimationSpeed(1.5f);
+        listView2 = (JazzyListView) v.findViewById(R.id.list_view2);
         eventAdapter = new EventAdapter(eventArrayList, getContext(),this);
         listView2.setAdapter(eventAdapter);
-
+        listView2.setTransitionEffect(new FanEffect());
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
 
@@ -195,6 +195,7 @@ public class FragmentEvent extends Fragment {
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addEvent.playAnimation();
                 alertDialog.show();
             }
         });

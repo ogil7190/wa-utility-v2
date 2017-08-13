@@ -33,6 +33,16 @@
                     android:background="#00ffffff"
                     android:src="@drawable/ic_reply_black_24dp"
                     android:tint="@color/colorPrimaryDark" />
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/forward_poll"
+                    android:layout_toRightOf="@+id/reply_poll"
+                    android:background="#00ffffff"
+                    android:tint="@color/colorPrimaryDark"
+                    android:src="@drawable/ic_reply_black_24dp"
+                    android:scaleX="-1"
+                    />
 
                 <ImageButton
                     android:id="@+id/refresh_poll"
