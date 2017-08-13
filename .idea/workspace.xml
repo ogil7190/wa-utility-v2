@@ -12,6 +12,7 @@
     <list default="true" id="0027c17d-6b8e-4fe6-a766-85680c15dc82" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/DataAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/DataAdapter.java" />
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/EventAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/EventAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentPoll.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentPoll.java" />
@@ -21,6 +22,14 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/poll_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/poll_fragment.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/single_list_event.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/single_list_event.xml" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentPoll.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentPoll.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentReminder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentReminder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/event_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/event_fragment.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/poll_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/poll_fragment.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/single_list_poll.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/single_list_poll.xml" />
     </list>
     <ignored path="wa-utility-v2.iws" />
@@ -53,6 +62,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+<<<<<<< HEAD
       <file leaf-file-name="FragmentEvent.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -62,11 +72,23 @@
                 <element signature="imports" expanded="true" />
                 <element signature="e#9457#9651#0" expanded="true" />
                 <element signature="e#9650#9651#0" expanded="true" />
+=======
+      <file leaf-file-name="FragmentEvent.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="298">
+              <caret line="114" column="45" selection-start-line="114" selection-start-column="45" selection-end-line="114" selection-end-column="45" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#9205#9399#0" expanded="true" />
+                <element signature="e#9398#9399#0" expanded="true" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="FragmentReminder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentReminder.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -98,11 +120,22 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="48">
               <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+=======
+      <file leaf-file-name="reminder_fragment.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="39" column="39" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="EventAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/EventAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -110,6 +143,17 @@
               <caret line="70" column="45" selection-start-line="70" selection-start-column="45" selection-end-line="70" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
+=======
+      <file leaf-file-name="FragmentReminder.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentReminder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="263">
+              <caret line="74" column="42" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#7843#8040#0" expanded="true" />
+                <element signature="e#8039#8040#0" expanded="true" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
               </folding>
             </state>
           </provider>
@@ -128,6 +172,22 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+=======
+      <file leaf-file-name="event_fragment.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/event_fragment.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-153">
+              <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -2186,12 +2246,17 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/poll_fragment.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/event_fragment.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/app/src/main/res/layout/single_list_event.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/EventAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentReminder.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/services/PackageService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/services/MyAlarmReceiver.java" />
+=======
+        <option value="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentReminder.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
       </list>
     </option>
   </component>
@@ -2320,6 +2385,7 @@
               <option name="myItemId" value="whatsapputility" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
+<<<<<<< HEAD
             <PATH_ELEMENT>
               <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -2364,6 +2430,8 @@
               <option name="myItemId" value="whatsapputility" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
+=======
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -2418,6 +2486,7 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+<<<<<<< HEAD
             <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
@@ -2440,6 +2509,8 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+=======
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
           </PATH>
         </subPane>
       </pane>
@@ -2451,7 +2522,11 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+<<<<<<< HEAD
     <property name="device.picker.selection" value="b16d68cb7d04" />
+=======
+    <property name="device.picker.selection" value="TA385046VZ" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -2790,9 +2865,15 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.66211605" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.66382253" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2887,6 +2968,21 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentPoll.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="146" column="59" selection-start-line="146" selection-start-column="59" selection-end-line="146" selection-end-column="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7010#7275#0" expanded="true" />
+            <element signature="e#7274#7275#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/chathead.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -2909,6 +3005,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/event_fragment.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -2920,6 +3017,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/poll_fragment.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -2931,6 +3030,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -2938,15 +3038,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
           <caret line="39" column="39" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/EventAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/single_list_event.xml">
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/event_fragment.xml">
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="289">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
@@ -2957,10 +3068,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="498">
           <caret line="61" column="58" selection-start-line="61" selection-start-column="58" selection-end-line="61" selection-end-column="58" />
+=======
+        <state relative-caret-position="-153">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/services/PackageService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="329">
@@ -2973,10 +3089,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="438">
           <caret line="111" column="5" selection-start-line="90" selection-start-column="4" selection-end-line="111" selection-end-column="5" />
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/reminder_fragment.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="39" column="39" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/adapters/EventAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="534">
@@ -3005,12 +3131,23 @@
             <element signature="imports" expanded="true" />
             <element signature="e#7839#8036#0" expanded="true" />
             <element signature="e#8035#8036#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentReminder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="74" column="42" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7843#8040#0" expanded="true" />
+            <element signature="e#8039#8040#0" expanded="true" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/bluebulls/apps/whatsapputility/fragments/FragmentEvent.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="262">
           <caret line="522" column="43" selection-start-line="522" selection-start-column="43" selection-end-line="522" selection-end-column="43" />
           <folding>
@@ -3035,6 +3172,14 @@
           <caret line="54" column="43" selection-start-line="54" selection-start-column="43" selection-end-line="54" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
+=======
+        <state relative-caret-position="298">
+          <caret line="114" column="45" selection-start-line="114" selection-start-column="45" selection-end-line="114" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9205#9399#0" expanded="true" />
+            <element signature="e#9398#9399#0" expanded="true" />
+>>>>>>> 6bdf4446b143c96db56a619b44416960a37e4831
           </folding>
         </state>
       </provider>
