@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bluebulls.apps.whatsapputility.util.CustomLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_layout_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"></View>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/background_title_poll"
+                    android:text="Create A Poll"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/topic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="top|left"
+                    android:hint="Enter Your Topic"
+                    android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:lines="4"
+                    android:maxLength="1000"
+                    android:textColor="#000000"
+                    android:textColorHint="#3d3c3c"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/titleOpt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Number of options :"
+                    android:textColor="#075e54"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/optionCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:backgroundTint="#075e54"
+                    android:spinnerMode="dropdown"></Spinner>
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/options"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/radioGroup"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:id="@+id/radio1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="#075e54"
+                                android:checked="true"
+                                android:textSize="37sp" />
+
+                            <RadioButton
+                                android:id="@+id/radio2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="#075e54"
+                                android:textSize="37sp"
+                                android:visibility="gone" />
+
+                            <RadioButton
+                                android:id="@+id/radio3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="#075e54"
+                                android:textColor="#003399"
+                                android:textSize="37sp"
+                                android:visibility="gone" />
+
+                            <RadioButton
+                                android:id="@+id/radio4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="#075e54"
+                                android:textColor="#003399"
+                                android:textSize="37sp"
+                                android:visibility="gone" />
+
+                            <RadioButton
+                                android:id="@+id/radio5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="#075e54"
+                                android:textColor="#003399"
+                                android:textSize="37sp"
+                                android:visibility="gone" />
+
+                            <RadioButton
+                                android:id="@+id/radio6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="#075e54"
+                                android:textColor="#003399"
+                                android:textSize="37sp"
+                                android:visibility="gone" />
+                        </RadioGroup>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/option1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Add Option"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:maxLength="25"
+                                android:maxLines="1"
+                                android:textColor="#000000"
+                                android:textColorHint="#696868"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/option2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Add Option"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:maxLength="25"
+                                android:maxLines="1"
+                                android:textColor="#000000"
+                                android:textColorHint="#696868"
+                                android:textSize="20sp"
+                                android:visibility="gone" />
+
+                            <EditText
+                                android:id="@+id/option3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Add Option"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:maxLength="25"
+                                android:maxLines="1"
+                                android:textColor="#000000"
+                                android:textColorHint="#696868"
+                                android:textSize="20sp"
+                                android:visibility="gone" />
+
+                            <EditText
+                                android:id="@+id/option4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Add Option"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:maxLength="25"
+                                android:maxLines="1"
+                                android:textColor="#000000"
+                                android:textColorHint="#696868"
+                                android:textSize="20sp"
+                                android:visibility="gone" />
+
+                            <EditText
+                                android:id="@+id/option5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Add Option"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:maxLength="25"
+                                android:maxLines="1"
+                                android:textColor="#000000"
+                                android:textColorHint="#696868"
+                                android:textSize="20sp"
+                                android:visibility="gone" />
+
+                            <EditText
+                                android:id="@+id/option6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Add Option"
+                                android:imeOptions="actionDone"
+                                android:inputType="text"
+                                android:maxLength="25"
+                                android:maxLines="1"
+                                android:textColor="#000000"
+                                android:textColorHint="#696868"
+                                android:textSize="20sp"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/close"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:background="#075e54"
+                            android:text="Cancel"
+                            android:textColor="#ffffff" />
+
+                        <Button
+                            android:id="@+id/submit"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:background="#075e54"
+                            android:text="Submit"
+                            android:textColor="#ffffff" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </ScrollView>
+</com.bluebulls.apps.whatsapputility.util.CustomLayout>

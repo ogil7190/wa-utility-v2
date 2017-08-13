@@ -1,0 +1,20 @@
+<resources>
+    <string-array name="numberArray">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string name="app_name">"WhatsApp Utility "</string>
+    <string name="FACEBOOK_APP_ID">468740496794221</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">36ccc84cb44deb99703333888fa72b15</string>
+    <string name="ak_login_protocol_scheme">ak468740496794221</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_logout">Logout</string>
+</resources>

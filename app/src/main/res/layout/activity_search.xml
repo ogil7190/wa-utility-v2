@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bluebulls.apps.whatsapputility.util.CustomLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/color_layout_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <SearchView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="4"
+                android:queryHint="Search Here!"
+                android:background="@color/colorPrimaryDark"
+                android:imeOptions="actionSearch" />
+
+            <!-- disabled color default -->
+            <ImageView
+                android:id="@+id/toggleContactSearch"
+                android:layout_width="50dp"
+                android:padding="5dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:src="@drawable/ic_contacts_black_24dp"
+                android:tint="#000000" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"></WebView>
+
+            <ListView
+                android:id="@+id/suggestions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/webView"></ListView>
+            <TextView
+                android:id="@+id/search_empty"
+                android:background="@color/color_layout_background"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18dp"
+                android:textAlignment="center"
+                android:text="You can also search Unknown Numbers\nTap the contacts button!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/closeSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="#075e54"
+                android:text="Cancel"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:id="@+id/submitSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="#075e54"
+                android:text="Search"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </LinearLayout>
+</com.bluebulls.apps.whatsapputility.util.CustomLayout>

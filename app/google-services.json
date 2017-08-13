@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "720205978778",
+    "firebase_url": "https://whatsapp-utility.firebaseio.com",
+    "project_id": "whatsapp-utility",
+    "storage_bucket": "whatsapp-utility.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720205978778:android:9f57fcd72298e219",
+        "android_client_info": {
+          "package_name": "com.bluebulls.apps.whatsapputility"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720205978778-hjfi9cg55tbrr03mg75d2f3jnnl44sde.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsG_wwUZAgUtYaEzwk6sCSAlF1PLJsYbA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

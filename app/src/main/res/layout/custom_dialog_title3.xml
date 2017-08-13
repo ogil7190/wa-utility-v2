@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/lCustomTitle1">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:id="@+id/CustomTitle3"
+    android:text="Enter A Reminder"
+    android:textStyle="bold"
+    android:textAlignment="center"
+    android:textSize="30sp"
+    android:textColor="#ffffff"
+    android:background="@color/background_title_poll"/>
+</LinearLayout>
