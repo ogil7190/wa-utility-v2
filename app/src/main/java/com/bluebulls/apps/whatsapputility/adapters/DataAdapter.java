@@ -71,6 +71,7 @@ public class DataAdapter extends BaseAdapter {
 
             viewHolder.refresh = (ImageButton)v.findViewById(R.id.refresh_poll);
             viewHolder.reply = (ImageButton)v.findViewById(R.id.reply_poll);
+            viewHolder.forward=(ImageButton)v.findViewById(R.id.forward_poll) ;
 
             //viewHolder.clear = (ImageButton)v.findViewById(R.id.clear_poll);
 
@@ -78,11 +79,13 @@ public class DataAdapter extends BaseAdapter {
             v.setTag(viewHolder);
             View.OnClickListener refreshListener = fragmentPoll.setListeners(1,null);
             View.OnClickListener replyListener = fragmentPoll.setListeners(2,viewHolder.refresh);
+            View.OnClickListener forwardListener=fragmentPoll.setListeners(4,viewHolder.forward);
 
             //View.OnClickListener clearListener = fragmentPoll.setListeners(3,null);
 
             viewHolder.refresh.setOnClickListener(refreshListener);
             viewHolder.reply.setOnClickListener(replyListener);
+            viewHolder.forward.setOnClickListener(forwardListener);
 
             //viewHolder.clear.setOnClickListener(clearListener);
         }
@@ -187,7 +190,7 @@ public class DataAdapter extends BaseAdapter {
     }
 
     static class ViewHolder{
-        ImageButton refresh, reply, clear;
+        ImageButton refresh, reply, clear,forward;
         TextView title;
         PieChart pollChart;
     }

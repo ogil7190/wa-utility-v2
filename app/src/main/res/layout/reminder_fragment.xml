@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipToPadding="false"
+    android:clipChildren="false"
     android:layout_height="match_parent">
     <ListView
         android:id="@+id/list_view2"
@@ -9,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
     </ListView>
-    <ImageView
+   <!-- <ImageView
         android:id="@+id/reminderbtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -20,7 +23,24 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:elevation="5dp"
-        android:src="@drawable/icon"/>
+        android:src="@drawable/icon"/>-->
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/reminderbtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:elevation="5dp"
+        app:sparkbutton_activeImage="@drawable/icon"
+        app:sparkbutton_inActiveImage="@drawable/icon"
+        app:sparkbutton_iconSize="50dp"
+        app:sparkbutton_primaryColor="@color/colorAccent"
+        app:sparkbutton_secondaryColor="@color/colorPrimaryDark">
+    </com.varunest.sparkbutton.SparkButton>
 
     <com.github.rahatarmanahmed.cpv.CircularProgressView
         xmlns:app="http://schemas.android.com/apk/res-auto"

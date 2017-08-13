@@ -20,9 +20,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -44,6 +42,9 @@ import com.bluebulls.apps.whatsapputility.entity.actors.Option;
 import com.bluebulls.apps.whatsapputility.entity.actors.Poll;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.twotoasters.jazzylistview.JazzyListView;
+import com.twotoasters.jazzylistview.effects.ZipperEffect;
+import com.varunest.sparkbutton.SparkButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +65,7 @@ import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGIST
  */
 
 public class FragmentPoll extends Fragment implements AdapterView.OnItemSelectedListener {
-    private ListView listView;
+    private JazzyListView listView;
     private SharedPreferences pref;
 
     private TextView ref_tag;
@@ -74,7 +75,7 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
     private EditText option1,option2,option3,option4,option5,option6;
 
 
-    private ImageView addPole;
+    private SparkButton addPole;
     private CircularProgressView chatHeadImg;
     private EditText title;
     private String pollTitle;
@@ -138,12 +139,14 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
         option4=(EditText)l.findViewById(R.id.option4);
         option5=(EditText)l.findViewById(R.id.option5);
         option6=(EditText)l.findViewById(R.id.option6);
-        listView =(ListView) v.findViewById(R.id.list_view);
-
+        listView =(JazzyListView) v.findViewById(R.id.list_view);
+        listView.setTransitionEffect(new ZipperEffect());
         ref_tag = (TextView) v.findViewById(R.id.refresh_tag);
         ref_tag.setVisibility(View.GONE);
 
-        addPole=(ImageView) v.findViewById(R.id.polebtn);
+        addPole=(SparkButton) v.findViewById(R.id.polebtn);
+        addPole.setAnimationSpeed(1.5f);
+
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
 
@@ -171,6 +174,7 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
         addPole.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addPole.playAnimation();
                 if(!isReply)
                     enableEditText(title);
                 alertDialog.show();
@@ -693,6 +697,9 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
                     d.dismiss();
                 }
             };
+            if(x==4){
+                // TODO: 8/13/2017  
+            }
             return listener;
         }
         else

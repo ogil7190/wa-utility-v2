@@ -1,6 +1,9 @@
 package com.bluebulls.apps.whatsapputility.fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,9 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,14 +34,17 @@ import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.EventAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.Event;
+import com.bluebulls.apps.whatsapputility.services.MyAlarmReceiver;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.twotoasters.jazzylistview.JazzyListView;
+import com.twotoasters.jazzylistview.effects.FanEffect;
+import com.varunest.sparkbutton.SparkButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +54,6 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
-import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
 import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGISTER_EVENT_URL;
 import static com.facebook.accountkit.internal.AccountKitController.getApplicationContext;
 
@@ -59,11 +62,11 @@ import static com.facebook.accountkit.internal.AccountKitController.getApplicati
  */
 
 public class FragmentEvent extends Fragment {
-    ListView listView2;
+    JazzyListView listView2;
     ArrayList<Event> eventArrayList = new ArrayList<>();
     private static AlertDialog alertDialog;
     static FragmentManager manager;
-    private ImageView addEvent;
+    private SparkButton addEvent;
     private static int date1,year1;
     private static String month1;
     private static TextView datetxt,timetxt;
@@ -79,6 +82,8 @@ public class FragmentEvent extends Fragment {
     private String options_str = "";
     public static final String PREF_USER_KEY_PHONE = "user_phone";
     private LayoutInflater inflater;
+
+    private long alarmTime = 0;
     public static final String TAG = "Fragement_Event";
     public static final String GET_EVENT_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/GetEvent.php";
     public static final String EVENT_REPLY_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/EventReply.php";
@@ -106,11 +111,12 @@ public class FragmentEvent extends Fragment {
         timetxt=(TextView)l.findViewById(R.id.time);
         final EditText event = (EditText) l.findViewById(R.id.event);
         final EditText description = (EditText) l.findViewById(R.id.description);
-        addEvent = (ImageView) v.findViewById(R.id.eventbtn);
-        listView2 = (ListView) v.findViewById(R.id.list_view2);
+        addEvent = (SparkButton) v.findViewById(R.id.eventbtn);
+        addEvent.setAnimationSpeed(1.5f);
+        listView2 = (JazzyListView) v.findViewById(R.id.list_view2);
         eventAdapter = new EventAdapter(eventArrayList, getContext(),this);
         listView2.setAdapter(eventAdapter);
-
+        listView2.setTransitionEffect(new FanEffect());
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
 
@@ -136,6 +142,7 @@ public class FragmentEvent extends Fragment {
                 .listener(new SingleDateAndTimePickerDialog.Listener() {
                     @Override
                     public void onDateSelected(Date date) {
+                        alarmTime = date.getTime();
                         String test=date.toString().replace("Mon","").replace("Tue","").replace("Wed","").replace("Thu","")
                                 .replace("Mon","").replace("Fri","").replace("Sat","").replace("Sun","")
                                 .replace("GMT+05:30","");
@@ -195,6 +202,7 @@ public class FragmentEvent extends Fragment {
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addEvent.playAnimation();
                 alertDialog.show();
             }
         });
@@ -405,12 +413,21 @@ public class FragmentEvent extends Fragment {
                 @Override
                 public void onClick(View v) {
                     pos = listView2.getPositionForView(v);
-                    // find this position in data array list and
-                    // handle it here what happen on click
+                    SparkButton b = (SparkButton) v;
+                    if (b.isChecked()){
+                        b.setActiveImage(R.drawable.ic_alarm_off_black_18dp);
+                        b.setChecked(false);
+                    }
+                    else {
+                        b.setInactiveImage(R.drawable.ic_alarm_on_black_18dp);
+                        b.setChecked(true);
+                    }
+                    b.playAnimation();
                 }
             };
             return listener;
         }
+
         else
             return null;
     }
@@ -486,11 +503,48 @@ public class FragmentEvent extends Fragment {
         if (obj.get("error").equals(false)) {
             String event_id = obj.get("event_id").toString();
             events();
+            Log.d(TAG,"EventId:"+event_id);
+            addToReminder(event_id);
             saveEvent(event_id,phone,topic_msg, description_str);
             shareEvent(event_id);
         } else
             showToast("Something went wrong. Try again!");
     }
+
+    private void addToReminder(String event_id){
+        /*Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH,date1);
+        c.set(Calendar.MONTH, getMonth(month1));
+        c.set(Calendar.YEAR, year1);
+        c.set(Calendar.HOUR_OF_DAY,hour1);
+        c.set(Calendar.MINUTE, minute1);
+        Log.d(TAG, c.toString());*/
+        Intent i = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        i.setAction("NEW_ALARM#"+event_id);
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
+        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Log.d(TAG,"AlarmTime:"+(alarmTime - System.currentTimeMillis()));
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000, pi);
+    }
+
+    private int getMonth(String month){
+        switch (month.toLowerCase()){
+            case "jan":  return 1;
+            case "feb":  return 2;
+            case "mar":  return 3;
+            case "apr":  return 4;
+            case "may":  return 5;
+            case "jun":  return 6;
+            case "jul":  return 7;
+            case "aug":  return 8;
+            case "sep":  return 9;
+            case "oct":  return 10;
+            case "nov":  return 11;
+            case "dec":  return 12;
+            default: return -1;
+        }
+    }
+
     private void saveEvent(String event_id, String user, String title, String description){
         dbHelper.insertEvent(event_id,title,description,"me",date_time,user,"joined");
     }

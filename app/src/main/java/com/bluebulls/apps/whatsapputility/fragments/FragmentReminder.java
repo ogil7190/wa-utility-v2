@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import com.bluebulls.apps.whatsapputility.services.MyAlarmReceiver;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.varunest.sparkbutton.SparkButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +41,7 @@ public class FragmentReminder extends Fragment {
     private ArrayList<Data> reminderArrayList = new ArrayList<>();
     private static AlertDialog alertDialog;
     static FragmentManager manager;
-    private ImageView addReminder;
+    private SparkButton addReminder;
 
     public static TextView datetxt,timetxt;
     public static int date2, year2;
@@ -71,7 +71,8 @@ public class FragmentReminder extends Fragment {
         timetxt=(TextView)l.findViewById(R.id.time);
         final EditText event = (EditText) l.findViewById(R.id.event);
         final EditText description = (EditText) l.findViewById(R.id.description);
-        addReminder = (ImageView) v.findViewById(R.id.reminderbtn);
+        addReminder = (SparkButton) v.findViewById(R.id.reminderbtn);
+        addReminder.setAnimationSpeed(1.5f);
         listView3 = (ListView) v.findViewById(R.id.list_view2);
         alarmManager=(AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
         final Intent intent=new Intent(getContext(),MyAlarmReceiver.class);
@@ -149,7 +150,7 @@ public class FragmentReminder extends Fragment {
                         event.setText(null);
                         description.setText(null);
                         Log.e("TAG", "onClick: "+(alarmTime-System.currentTimeMillis()) );
-                        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,alarmTime,pi);
+                        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,10000,pi);
                     }
                 })
                 .setNegativeButton("Set Date & Time", new DialogInterface.OnClickListener() {
@@ -162,6 +163,7 @@ public class FragmentReminder extends Fragment {
         addReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addReminder.playAnimation();
                 alertDialog.show();
             }
         });

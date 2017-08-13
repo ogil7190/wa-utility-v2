@@ -41,5 +41,7 @@ dependencies {
     compile 'com.github.florent37:singledateandtimepicker:1.1.8'
     compile 'com.eminayar.panterdialog:panter-dialog:0.0.2.1'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
+    compile 'com.twotoasters.jazzylistview:library:1.2.1'
+    compile 'com.github.varunest:sparkbutton:1.0.5'
     testCompile 'junit:junit:4.12'
 }

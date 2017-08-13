@@ -5,13 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.bluebulls.apps.whatsapputility.entity.actors.Data;
+import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.entity.actors.Event;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentEvent;
-import com.bluebulls.apps.whatsapputility.R;
+import com.varunest.sparkbutton.SparkButton;
 
 import java.util.ArrayList;
 
@@ -59,15 +58,16 @@ public class EventAdapter extends BaseAdapter {
             viewHolder.descriptionTxt=(TextView)v.findViewById(R.id.eventDescription);
             viewHolder.date=(TextView)v.findViewById(R.id.date);
             viewHolder.time=(TextView)v.findViewById(R.id.time);
-            viewHolder.imageButton=(ImageButton)v.findViewById(R.id.addToReminder);
+            viewHolder.imageButton=(SparkButton) v.findViewById(R.id.addToReminder);
             viewHolder.imageButton.setOnClickListener(event.getListener(1));
-
+            //viewHolder.imageButton.setInactiveImage(R.drawable.ic_alarm_off_black_18dp);
             v.setTag(viewHolder);
         }
         else {
             v=convertView;
             viewHolder=(ViewHolder)v.getTag();
         }
+
         viewHolder.eventTxt.setText(e.getTopic());
         viewHolder.descriptionTxt.setText(e.getDescriptioin());
         viewHolder.date.setText(e.getTime().substring(0,e.getTime().indexOf("|")));
@@ -76,6 +76,6 @@ public class EventAdapter extends BaseAdapter {
     }
     static class ViewHolder{
         TextView eventTxt,descriptionTxt,date,time;
-        ImageButton imageButton;
+        SparkButton imageButton;
     }
 }
