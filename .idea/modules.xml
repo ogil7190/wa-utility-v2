@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WhatsAppUtility_V2.iml" filepath="$PROJECT_DIR$/WhatsAppUtility_V2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wa-utility-v2.iml" filepath="$PROJECT_DIR$/wa-utility-v2.iml" />
     </modules>
   </component>
 </project>
