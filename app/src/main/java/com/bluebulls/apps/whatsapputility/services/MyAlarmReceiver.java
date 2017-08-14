@@ -5,8 +5,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,13 +21,16 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     MediaPlayer mp;
     Context context;
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         this.context = context;
         Log.d("ALM","ACTION:"+intent.getAction());
         if (intent.getAction().contains("NEW_ALARM")) {
-            Toast.makeText(context, "Alarm Rang", Toast.LENGTH_SHORT).show();
+            Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(new long[]{1000,500,200,200,500,1000},5);
+
             String event_id = intent.getAction().substring(intent.getAction().indexOf("#")+1, intent.getAction().length());
             Log.d("EVENT_ID:",event_id);
+
             showNotification("Event has Arrived!","Tap to view event",event_id);
             /*Uri uri=Uri.parse("android.resource://com.bluebulls.apps.whatsapputility/"+R.raw.audio);
             mp=new MediaPlayer();
@@ -48,7 +54,8 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_alarm_on_black_18dp)
                         .setContentTitle(title)
-                        .setContentText(text);
+                        .setContentText(text)
+                        .setSound(Uri.parse("android.resource://com.bluebulls.apps.whatsapputility/"+R.raw.audio));
         Intent resultIntent = new Intent(context, HomeActivity.class);
         resultIntent.setAction(Intent.ACTION_VIEW);
         resultIntent.setData(Uri.parse("event_id/"+event_id));

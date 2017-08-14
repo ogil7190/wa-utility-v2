@@ -512,37 +512,12 @@ public class FragmentEvent extends Fragment {
     }
 
     private void addToReminder(String event_id){
-        /*Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_MONTH,date1);
-        c.set(Calendar.MONTH, getMonth(month1));
-        c.set(Calendar.YEAR, year1);
-        c.set(Calendar.HOUR_OF_DAY,hour1);
-        c.set(Calendar.MINUTE, minute1);
-        Log.d(TAG, c.toString());*/
         Intent i = new Intent(getApplicationContext(), MyAlarmReceiver.class);
         i.setAction("NEW_ALARM#"+event_id);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
         AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Log.d(TAG,"AlarmTime:"+(alarmTime - System.currentTimeMillis()));
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000, pi);
-    }
-
-    private int getMonth(String month){
-        switch (month.toLowerCase()){
-            case "jan":  return 1;
-            case "feb":  return 2;
-            case "mar":  return 3;
-            case "apr":  return 4;
-            case "may":  return 5;
-            case "jun":  return 6;
-            case "jul":  return 7;
-            case "aug":  return 8;
-            case "sep":  return 9;
-            case "oct":  return 10;
-            case "nov":  return 11;
-            case "dec":  return 12;
-            default: return -1;
-        }
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
     }
 
     private void saveEvent(String event_id, String user, String title, String description){
