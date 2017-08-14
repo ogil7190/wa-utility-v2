@@ -1,55 +1,104 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 
+import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentEvent;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentPoll;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentReminder;
-import com.bluebulls.apps.whatsapputility.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import devlight.io.library.ntb.NavigationTabBar;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+public class HomeActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     public String data = "";
-
+    private ViewPager viewPager;
+    NavigationTabBar navigationTabBar;
+    ArrayList<NavigationTabBar.Model> models=new ArrayList<>();
+    Toolbar toolbar;
     private boolean isPollSelected = false;
+
+    private static final int COUNT=5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        fragmentManager=getSupportFragmentManager();
-        checkReply();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        fragmentManager = getSupportFragmentManager();
+        viewPager=(ViewPager)findViewById(R.id.viewPager);
+        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+        navigationTabBar=(NavigationTabBar)findViewById(R.id.navigation);
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        ContextCompat.getDrawable(this,R.drawable.ic_assessment_black_24dp),
+                        Color.rgb(255,102,0)
+                ).title("Heart")
+                        .badgeTitle("NTB")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        ContextCompat.getDrawable(this,R.drawable.ic_event_black_24dp),
+                        Color.rgb(7,94,84)
+                ).title("Cup")
+                        .badgeTitle("with")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        ContextCompat.getDrawable(this,R.drawable.ic_alarm_black_24dp),
+                        Color.BLACK
+                ).title("Diploma")
+                        .badgeTitle("state")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        ContextCompat.getDrawable(this,R.drawable.ic_settings_black_18dp),
+                        Color.BLUE
+                ).title("Flag")
+                        .badgeTitle("icon")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        ContextCompat.getDrawable(this,R.drawable.ic_error_outline_black_18dp),
+                        Color.RED
+                ).title("Flag")
+                        .badgeTitle("icon")
+                        .build()
+        );
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        if(!data.equals("")){
-            selectedItem = navigationView.getMenu().getItem(selection).setChecked(true);
-        }
+        navigationTabBar.setModels(models);
+        navigationTabBar.setViewPager(viewPager);
+        checkReply();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
     int selection = 0;
 
     private void checkReply(){
@@ -63,11 +112,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 case "poll_id" :
                     data = params.get(1);
                     selection = 0;
-                    goToPoll();
+                    viewPager.setCurrentItem(0,true);
                     break;
                 case "event_id" :
                     data = params.get(1);
-                    goToEvent();
+                    viewPager.setCurrentItem(1,true);
                     selection = 1;
                     break;
             }
@@ -85,94 +134,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 intent.setAction(Intent.ACTION_VOICE_COMMAND);
             }
         }
-        else goToPoll();
+        else viewPager.setCurrentItem(0,true);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+    class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public Fragment getItem(int position) {
+            if(position==0)
+                return data.equals("") ? FragmentPoll.newInstance(false,data):FragmentPoll.newInstance(true,data);
+            if(position==1)
+                return data.equals("") ? FragmentEvent.newInstance(fragmentManager,false,data): FragmentEvent.newInstance(fragmentManager,true,data);
+            if(position==2)
+                return FragmentReminder.newInstance(fragmentManager);
+            else
+                return FragmentReminder.newInstance(fragmentManager);
+        }
 
-    MenuItem selectedItem;
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        selectedItem = item;
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_poll) {
-           goToPoll();
-
-        } else if (id == R.id.nav_gallery) {
-            goToEvent();
-
-        } else if (id == R.id.nav_slideshow) {
-            goToReminder();
-
-        } /*else if (id == R.id.nav_manage) {
-
-        }*/ else if (id == R.id.nav_share) {
-
-        } /*else if (id == R.id.nav_send) {
-
-        }*/
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-    void goToPoll()
-    {
-        isPollSelected = true;
-        FragmentTransaction PollTransaction=fragmentManager.beginTransaction();
-        PollTransaction.replace(R.id.container_frame, data.equals("") ? FragmentPoll.newInstance(false,data):FragmentPoll.newInstance(true,data));
-        data = "";
-        PollTransaction.commit();
-    }
-    void goToEvent()
-    {
-        FragmentTransaction EventTransaction=fragmentManager.beginTransaction();
-        EventTransaction.replace(R.id.container_frame, data.equals("") ? FragmentEvent.newInstance(fragmentManager,false,data): FragmentEvent.newInstance(fragmentManager,true,data));
-        data = "";
-        EventTransaction.commit();
-    }
-    void goToReminder()
-    {
-        FragmentTransaction ReminderTransaction=fragmentManager.beginTransaction();
-        ReminderTransaction.replace(R.id.container_frame, FragmentReminder.newInstance(fragmentManager));
-        ReminderTransaction.commit();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //No call for super(). Bug on API Level > 11.
+        @Override
+        public int getCount() {
+            return COUNT;
+        }
     }
 }

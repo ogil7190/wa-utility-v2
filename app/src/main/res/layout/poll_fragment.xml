@@ -30,24 +30,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </com.twotoasters.jazzylistview.JazzyListView>
-   <!-- <ImageView
-        android:id="@+id/polebtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:elevation="5dp"
-        android:src="@drawable/icon"/>-->
     <com.varunest.sparkbutton.SparkButton
         android:id="@+id/polebtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_alignParentBottom="true"
@@ -66,8 +53,8 @@
         android:layout_width="50dp"
         android:background="#00ffffff"
         app:cpv_color="#075e54"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_alignParentBottom="true"
