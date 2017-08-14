@@ -607,7 +607,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
     private CustomLayout poll;
     private int items = 0;
-    private String[] option_values = {"1", "2", "3", "4", "5", "6"};
 
     private void setupPoll() {
 
@@ -620,10 +619,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         paramOptions.gravity = Gravity.CENTER;
         options.setVisibility(View.GONE);
 
-        //Spinner options = (Spinner) poll.findViewById(R.id.optionCount);
-        //ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, option_values);
-        //spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //options.setAdapter(spinnerAdapter);
         StepperTouch options = (StepperTouch)poll.findViewById(R.id.option);
         options.enableSideTap(true);
         options.stepper.setMax(6);
@@ -777,7 +772,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         String topicMssg = topic.getText().toString().replaceFirst("\\s++$", "");
         int n = Integer.parseInt(res);
 
-        for (int i = 1; i <= items + 1; i++) {
+        for (int i = 1; i <= items; i++) {
             EditText editText = (EditText) poll.findViewById(getResources().getIdentifier("option" + i, "id", getPackageName()));
             String data = editText.getText().toString().replaceFirst("\\s++$", "");
             if (!data.equals("")) {
@@ -788,7 +783,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                 else
                     options_map.put(data,"0");
             } else {
-                showToast("Check option:" + i);
+                showToast("Check Option " + i);
                 return false;
             }
         }

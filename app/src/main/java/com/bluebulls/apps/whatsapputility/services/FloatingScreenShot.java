@@ -10,6 +10,7 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.util.Log;
@@ -40,7 +41,7 @@ public class FloatingScreenShot extends Service implements CustomLayout.BackButt
     private View mFloatingSS;
 
     private SSBridge bridge = new SSBridge();
-
+    public static boolean isVisible = false;
     public FloatingScreenShot() {
     }
 
@@ -92,6 +93,19 @@ public class FloatingScreenShot extends Service implements CustomLayout.BackButt
         Bitmap myBitmap = BitmapFactory.decodeFile(new File(imgUri.getPath()).getAbsolutePath());
         ss.setImageBitmap(myBitmap);
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                isVisible = true;
+            }
+        });
+        t.start();
+
         ss.setOnTouchListener(new View.OnTouchListener() {
             private int lastAction;
             private int initialX;
@@ -137,6 +151,13 @@ public class FloatingScreenShot extends Service implements CustomLayout.BackButt
                 return false;
             }
         });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                stopSelf();
+            }
+        }, 30000);
     }
 
     private void moveUp(final int y_cord_now) {

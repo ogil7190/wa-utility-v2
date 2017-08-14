@@ -46,7 +46,10 @@ import com.varunest.sparkbutton.SparkButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +65,8 @@ import static com.facebook.accountkit.internal.AccountKitController.getApplicati
  */
 
 public class FragmentEvent extends Fragment {
-    JazzyListView listView2;
-    ArrayList<Event> eventArrayList = new ArrayList<>();
+    private JazzyListView listView2;
+    private ArrayList<Event> eventArrayList = new ArrayList<>();
     private static AlertDialog alertDialog;
     static FragmentManager manager;
     private SparkButton addEvent;
@@ -79,7 +82,7 @@ public class FragmentEvent extends Fragment {
     private static boolean dataComing = false;
     private static String event_data = "";
     private String phone = "";
-    private String options_str = "";
+
     public static final String PREF_USER_KEY_PHONE = "user_phone";
     private LayoutInflater inflater;
 
@@ -95,6 +98,10 @@ public class FragmentEvent extends Fragment {
         fragment.setArguments(args);
         dataComing = incomingData;
         event_data = data;
+        if(event_data.equals("") || event_data.equals(null)){
+            dataComing = false; /* resetting on empty data */
+        }
+
         return fragment;
     }
 
@@ -123,59 +130,53 @@ public class FragmentEvent extends Fragment {
         pref = getContext().getSharedPreferences(PREF_USER,MODE_PRIVATE);
         phone=pref.getString(PREF_USER_KEY_PHONE,"null");
         singleDateAndTimePickerDialog=new SingleDateAndTimePickerDialog.Builder(getContext())
-                //.bottomSheet()
                 .curved()
                 .minutesStep(1)
-                //.mustBeOnFuture()
+                .defaultDate(Calendar.getInstance().getTime())
                 .titleTextColor(Color.WHITE)
                 .mainColor(Color.rgb(255,140,0))
-                //.displayHours(false)
-                //.displayMinutes(false)
                 .displayListener(new SingleDateAndTimePickerDialog.DisplayListener() {
                     @Override
                     public void onDisplayed(SingleDateAndTimePicker picker) {
-                        //retrieve the SingleDateAndTimePicker
+
                     }
                 })
-
                 .title("Pick Time")
                 .listener(new SingleDateAndTimePickerDialog.Listener() {
                     @Override
                     public void onDateSelected(Date date) {
                         alarmTime = date.getTime();
-                        String test=date.toString().replace("Mon","").replace("Tue","").replace("Wed","").replace("Thu","")
-                                .replace("Mon","").replace("Fri","").replace("Sat","").replace("Sun","")
-                                .replace("GMT+05:30","");
-                        hour1=Integer.parseInt(String.valueOf(test.charAt(8))+String.valueOf(test.charAt(9)));
-                        minute1=Integer.parseInt(String.valueOf(test.charAt(11))+String.valueOf(test.charAt(12)));
-                        date1=Integer.parseInt(String.valueOf(test.charAt(5))+String.valueOf(test.charAt(6)));
-                        month1=String.valueOf(test.charAt(1))+String.valueOf(test.charAt(2))+String.valueOf(test.charAt(3));
-                        year1=Integer.parseInt(String.valueOf(test.charAt(18))+String.valueOf(test.charAt(19))+String.valueOf(test.charAt(20))+String.valueOf(test.charAt(21)));
-                        datetxt.setText(date1+" "+month1+" "+year1);
-                        if(hour1<10)
-                        {
-                            if(minute1<10)
-                            {
-                                timetxt.setText("0"+hour1+":0"+minute1);
+                        if(alarmTime - System.currentTimeMillis() > 0) {
+                            String test = date.toString().replace("Mon", "").replace("Tue", "").replace("Wed", "").replace("Thu", "")
+                                    .replace("Mon", "").replace("Fri", "").replace("Sat", "").replace("Sun", "")
+                                    .replace("GMT+05:30", "");
+                            hour1 = Integer.parseInt(String.valueOf(test.charAt(8)) + String.valueOf(test.charAt(9)));
+                            minute1 = Integer.parseInt(String.valueOf(test.charAt(11)) + String.valueOf(test.charAt(12)));
+                            date1 = Integer.parseInt(String.valueOf(test.charAt(5)) + String.valueOf(test.charAt(6)));
+                            month1 = String.valueOf(test.charAt(1)) + String.valueOf(test.charAt(2)) + String.valueOf(test.charAt(3));
+                            year1 = Integer.parseInt(String.valueOf(test.charAt(18)) + String.valueOf(test.charAt(19)) + String.valueOf(test.charAt(20)) + String.valueOf(test.charAt(21)));
+                            datetxt.setText(date1 + " " + month1 + " " + year1);
+                            if (hour1 < 10) {
+                                if (minute1 < 10) {
+                                    timetxt.setText("0" + hour1 + ":0" + minute1);
+                                } else {
+                                    timetxt.setText("0" + hour1 + ":" + minute1);
+                                }
+                            } else {
+                                if (minute1 < 10) {
+                                    timetxt.setText(hour1 + ":0" + minute1);
+                                } else {
+                                    timetxt.setText(hour1 + ":" + minute1);
+                                }
                             }
-                            else
-                            {
-                                timetxt.setText("0"+hour1+":"+minute1);
-                            }
+                            Log.e("TAG", "onDateSelected: " + test);
+                            alertDialog.show();
                         }
                         else
-                        {
-                            if(minute1<10)
-                            {
-                                timetxt.setText(hour1+":0"+minute1);                            }
-                            else
-                            {
-                                timetxt.setText(hour1+":"+minute1);                            }
-                        }
-                        Log.e("TAG", "onDateSelected: "+test);
-                        alertDialog.show();
+                            Toast.makeText(getContext(),"Must be a valid date time",Toast.LENGTH_SHORT).show();
                     }
                 }).build();
+
         alertDialog = new AlertDialog.Builder(getContext())
                 .setCancelable(true)
                 .setView(l)
@@ -316,8 +317,8 @@ public class FragmentEvent extends Fragment {
         date.setText(event.getTime().substring(0,event.getTime().indexOf("|")));
         time.setText(event.getTime().substring(event.getTime().indexOf("|") + 1,event.getTime().length()));
 
-        topic.setText("Topic:"+ event.getTopic());
-        desc.setText("Description:"+ event.getDescriptioin());
+        topic.setText("Topic: "+ event.getTopic());
+        desc.setText("Description: "+ event.getDescriptioin());
         disableEditText(topic);
         disableEditText(desc);
         builder.setView(linearLayout);
@@ -386,6 +387,7 @@ public class FragmentEvent extends Fragment {
     private void handleEventReply(String response, Event event) throws JSONException{
         JSONObject o = new JSONObject(response);
         if(o.get("error").equals(false)) {
+
             saveEvent(event,"joined");
             events();
         }
@@ -402,7 +404,6 @@ public class FragmentEvent extends Fragment {
         catch (JSONException e) {
             e.printStackTrace();
         }
-
         return "participants";
     }
 
@@ -415,13 +416,12 @@ public class FragmentEvent extends Fragment {
                     pos = listView2.getPositionForView(v);
                     SparkButton b = (SparkButton) v;
                     if (b.isChecked()){
-                        b.setActiveImage(R.drawable.ic_alarm_off_black_18dp);
+                        b.setActiveImage(R.drawable.ic_alarm_on_black_18dp);
+                        addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
                         b.setChecked(false);
                     }
-                    else {
-                        b.setInactiveImage(R.drawable.ic_alarm_on_black_18dp);
-                        b.setChecked(true);
-                    }
+                    b.setInactiveImage(R.drawable.ic_alarm_off_black_18dp);
+                    b.setChecked(true);
                     b.playAnimation();
                 }
             };
@@ -431,6 +431,42 @@ public class FragmentEvent extends Fragment {
         else
             return null;
     }
+
+    private long getAlarmTime(String date_time){
+        String date = date_time.substring(0, date_time.indexOf("|"));
+        String time = date_time.substring(date_time.indexOf("|") + 1, date_time.length());
+        Log.d(TAG, "Date:"+date+ " time:"+time);
+        Calendar calendar = Calendar.getInstance();
+        String dates[] = date.split(" ");
+        String times[] = time.split(":");
+        Log.d(TAG, "Dates:"+ Arrays.toString(dates) + " Times:"+ Arrays.toString(times));
+        calendar.set(Calendar.DAY_OF_MONTH,Integer.valueOf(dates[0]));
+        calendar.set(Calendar.MONTH, getMonth(dates[1]));
+        calendar.set(Calendar.YEAR, Integer.valueOf(dates[2]));
+        calendar.set(Calendar.HOUR_OF_DAY,Integer.valueOf(times[0]));
+        calendar.set(Calendar.MINUTE, Integer.valueOf(times[1]));
+        Log.d(TAG, "TIME:"+calendar.getTime().toString()+ "Long:"+calendar.getTime().getTime());
+        return calendar.getTime().getTime();
+    }
+
+    private int getMonth(String month){
+        switch (month.toLowerCase()){
+            case "jan": return 0;
+            case "feb": return 1;
+            case "mar": return 2;
+            case "apr": return 3;
+            case "may": return 4;
+            case "jun": return 5;
+            case "jul": return 6;
+            case "aug": return 7;
+            case "sep": return 8;
+            case "oct": return 9;
+            case "nov": return 10;
+            case "dec": return 11;
+            default: return -1;
+        }
+    }
+
     private void showToast(final String mssg) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
@@ -504,20 +540,25 @@ public class FragmentEvent extends Fragment {
             String event_id = obj.get("event_id").toString();
             events();
             Log.d(TAG,"EventId:"+event_id);
-            addToReminder(event_id);
             saveEvent(event_id,phone,topic_msg, description_str);
             shareEvent(event_id);
         } else
             showToast("Something went wrong. Try again!");
     }
 
-    private void addToReminder(String event_id){
+    private void addToReminder(String event_id, long alarmTime){
         Intent i = new Intent(getApplicationContext(), MyAlarmReceiver.class);
         i.setAction("NEW_ALARM#"+event_id);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
         AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Log.d(TAG,"AlarmTime:"+(alarmTime - System.currentTimeMillis()));
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
+        long time = alarmTime - System.currentTimeMillis();
+
+        if(time<0){
+            Toast.makeText(getContext(), "Event Already gone!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
     }
 
     private void saveEvent(String event_id, String user, String title, String description){

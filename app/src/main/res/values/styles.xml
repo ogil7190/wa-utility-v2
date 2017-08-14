@@ -35,4 +35,10 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">#FF1FEAD2</item>
+        <item name="colorSwitchThumbNormal">#eaeaea</item>
+        <item name="android:colorForeground">#dd131313</item>
+    </style>
+
 </resources>

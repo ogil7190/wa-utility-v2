@@ -40,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         fragmentManager = getSupportFragmentManager();
         viewPager=(ViewPager)findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
@@ -47,44 +48,40 @@ public class HomeActivity extends AppCompatActivity {
         navigationTabBar=(NavigationTabBar)findViewById(R.id.navigation);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         models.add(
                 new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(this,R.drawable.ic_assessment_black_24dp),
-                        Color.rgb(255,102,0)
-                ).title("Heart")
-                        .badgeTitle("NTB")
+                        Color.rgb(7,94,84)
+                ).title("Poll")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(this,R.drawable.ic_event_black_24dp),
-                        Color.rgb(7,94,84)
-                ).title("Cup")
-                        .badgeTitle("with")
+                        Color.rgb(255,102,0)
+                ).title("Event")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(this,R.drawable.ic_alarm_black_24dp),
-                        Color.BLACK
-                ).title("Diploma")
-                        .badgeTitle("state")
+                        Color.BLUE
+                ).title("Reminder")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(this,R.drawable.ic_settings_black_18dp),
-                        Color.BLUE
-                ).title("Flag")
-                        .badgeTitle("icon")
+                        Color.RED
+                ).title("Settings")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(this,R.drawable.ic_error_outline_black_18dp),
-                        Color.RED
-                ).title("Flag")
-                        .badgeTitle("icon")
+                        Color.BLACK
+                ).title("About")
                         .build()
         );
 
@@ -99,58 +96,71 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    int selection = 0;
+    private int selection = 0;
+    public static final String STR_EVENT_ID = "event_id";
+    public static final String STR_POLL_ID = "poll_id";
+
 
     private void checkReply(){
         Intent intent = getIntent();
         fragmentManager=getSupportFragmentManager();
+
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri incomingData = intent.getData();
             List<String> params = incomingData.getPathSegments();
-
             switch (params.get(0)){
-                case "poll_id" :
+                case STR_POLL_ID :
                     data = params.get(1);
                     selection = 0;
-                    viewPager.setCurrentItem(0,true);
+                    viewPager.setCurrentItem(0,false);
                     break;
-                case "event_id" :
+
+                case STR_EVENT_ID :
                     data = params.get(1);
-                    viewPager.setCurrentItem(1,true);
                     selection = 1;
+                    viewPager.setCurrentItem(1,false);
                     break;
             }
 
             if(params.size()>0) {
-                intent.setAction(Intent.ACTION_VOICE_COMMAND);
+                getIntent().setAction("");
             }
         }
 
         else if(Intent.ACTION_SEND.equals(intent.getAction())){
             if(intent.getType().equals("text/ogil")){
-                Log.d("HOME","We have poll!");
                 data = intent.getStringExtra(Intent.EXTRA_TEXT);
-                Log.d("HOME","PollID:"+data);
-                intent.setAction(Intent.ACTION_VOICE_COMMAND);
+                getIntent().setAction("");
             }
         }
-        else viewPager.setCurrentItem(0,true);
+
+        else viewPager.setCurrentItem(0,false);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
         @Override
         public Fragment getItem(int position) {
-            if(position==0)
-                return data.equals("") ? FragmentPoll.newInstance(false,data):FragmentPoll.newInstance(true,data);
-            if(position==1)
-                return data.equals("") ? FragmentEvent.newInstance(fragmentManager,false,data): FragmentEvent.newInstance(fragmentManager,true,data);
-            if(position==2)
-                return FragmentReminder.newInstance(fragmentManager);
+            if(position == 0) {
+                if(selection == position)
+                    return FragmentPoll.newInstance(true, data);
+                else
+                    return FragmentPoll.newInstance(false, data);
+            }
+            if(position == 1) {
+                if(selection == position)
+                    return FragmentEvent.newInstance(fragmentManager, true, data);
+                else
+                    return FragmentEvent.newInstance(fragmentManager, false, data);
+            }
+            if(position == 2) {
+                if(selection == position)
+                    return FragmentReminder.newInstance(fragmentManager);
+                else
+                    return FragmentReminder.newInstance(fragmentManager);
+            }
             else
                 return FragmentReminder.newInstance(fragmentManager);
         }

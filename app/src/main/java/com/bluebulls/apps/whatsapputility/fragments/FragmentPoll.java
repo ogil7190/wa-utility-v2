@@ -104,6 +104,10 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         fragment.setArguments(args);
         isReply = reply;
         poll_id = pollid;
+        if(pollid.equals("") || pollid.equals(null)){
+            isReply = false; /* resetting on empty poll */
+        }
+
         return fragment;
     }
 

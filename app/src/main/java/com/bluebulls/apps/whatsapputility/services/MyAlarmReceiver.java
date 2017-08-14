@@ -23,30 +23,12 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         this.context = context;
-        Log.d("ALM","ACTION:"+intent.getAction());
+
         if (intent.getAction().contains("NEW_ALARM")) {
             Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(new long[]{1000,500,200,200,500,1000},5);
-
             String event_id = intent.getAction().substring(intent.getAction().indexOf("#")+1, intent.getAction().length());
-            Log.d("EVENT_ID:",event_id);
-
             showNotification("Event has Arrived!","Tap to view event",event_id);
-            /*Uri uri=Uri.parse("android.resource://com.bluebulls.apps.whatsapputility/"+R.raw.audio);
-            mp=new MediaPlayer();
-            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            try {
-                mp.setDataSource(context,uri);
-                mp.prepareAsync();
-                mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.start();
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
         }
     }
     private void showNotification(String title, String text, String event_id){
@@ -56,6 +38,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                         .setContentTitle(title)
                         .setContentText(text)
                         .setSound(Uri.parse("android.resource://com.bluebulls.apps.whatsapputility/"+R.raw.audio));
+
         Intent resultIntent = new Intent(context, HomeActivity.class);
         resultIntent.setAction(Intent.ACTION_VIEW);
         resultIntent.setData(Uri.parse("event_id/"+event_id));

@@ -14,12 +14,15 @@ import com.bluebulls.apps.whatsapputility.services.FloatingScreenShot;
 public class SSBridge extends BroadcastReceiver {
 
     public static final String STOP_SS_SERV = "Stop SS Service";
-
+    public static boolean closed = false;
     @Override
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()){
             case STOP_SS_SERV:
-                context.stopService(new Intent(context, FloatingScreenShot.class));
+                if(FloatingScreenShot.isVisible) {
+                    context.stopService(new Intent(context, FloatingScreenShot.class));
+                    closed = true;
+                }
                 break;
         }
     }

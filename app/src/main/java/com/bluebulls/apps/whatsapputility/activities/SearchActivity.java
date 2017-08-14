@@ -1,6 +1,8 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +13,9 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,21 +38,25 @@ public class SearchActivity extends Activity {
     private WebView webView;
     private Button search, cancel;
     private ListView suggestionList;
-
+    private TextView empty_search;
     private ArrayList<Query> queries = new ArrayList<>();
     private SearchAdapter adapter;
+    String orig_empty_search_str;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_SearchFloat);
-
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_PROGRESS);
+        //getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_search);
-
+        progress = (ProgressBar)findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
         suggestionList = (ListView) findViewById(R.id.suggestions);
         suggestionList.setEmptyView(findViewById(R.id.search_empty));
         searchView = (SearchView)findViewById(R.id.search);
+        empty_search = (TextView) findViewById(R.id.search_empty);
+        orig_empty_search_str = empty_search.getText().toString();
 
         webView = (WebView) findViewById(R.id.webView);
         webView.setVisibility(View.GONE);
@@ -78,7 +86,16 @@ public class SearchActivity extends Activity {
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                activity.setProgress(newProgress*1000);
+                if(newProgress<100) {
+                    progress.setVisibility(View.VISIBLE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        progress.setProgress(newProgress, true);
+                    } else progress.setProgress(newProgress);
+                }
+                else
+                    progress.setVisibility(View.GONE);
+
+                Log.d("WEB","Progress:"+newProgress);
                 super.onProgressChanged(view, newProgress);
             }
         });
@@ -93,6 +110,8 @@ public class SearchActivity extends Activity {
             public boolean onQueryTextSubmit(String query) {
                 searchView.setQuery(query,false);
                 suggestionList.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                empty_search.setText("Loading...");
                 searchWeb(query);
                 return true;
             }
@@ -114,7 +133,6 @@ public class SearchActivity extends Activity {
         suggestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                searchView.setQuery(queries.get(position).getQuery(),false);
                 suggestionList.setVisibility(View.GONE);
                 searchWeb(queries.get(position).getQuery());
             }
@@ -124,6 +142,8 @@ public class SearchActivity extends Activity {
     private void searchWeb(String query){
         if(!query.equals("")) {
             webView.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.VISIBLE);
+
             webView.loadUrl("https://www.google.com/search?site=&source=hp&q=" + query);
         }
     }
@@ -153,6 +173,7 @@ public class SearchActivity extends Activity {
     private void handleResponse(String response, String query){
         suggestionList.setVisibility(View.VISIBLE);
         webView.setVisibility(View.GONE);
+        progress.setVisibility(View.GONE);
 
         response = response.replace("["+"\""+query+"\""+",[","");
         response = response.replace("]]","");
@@ -168,6 +189,7 @@ public class SearchActivity extends Activity {
                     s = "";
                 }
         }
+        empty_search.setText(orig_empty_search_str);
         adapter.notifyDataSetChanged();
     }
 

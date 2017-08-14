@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.bluebulls.apps.whatsapputility.util.SSBridge;
 import com.rvalerio.fgchecker.AppChecker;
 
 import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
