@@ -53,6 +53,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.dionsegijn.steppertouch.OnStepCallback;
+import nl.dionsegijn.steppertouch.StepperTouch;
+
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
@@ -64,7 +67,7 @@ import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGIST
  * Created by dell on 7/29/2017.
  */
 
-public class FragmentPoll extends Fragment implements AdapterView.OnItemSelectedListener {
+public class FragmentPoll extends Fragment implements OnStepCallback{
     private JazzyListView listView;
     private SharedPreferences pref;
 
@@ -82,8 +85,8 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
     private ArrayList<Data> dataArrayList=new ArrayList<>();
     private int number;
 
-
-    private Spinner spinner;
+    public final int LENGTH = 6;
+    private StepperTouch option;
     private static boolean isReply = false;
     private static String poll_id = "";
     private LinearLayout l;
@@ -127,11 +130,13 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
         final View v=inflater.inflate(R.layout.poll_fragment,container,false);
         l =(LinearLayout)inflater.inflate(R.layout.poll_dialog,null);
         LinearLayout l3=(LinearLayout) inflater.inflate(R.layout.custom_dialog_title1,null);
-        spinner=(Spinner)l.findViewById(R.id.optionCount);
-        spinnerAdapter=new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.numberArray));
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(this);
+        option = (StepperTouch) l.findViewById(R.id.option);
+        option.stepper.addStepCallback(this);
+        option.enableSideTap(true);
+        option.stepper.setMax(6);
+        option.stepper.setMin(2);
+        option.stepper.setValue(2);
+
         title=(EditText)l.findViewById(R.id.topic);
         option1=(EditText)l.findViewById(R.id.option1);
         option2=(EditText)l.findViewById(R.id.option2);
@@ -160,7 +165,6 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         title.setText("");
-                        spinner.setAdapter(spinnerAdapter);
                         title.setText("");
                         option1.setText("");
                         option2.setText("");
@@ -374,17 +378,15 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
     private void setOptions(Option[] opt) {
         while(true)
         if (isAdded()) {
-            items = opt[0].getCount() - 1;
+            items = opt[0].getCount();
             RadioButton b = (RadioButton) l.findViewById(R.id.radio1);
             b.setChecked(true);
+            option.stepper.setValue(items);
+            option.stepper.setMin(items);
+            option.stepper.setMax(items);
+            number = items;
 
-            spinner.setSelection(items);
-            spinner.setOnItemSelectedListener(null);
-            spinner.setEnabled(false);
-
-            number = items + 1;
-
-            for (int i = 1; i <= option_values.length; i++) {
+            for (int i = 1; i <=LENGTH; i++) {
                 RadioButton button = (RadioButton) l.findViewById(getResources().getIdentifier("radio" + i, "id", getContext().getPackageName()));
                 EditText editText = (EditText) l.findViewById(getResources().getIdentifier("option" + i, "id", getContext().getPackageName()));
                 button.setVisibility(View.GONE);
@@ -417,29 +419,7 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
         editText.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    private String[] option_values = { "1", "2", "3", "4", "5", "6" };
     private int items = 0;
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        items = position;
-        RadioButton b = (RadioButton)l.findViewById(R.id.radio1);
-        b.setChecked(true);
-        int count = Integer.parseInt(parent.getItemAtPosition(position).toString());
-        number=count;
-        for(int i=1; i<=option_values.length; i++){
-            RadioButton button = (RadioButton)l.findViewById(getResources().getIdentifier("radio"+i, "id", getContext().getPackageName()));
-            EditText editText = (EditText)l.findViewById(getResources().getIdentifier("option"+i, "id", getContext().getPackageName()));
-            button.setVisibility(View.GONE);
-            editText.setVisibility(View.GONE);
-        }
-        for(int i=1; i<=count; i++){
-            RadioButton button = (RadioButton)l.findViewById(getResources().getIdentifier("radio"+i, "id", getContext().getPackageName()));
-            EditText editText = (EditText)l.findViewById(getResources().getIdentifier("option"+i, "id", getContext().getPackageName()));
-            button.setVisibility(View.VISIBLE);
-            editText.setVisibility(View.VISIBLE);
-        }
-
-    }
 
     private void showToast(String msg){
         Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
@@ -461,7 +441,7 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
         String topicMssg = topic.getText().toString().replaceFirst("\\s++$", "");
         int n = Integer.parseInt(res);
 
-        for (int i = 1; i <= items + 1; i++) {
+        for (int i = 1; i <= items; i++) {
             EditText editText = (EditText) l.findViewById(getResources().getIdentifier("option" + i, "id", getContext().getPackageName()));
             String data = editText.getText().toString().replaceFirst("\\s++$", "");
             if (!data.equals("")) {
@@ -642,7 +622,10 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
     }
 
     private void reset(){
-        spinner.setAdapter(spinnerAdapter);
+        option.stepper.setValue(2);
+        option.stepper.setMax(6);
+        option.stepper.setMin(2);
+
         title.setText("");
         option1.setText("");
         option2.setText("");
@@ -697,11 +680,20 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
                     d.dismiss();
                 }
             };
-            if(x==4){
-                // TODO: 8/13/2017  
-            }
             return listener;
         }
+
+        if(x==4){
+            final View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pos = listView.getPositionForView(v);
+                    sharePoll(dataArrayList.get(pos).getPoll().getPoll_id(),dataArrayList.get(pos).getPoll().getTitle());
+                }
+            };
+            return listener;
+        }
+
         else
             return null;
     }
@@ -870,6 +862,22 @@ public class FragmentPoll extends Fragment implements AdapterView.OnItemSelected
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
-
+    public void onStep(int value, boolean bool) {
+        items = value;
+        RadioButton b = (RadioButton) l.findViewById(R.id.radio1);
+        b.setChecked(true);
+        int count = value;
+        for (int i = 1; i <= LENGTH; i++) {
+            RadioButton button = (RadioButton) l.findViewById(getResources().getIdentifier("radio" + i, "id", getContext().getPackageName()));
+            EditText editText = (EditText) l.findViewById(getResources().getIdentifier("option" + i, "id", getContext().getPackageName()));
+            button.setVisibility(View.GONE);
+            editText.setVisibility(View.GONE);
+        }
+        for (int i = 1; i <= count; i++) {
+            RadioButton button = (RadioButton) l.findViewById(getResources().getIdentifier("radio" + i, "id", getContext().getPackageName()));
+            EditText editText = (EditText) l.findViewById(getResources().getIdentifier("option" + i, "id", getContext().getPackageName()));
+            button.setVisibility(View.VISIBLE);
+            editText.setVisibility(View.VISIBLE);
+        }
+    }
 }

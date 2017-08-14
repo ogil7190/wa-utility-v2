@@ -3,10 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/remove_relativelayout" >
-    
-     <ImageView android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/remove_img"
-        android:src="@drawable/remove" />
+
+     <TextView
+        android:textSize="55dp"
+        android:textColor="#262626"
+        android:text="X"
+        android:textAlignment="center"
+        android:background="@drawable/remove_back"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/remove_img" />
 
 </RelativeLayout>

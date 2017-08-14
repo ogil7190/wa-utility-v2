@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -49,13 +51,21 @@ import com.bluebulls.apps.whatsapputility.util.CustomLayout;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import nl.dionsegijn.steppertouch.OnStepCallback;
+import nl.dionsegijn.steppertouch.StepperTouch;
+import rjsv.floatingmenu.floatingmenubutton.FloatingMenuButton;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
@@ -71,9 +81,11 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
     public WindowManager windowManager;
     private RelativeLayout chatheadView, removeView;
+    private ImageView chatHead;
+
     private CustomLayout options;
     private LinearLayout txtView, txt_linearlayout, dateTimePicker;
-    private ImageView removeImg;
+    private TextView removeImg;
     private LinearLayout action_pol, action_eve, action_ss, action_rem,action_search;
     private CircularProgressView chatheadImg;
     private TextView txt1;
@@ -112,12 +124,14 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         paramRemove.gravity = Gravity.TOP | Gravity.LEFT;
 
         removeView.setVisibility(View.GONE);
-        removeImg = (ImageView) removeView.findViewById(R.id.remove_img);
+        removeImg = (TextView) removeView.findViewById(R.id.remove_img);
         windowManager.addView(removeView, paramRemove);
 
 
         chatheadView = (RelativeLayout) inflater.inflate(R.layout.chathead, null);
         chatheadImg = (CircularProgressView) chatheadView.findViewById(R.id.chathead_img);
+        chatHead = (ImageView) chatheadView.findViewById(R.id.chatHead);
+
         chatheadImg.setVisibility(View.GONE);
 
         options = (CustomLayout) inflater.inflate(R.layout.new_options, null);
@@ -255,7 +269,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
         windowManager.addView(chatheadView, params);
 
-        chatheadView.setOnTouchListener(new View.OnTouchListener() {
+        chatHead.setOnTouchListener(new View.OnTouchListener() {
             long time_start = 0, time_end = 0;
             boolean isLongclick = false, inBounded = false;
             int remove_img_width = 0, remove_img_height = 0;
@@ -606,19 +620,25 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         paramOptions.gravity = Gravity.CENTER;
         options.setVisibility(View.GONE);
 
-        Spinner options = (Spinner) poll.findViewById(R.id.optionCount);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, option_values);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        options.setAdapter(spinnerAdapter);
-        options.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //Spinner options = (Spinner) poll.findViewById(R.id.optionCount);
+        //ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, option_values);
+        //spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //options.setAdapter(spinnerAdapter);
+        StepperTouch options = (StepperTouch)poll.findViewById(R.id.option);
+        options.enableSideTap(true);
+        options.stepper.setMax(6);
+        final int LENGTH = 6;
+        options.stepper.setMin(2);
+        options.stepper.setValue(2);
+        options.stepper.addStepCallback(new OnStepCallback() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                items = position;
+            public void onStep(int value, boolean positive) {
+                Log.d(LogTag,"Value:"+value+" Bool:"+positive);
+                items = value;
                 RadioButton b = (RadioButton) poll.findViewById(R.id.radio1);
                 b.setChecked(true);
-                int count = Integer.parseInt(parent.getItemAtPosition(position).toString());
-
-                for (int i = 1; i <= option_values.length; i++) {
+                int count = value;
+                for (int i = 1; i <= LENGTH; i++) {
                     RadioButton button = (RadioButton) poll.findViewById(getResources().getIdentifier("radio" + i, "id", getPackageName()));
                     EditText editText = (EditText) poll.findViewById(getResources().getIdentifier("option" + i, "id", getPackageName()));
                     button.setVisibility(View.GONE);
@@ -631,12 +651,8 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                     editText.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
+
         Button close = (Button) poll.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1092,25 +1108,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
     private void chathead_click() {
         if (!optionsVisible) {
-            /*WindowManager.LayoutParams param_chathead = (WindowManager.LayoutParams) chatheadView.getLayoutParams();
-            WindowManager.LayoutParams params = (WindowManager.LayoutParams) options.getLayoutParams();
-            if (isLeft) {
-                params.x = param_chathead.x;
-            } else {
-                if (options.getWidth() > 0)
-                    params.x = param_chathead.x + param_chathead.width - options.getWidth();
-                else
-                    params.x = param_chathead.x - 250;
-            }
-
-            params.y = param_chathead.y + params.height + 100; */
-
             options.setVisibility(View.VISIBLE);
-
             if (poll != null)
                 poll.setVisibility(View.GONE);
             optionsVisible = true;
-            //windowManager.updateViewLayout(options, params);
         } else {
             if (poll != null)
                 poll.setVisibility(View.GONE);

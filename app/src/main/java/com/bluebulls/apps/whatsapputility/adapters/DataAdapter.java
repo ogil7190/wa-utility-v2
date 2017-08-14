@@ -79,7 +79,7 @@ public class DataAdapter extends BaseAdapter {
             v.setTag(viewHolder);
             View.OnClickListener refreshListener = fragmentPoll.setListeners(1,null);
             View.OnClickListener replyListener = fragmentPoll.setListeners(2,viewHolder.refresh);
-            View.OnClickListener forwardListener=fragmentPoll.setListeners(4,viewHolder.forward);
+            View.OnClickListener forwardListener=fragmentPoll.setListeners(4, null);
 
             //View.OnClickListener clearListener = fragmentPoll.setListeners(3,null);
 

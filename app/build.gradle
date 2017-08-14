@@ -47,5 +47,6 @@ dependencies {
     compile 'com.github.DanielMartinus:Stepper-Touch:0.6'
     compile 'devlight.io:navigationtabbar:1.2.5'
     compile 'com.roger.catloadinglibrary:catloadinglibrary:1.0.1'
+    compile 'com.github.rjsvieira:floatingMenu:1.2.0'
     testCompile 'junit:junit:4.12'
 }
