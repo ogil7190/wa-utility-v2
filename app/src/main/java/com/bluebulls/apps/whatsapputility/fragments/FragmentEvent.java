@@ -172,6 +172,7 @@ public class FragmentEvent extends Fragment {
                             Log.e("TAG", "onDateSelected: " + test);
                             alertDialog.show();
                         }
+
                         else
                             Toast.makeText(getContext(),"Must be a valid date time",Toast.LENGTH_SHORT).show();
                     }
