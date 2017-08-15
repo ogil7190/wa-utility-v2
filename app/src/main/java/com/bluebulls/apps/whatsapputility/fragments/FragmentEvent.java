@@ -90,6 +90,8 @@ public class FragmentEvent extends Fragment {
     public static final String GET_EVENT_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/GetEvent.php";
     public static final String EVENT_REPLY_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/EventReply.php";
 
+    public static final String PREF_REM_EVENT_ID = "event_rem -";
+
     public static FragmentEvent newInstance(FragmentManager man, boolean incomingData, String data) {
         Bundle args = new Bundle();
         manager = man;
@@ -188,7 +190,6 @@ public class FragmentEvent extends Fragment {
                         description_str = description.getText().toString();
                         date_time= datetxt.getText().toString()+"|"+timetxt.getText().toString();
                         uploadEvent();
-                        eventAdapter.notifyDataSetChanged();
                         event.setText(null);
                         description.setText(null);
                     }
@@ -255,8 +256,10 @@ public class FragmentEvent extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
-                        d.dismiss();
+                        if(getContext()!=null) {
+                            Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                            d.dismiss();
+                        }
                         Log.d(TAG,"Network-Error:"+error);
                     }
                 }) {
@@ -363,7 +366,8 @@ public class FragmentEvent extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        if(getContext()!=null)
+                            Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
                         Log.d(TAG,"Network-Error:"+error);
                     }
                 }) {
@@ -387,7 +391,6 @@ public class FragmentEvent extends Fragment {
     private void handleEventReply(String response, Event event) throws JSONException{
         JSONObject o = new JSONObject(response);
         if(o.get("error").equals(false)) {
-
             saveEvent(event,"joined");
             events();
         }
@@ -415,25 +418,19 @@ public class FragmentEvent extends Fragment {
                 public void onClick(View v) {
                     pos = listView2.getPositionForView(v);
                     SparkButton b = (SparkButton) v;
-                    /*if (b.isChecked()){
-                        b.setActiveImage(R.drawable.ic_alarm_on_black_18dp);
-                        addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
-                        b.setChecked(false);
-                    }
-                    b.setInactiveImage(R.drawable.ic_alarm_off_black_18dp);
-                    b.setChecked(true);
-                    b.playAnimation();*/
                     if(!b.isChecked())
                     {
                         b.setActiveImage(R.drawable.ic_alarm_on_black_18dp);
-                        addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
+                        if(pref.getBoolean(PREF_REM_EVENT_ID + eventArrayList.get(pos).getEvent_id(), false)) {
+                            addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
+                        }
+
                         b.setChecked(true);
                         b.playAnimation();
                     }
                     else {
                         b.setInactiveImage(R.drawable.ic_alarm_on_black_18dp);
                         b.setChecked(true);
-                        //b.playAnimation();
                     }
                 }
             };
@@ -447,22 +444,19 @@ public class FragmentEvent extends Fragment {
     private long getAlarmTime(String date_time){
         String date = date_time.substring(0, date_time.indexOf("|"));
         String time = date_time.substring(date_time.indexOf("|") + 1, date_time.length());
-        Log.d(TAG, "Date:"+date+ " time:"+time);
         Calendar calendar = Calendar.getInstance();
         String dates[] = date.split(" ");
         String times[] = time.split(":");
-        Log.d(TAG, "Dates:"+ Arrays.toString(dates) + " Times:"+ Arrays.toString(times));
         calendar.set(Calendar.DAY_OF_MONTH,Integer.valueOf(dates[0]));
         calendar.set(Calendar.MONTH, getMonth(dates[1]));
         calendar.set(Calendar.YEAR, Integer.valueOf(dates[2]));
         calendar.set(Calendar.HOUR_OF_DAY,Integer.valueOf(times[0]));
         calendar.set(Calendar.MINUTE, Integer.valueOf(times[1]));
-        Log.d(TAG, "TIME:"+calendar.getTime().toString()+ "Long:"+calendar.getTime().getTime());
         return calendar.getTime().getTime();
     }
 
     private int getMonth(String month){
-        switch (month.toLowerCase()){
+        switch (month.toLowerCase()) {
             case "jan": return 0;
             case "feb": return 1;
             case "mar": return 2;
@@ -503,7 +497,7 @@ public class FragmentEvent extends Fragment {
         final String topic = this.topic_msg;
         final String description = this.description_str;
         final String date_time = this.date_time;
-        Log.e("TAG", "uploadEvent: "+phone );
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_EVENT_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -550,9 +544,8 @@ public class FragmentEvent extends Fragment {
         JSONObject obj = new JSONObject(response);
         if (obj.get("error").equals(false)) {
             String event_id = obj.get("event_id").toString();
-            events();
-            Log.d(TAG,"EventId:"+event_id);
             saveEvent(event_id,phone,topic_msg, description_str);
+            events();
             shareEvent(event_id);
         } else
             showToast("Something went wrong. Try again!");

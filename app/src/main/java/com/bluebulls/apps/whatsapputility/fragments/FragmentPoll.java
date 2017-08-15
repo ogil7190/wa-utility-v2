@@ -90,7 +90,6 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     private static boolean isReply = false;
     private static String poll_id = "";
     private LinearLayout l;
-    private ArrayAdapter<String> spinnerAdapter;
     private DialogInterface.OnClickListener submitClickListner;
 
     public static final  String TAG = "POLL FRAGMENT";
@@ -772,14 +771,13 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     private String current_poll_id = "";
     private ArrayList<Poll> polls;
     private int count = 0;
-
     private FadingTextViewAnimator animator;
 
     private void refreshTopPolls(){  /* Top 3 Polls Update */
         polls = dbHelper.getAllPolls();
         if(polls.size()>count) {
             if (count == 0) {
-                animator = new FadingTextViewAnimator(ref_tag, new String[]{"Refreshing Polls","Please Wait!"});
+                animator = new FadingTextViewAnimator(ref_tag, new String[]{ "Refreshing Polls","Please Wait!" });
                 ref_tag.setVisibility(View.VISIBLE);
                 animator.startAnimation();
 
@@ -797,7 +795,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
             ref_tag.setVisibility(View.GONE);
     }
 
-    private final int LIMIT = 3; /* poll update limit */
+    private final int LIMIT = 4; /* poll update limit */
 
     private void getPoll(final String poll_id){
         final String KEY_POLL_ID = "poll_id";
@@ -824,10 +822,11 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
-                        count = LIMIT;
-                        refreshTopPolls();
-                        Log.d(LogTag,"Network-Error:"+error);
+                        if(getContext()!=null) {
+                            Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                            count = LIMIT;
+                            refreshTopPolls();
+                        }
                     }
                 }) {
             @Override

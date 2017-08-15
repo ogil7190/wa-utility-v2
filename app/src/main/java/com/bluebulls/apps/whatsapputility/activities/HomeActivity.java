@@ -28,7 +28,7 @@ import devlight.io.library.ntb.NavigationTabBar;
 
 public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
-    public String data = "";
+    private String data = "";
     private ViewPager viewPager;
     private NavigationTabBar navigationTabBar;
     private ArrayList<NavigationTabBar.Model> models=new ArrayList<>();
@@ -170,7 +170,6 @@ public class HomeActivity extends AppCompatActivity {
                 else
                     return FragmentPoll.newInstance(false, data);
             }
-                /*return FragmentReminder.newInstance(fragmentManager);*/
         }
 
         @Override
