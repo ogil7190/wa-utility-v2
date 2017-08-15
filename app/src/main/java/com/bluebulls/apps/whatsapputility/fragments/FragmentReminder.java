@@ -126,6 +126,7 @@ public class FragmentReminder extends Fragment {
                     }
                 })
                 .title("Pick Time")
+                .defaultDate(Calendar.getInstance().getTime())
                 .listener(new SingleDateAndTimePickerDialog.Listener() {
                     @Override
                     public void onDateSelected(Date date) {
