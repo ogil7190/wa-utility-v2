@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bluebulls.apps.whatsapputility.entity.actors.Data;
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.entity.actors.Reminder;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,10 @@ import java.util.ArrayList;
  */
 
 public class ReminderAdapter extends BaseAdapter {
-    ArrayList<Data> reminderArrayList;
+    ArrayList<Reminder> reminderArrayList;
     Context c;
 
-    public ReminderAdapter(ArrayList<Data> reminderArrayList, Context c) {
+    public ReminderAdapter(ArrayList<Reminder> reminderArrayList, Context c) {
         this.reminderArrayList = reminderArrayList;
         this.c = c;
     }
@@ -44,7 +45,7 @@ public class ReminderAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater l= LayoutInflater.from(c);
         View v;
-        final Data s=  reminderArrayList.get(position);
+        final Reminder s = reminderArrayList.get(position);
         ViewHolder viewHolder;
         if(convertView==null) {
             v = l.inflate(R.layout.single_list_event, parent, false);
@@ -59,34 +60,22 @@ public class ReminderAdapter extends BaseAdapter {
             v=convertView;
             viewHolder=(ViewHolder)v.getTag();
         }
-        viewHolder.eventTxt.setText(s.getEvent());
-        viewHolder.descriptionTxt.setText(s.getDescription());
-        viewHolder.date.setText(s.getDate()+" "+s.getMonth()+" "+s.getYear());
-        if(s.getHour()<10)
-        {
-            if(s.getMinute()<10)
-            {
-                viewHolder.time.setText("0"+s.getHour()+":0"+s.getMinute());
-            }
-            else
-            {
-                viewHolder.time.setText("0"+s.getHour()+":"+s.getMinute());
-            }
-        }
-        else
-        {
-            if(s.getMinute()<10)
-            {
-                viewHolder.time.setText(s.getHour()+":0"+s.getMinute());
-            }
-            else
-            {
-                viewHolder.time.setText(s.getHour()+":"+s.getMinute());
-            }
-        }
+        viewHolder.eventTxt.setText(s.getReminder_title());
+        viewHolder.descriptionTxt.setText(s.getReminder_desc());
+        viewHolder.date.setText(getDate(s.getDate_time()));
+        viewHolder.time.setText(getTime(s.getDate_time()));
         return v;
     }
+
+    private String getDate(String date_time){
+        return date_time.substring(0, date_time.indexOf("|"));
+    }
+
+    private String getTime(String date_time){
+        return date_time.substring(date_time.indexOf("|") + 1, date_time.length());
+    }
+
     static class ViewHolder{
-        TextView eventTxt,descriptionTxt,date,time;
+        private TextView eventTxt,descriptionTxt,date,time;
     }
 }

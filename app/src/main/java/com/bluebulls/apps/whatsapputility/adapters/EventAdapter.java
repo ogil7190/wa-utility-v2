@@ -66,7 +66,6 @@ public class EventAdapter extends BaseAdapter {
             v=convertView;
             viewHolder=(ViewHolder)v.getTag();
         }
-
         viewHolder.eventTxt.setText(e.getTopic());
         viewHolder.descriptionTxt.setText(e.getDescriptioin());
         viewHolder.date.setText(e.getTime().substring(0,e.getTime().indexOf("|")));

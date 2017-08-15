@@ -11,9 +11,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 
+import com.ToxicBakery.viewpager.transforms.AccordionTransformer;
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentEvent;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentPoll;
@@ -26,14 +27,12 @@ import devlight.io.library.ntb.NavigationTabBar;
 
 
 public class HomeActivity extends AppCompatActivity {
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
     public String data = "";
     private ViewPager viewPager;
-    NavigationTabBar navigationTabBar;
-    ArrayList<NavigationTabBar.Model> models=new ArrayList<>();
-    Toolbar toolbar;
-    private boolean isPollSelected = false;
-
+    private NavigationTabBar navigationTabBar;
+    private ArrayList<NavigationTabBar.Model> models=new ArrayList<>();
+    private Toolbar toolbar;
     private static final int COUNT=5;
 
     @Override
@@ -45,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         viewPager=(ViewPager)findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setPageTransformer(true, new AccordionTransformer());
         navigationTabBar=(NavigationTabBar)findViewById(R.id.navigation);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -149,20 +149,28 @@ public class HomeActivity extends AppCompatActivity {
                 else
                     return FragmentPoll.newInstance(false, data);
             }
+
             if(position == 1) {
                 if(selection == position)
                     return FragmentEvent.newInstance(fragmentManager, true, data);
                 else
                     return FragmentEvent.newInstance(fragmentManager, false, data);
             }
+
             if(position == 2) {
                 if(selection == position)
                     return FragmentReminder.newInstance(fragmentManager);
                 else
                     return FragmentReminder.newInstance(fragmentManager);
             }
-            else
-                return FragmentReminder.newInstance(fragmentManager);
+
+            else{
+                if(selection == position)
+                    return FragmentPoll.newInstance(true, data);
+                else
+                    return FragmentPoll.newInstance(false, data);
+            }
+                /*return FragmentReminder.newInstance(fragmentManager);*/
         }
 
         @Override

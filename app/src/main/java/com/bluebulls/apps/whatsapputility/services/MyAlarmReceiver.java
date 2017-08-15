@@ -23,15 +23,27 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         this.context = context;
-
-        if (intent.getAction().contains("NEW_ALARM")) {
+        if (intent.getAction().contains("NEW_EVENT_ALARM")) {
             Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(new long[]{1000,500,200,200,500,1000},5);
+            v.vibrate(new long[]{ 1000,500,500,1000 }, 3);
             String event_id = intent.getAction().substring(intent.getAction().indexOf("#")+1, intent.getAction().length());
-            showNotification("Event has Arrived!","Tap to view event",event_id);
+            showNotificationEvent("Event has Arrived!","Tap to view event",event_id);
+        }
+
+        if(intent.getAction().contains("NEW_REM_ALARM")) {
+            Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(new long[]{ 1000,500,500,1000 }, 3);
+            String rem_id = intent.getAction().substring(intent.getAction().indexOf("#")+1, intent.getAction().length());
+            int remID = Integer.valueOf(rem_id);
+            showNotificationRem(remID);
         }
     }
-    private void showNotification(String title, String text, String event_id){
+
+    private void showNotificationRem(int remId){
+        Log.d("ALARM","Reminder :"+remId);
+    }
+
+    private void showNotificationEvent(String title, String text, String event_id){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_alarm_on_black_18dp)

@@ -19,10 +19,6 @@ android {
     }
 }
 
-
-
-
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -34,6 +30,7 @@ dependencies {
     compile 'com.karumi:dexter:4.1.0'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.github.medyo:fancybuttons:1.8.3'
+    compile 'com.android.support:palette-v7:25.3.1'
     compile 'com.facebook.android:account-kit-sdk:4.+'
     compile 'com.rvalerio:fgchecker:1.0.1'
     compile 'mbanje.kurt:fabbutton:1.2.4@aar'
@@ -48,5 +45,6 @@ dependencies {
     compile 'devlight.io:navigationtabbar:1.2.5'
     compile 'com.roger.catloadinglibrary:catloadinglibrary:1.0.1'
     compile 'com.github.rjsvieira:floatingMenu:1.2.0'
+    compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     testCompile 'junit:junit:4.12'
 }
