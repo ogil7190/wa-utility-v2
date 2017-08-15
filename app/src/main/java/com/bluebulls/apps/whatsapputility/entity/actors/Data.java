@@ -1,7 +1,5 @@
 package com.bluebulls.apps.whatsapputility.entity.actors;
 
-import com.bluebulls.apps.whatsapputility.entity.actors.Option;
-import com.bluebulls.apps.whatsapputility.entity.actors.Poll;
 
 /**
  * Created by dell on 7/22/2017.

@@ -1,7 +1,10 @@
 package com.bluebulls.apps.whatsapputility.services;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -46,6 +49,7 @@ import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.activities.SearchActivity;
 import com.bluebulls.apps.whatsapputility.activities.SsCallActivity;
+import com.bluebulls.apps.whatsapputility.entity.actors.Reminder;
 import com.bluebulls.apps.whatsapputility.util.CustomBridge;
 import com.bluebulls.apps.whatsapputility.util.CustomLayout;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
@@ -71,12 +75,23 @@ import rjsv.floatingmenu.floatingmenubutton.FloatingMenuButton;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_DATE_TIME_KEY;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_ID_KEY;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_SIZE_KEY;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_TITLE_KEY;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PRE_REM_DESC_KEY;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.addToReminder;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.datetxt;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.getAlarmTime;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.saveReminder;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.timetxt;
 import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
+import static com.facebook.accountkit.internal.AccountKitController.getApplicationContext;
 
 public class ChatHeadService extends Service implements CustomLayout.BackButtonListener, CustomLayout.HomeButtonListener {
     public static final String LogTag = "ChatHead";
     public static boolean isRunning = false;
-
+    private long alarmTime = 0;
     public static final String REGISTER_POLL_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/RegisterPoll.php";
     public static final String REGISTER_EVENT_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/RegisterEvent.php";
 
@@ -439,47 +454,46 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                 timeSet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String test=xdate1.toString().replace("Mon","").replace("Tue","").replace("Wed","").replace("Thu","")
-                                .replace("Mon","").replace("Fri","").replace("Sat","").replace("Sun","")
-                                .replace("GMT+05:30","");
-                        hour2=Integer.parseInt(String.valueOf(test.charAt(8))+String.valueOf(test.charAt(9)));
-                        minute2=Integer.parseInt(String.valueOf(test.charAt(11))+String.valueOf(test.charAt(12)));
-                        date2=Integer.parseInt(String.valueOf(test.charAt(5))+String.valueOf(test.charAt(6)));
-                        month2=String.valueOf(test.charAt(1))+String.valueOf(test.charAt(2))+String.valueOf(test.charAt(3));
-                        year2=Integer.parseInt(String.valueOf(test.charAt(18))+String.valueOf(test.charAt(19))+String.valueOf(test.charAt(20))+String.valueOf(test.charAt(21)));
-                        datetxt.setText(date2+" "+month2+" "+year2);
-                        if(hour2<10)
-                        {
-                            if(minute2<10)
-                            {
-                                timetxt.setText("0"+hour2+":0"+minute2);
+                        if(xdate1!=null || !xdate1.equals("")) {
+                            String test = xdate1.toString().replace("Mon", "").replace("Tue", "").replace("Wed", "").replace("Thu", "")
+                                    .replace("Mon", "").replace("Fri", "").replace("Sat", "").replace("Sun", "")
+                                    .replace("GMT+05:30", "");
+                            hour2 = Integer.parseInt(String.valueOf(test.charAt(8)) + String.valueOf(test.charAt(9)));
+                            minute2 = Integer.parseInt(String.valueOf(test.charAt(11)) + String.valueOf(test.charAt(12)));
+                            date2 = Integer.parseInt(String.valueOf(test.charAt(5)) + String.valueOf(test.charAt(6)));
+                            month2 = String.valueOf(test.charAt(1)) + String.valueOf(test.charAt(2)) + String.valueOf(test.charAt(3));
+                            year2 = Integer.parseInt(String.valueOf(test.charAt(18)) + String.valueOf(test.charAt(19)) + String.valueOf(test.charAt(20)) + String.valueOf(test.charAt(21)));
+                            datetxt.setText(date2 + " " + month2 + " " + year2);
+                            if (hour2 < 10) {
+                                if (minute2 < 10) {
+                                    timetxt.setText("0" + hour2 + ":0" + minute2);
+                                } else {
+                                    timetxt.setText("0" + hour2 + ":" + minute2);
+                                }
+                            } else {
+                                if (minute2 < 10) {
+                                    timetxt.setText(hour2 + ":0" + minute2);
+                                } else {
+                                    timetxt.setText(hour2 + ":" + minute2);
+                                }
                             }
-                            else
-                            {
-                                timetxt.setText("0"+hour2+":"+minute2);
-                            }
+                            datetxt.setVisibility(View.VISIBLE);
+                            timetxt.setVisibility(View.VISIBLE);
+                            dateTimePicker.setVisibility(View.GONE);
+                            event.setVisibility(View.VISIBLE);
+                            windowManager.removeViewImmediate(dateTimePicker);
                         }
-                        else
-                        {
-                            if(minute2<10)
-                            {
-                                timetxt.setText(hour2+":0"+minute2);                            }
-                            else
-                            {
-                                timetxt.setText(hour2+":"+minute2);                            }
-                        }
-                        datetxt.setVisibility(View.VISIBLE);
-                        timetxt.setVisibility(View.VISIBLE);
-                        dateTimePicker.setVisibility(View.GONE);
-                        event.setVisibility(View.VISIBLE);
-                        windowManager.removeViewImmediate(dateTimePicker);
                     }
                 });
                 picker.setListener(new SingleDateAndTimePicker.Listener() {
                     @Override
                     public void onDateChanged(String displayed, Date date) {
-                        xdate1=date;
-                        Log.e("TAG", "onDateChanged:"+date );
+                        alarmTime = date.getTime();
+                        if(alarmTime - System.currentTimeMillis() > 0) {
+                            xdate1=date;
+                        }
+                        else
+                            showToast("Select valid future date!");
                     }
                 });
 
@@ -517,6 +531,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT);
         paramOptions.gravity = Gravity.CENTER;
+
+        final TextView datetxt=(TextView)reminder.findViewById(R.id.date);
+        final TextView timetxt=(TextView)reminder.findViewById(R.id.time);
+
         final ImageButton pick_clock = (ImageButton) reminder.findViewById(R.id.pick_clock);
         pick_clock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -528,56 +546,50 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                 SingleDateAndTimePicker picker = (SingleDateAndTimePicker)dateTimePicker.findViewById(R.id.picker);
                 Button timeSet=(Button)dateTimePicker.findViewById(R.id.setTime);
 
-                final TextView datetxt=(TextView)reminder.findViewById(R.id.date);
-                final TextView timetxt=(TextView)reminder.findViewById(R.id.time);
-
                 timeSet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String test=xdate2.toString().replace("Mon","").replace("Tue","").replace("Wed","").replace("Thu","")
-                                .replace("Mon","").replace("Fri","").replace("Sat","").replace("Sun","")
-                                .replace("GMT+05:30","");
-                        hour2=Integer.parseInt(String.valueOf(test.charAt(8))+String.valueOf(test.charAt(9)));
-                        minute2=Integer.parseInt(String.valueOf(test.charAt(11))+String.valueOf(test.charAt(12)));
-                        date2=Integer.parseInt(String.valueOf(test.charAt(5))+String.valueOf(test.charAt(6)));
-                        month2=String.valueOf(test.charAt(1))+String.valueOf(test.charAt(2))+String.valueOf(test.charAt(3));
-                        year2=Integer.parseInt(String.valueOf(test.charAt(18))+String.valueOf(test.charAt(19))+String.valueOf(test.charAt(20))+String.valueOf(test.charAt(21)));
-                        datetxt.setText(date2+" "+month2+" "+year2);
-                        if(hour2<10)
-                        {
-                            if(minute2<10)
-                            {
-                                timetxt.setText("0"+hour2+":0"+minute2);
+                        if (!xdate2.equals("") || xdate2!=null) {
+                            String test = xdate2.toString().replace("Mon", "").replace("Tue", "").replace("Wed", "").replace("Thu", "")
+                                    .replace("Mon", "").replace("Fri", "").replace("Sat", "").replace("Sun", "")
+                                    .replace("GMT+05:30", "");
+                            hour2 = Integer.parseInt(String.valueOf(test.charAt(8)) + String.valueOf(test.charAt(9)));
+                            minute2 = Integer.parseInt(String.valueOf(test.charAt(11)) + String.valueOf(test.charAt(12)));
+                            date2 = Integer.parseInt(String.valueOf(test.charAt(5)) + String.valueOf(test.charAt(6)));
+                            month2 = String.valueOf(test.charAt(1)) + String.valueOf(test.charAt(2)) + String.valueOf(test.charAt(3));
+                            year2 = Integer.parseInt(String.valueOf(test.charAt(18)) + String.valueOf(test.charAt(19)) + String.valueOf(test.charAt(20)) + String.valueOf(test.charAt(21)));
+                            datetxt.setText(date2 + " " + month2 + " " + year2);
+                            if (hour2 < 10) {
+                                if (minute2 < 10) {
+                                    timetxt.setText("0" + hour2 + ":0" + minute2);
+                                } else {
+                                    timetxt.setText("0" + hour2 + ":" + minute2);
+                                }
+                            } else {
+                                if (minute2 < 10) {
+                                    timetxt.setText(hour2 + ":0" + minute2);
+                                } else {
+                                    timetxt.setText(hour2 + ":" + minute2);
+                                }
                             }
-                            else
-                            {
-                                timetxt.setText("0"+hour2+":"+minute2);
-                            }
+                            datetxt.setVisibility(View.VISIBLE);
+                            timetxt.setVisibility(View.VISIBLE);
+                            dateTimePicker.setVisibility(View.GONE);
+                            reminder.setVisibility(View.VISIBLE);
+                            windowManager.removeViewImmediate(dateTimePicker);
                         }
-                        else
-                        {
-                            if(minute2<10)
-                            {
-                                timetxt.setText(hour2+":0"+minute2);
-                            }
-                            else
-                            {
-                                timetxt.setText(hour2+":"+minute2);
-                            }
-                        }
-                        datetxt.setVisibility(View.VISIBLE);
-                        timetxt.setVisibility(View.VISIBLE);
-                        dateTimePicker.setVisibility(View.GONE);
-                        reminder.setVisibility(View.VISIBLE);
-                        windowManager.removeViewImmediate(dateTimePicker);
                     }
                 });
 
                 picker.setListener(new SingleDateAndTimePicker.Listener() {
                     @Override
                     public void onDateChanged(String displayed, Date date) {
-                        xdate2=date;
-                        Log.e("TAG", "onDateChanged: "+xdate2 );
+                        alarmTime = date.getTime();
+                        if(alarmTime - System.currentTimeMillis() > 0) {
+                            xdate2 = date;
+                        }
+                        else
+                            showToast("Select valid future date!");
                     }
                 });
                 windowManager.addView(dateTimePicker,paramOptions);
@@ -598,9 +610,16 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             @Override
             public void onClick(View v) {
             if (validateReminder()) {
-                /* reminder must be local only */
-            }
+                int rem_id = pref.getInt(PREF_REM_ID_KEY, -1) +1;
+                date_time = datetxt.getText().toString() + "|" + timetxt.getText().toString();
+                String eve = ((EditText)reminder.findViewById(R.id.reminderTopic)).getText().toString();
+                String des = ((EditText)reminder.findViewById(R.id.reminderDescription)).getText().toString();
+                saveReminder(pref, new Reminder(rem_id, eve, des, date_time));
+                if(addToReminder(getApplicationContext(), rem_id, getAlarmTime(date_time)))
+                    showToast("Alarm Set!");
+                hideUIReminder();
 
+            }
             }
         });
         windowManager.addView(reminder, paramOptions);
@@ -724,8 +743,8 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
     public boolean validateReminder()
     {
-        EditText reminderTopic=(EditText)reminder.findViewById(R.id.event);
-        EditText reminderDescription=(EditText)reminder.findViewById(R.id.description);
+        EditText reminderTopic = (EditText)reminder.findViewById(R.id.reminderTopic);
+        EditText reminderDescription = (EditText)reminder.findViewById(R.id.reminderDescription);
         TextView date = (TextView)reminder.findViewById(R.id.date);
 
         topic_msg = reminderTopic.getText().toString().replaceFirst("\\s++$", "");
@@ -821,6 +840,11 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     private void hideUIEvent(){
         options.setVisibility(View.GONE);
         event.setVisibility(View.GONE);
+    }
+
+    private void hideUIReminder(){
+        options.setVisibility(View.GONE);
+        reminder.setVisibility(View.GONE);
     }
 
     private void uploadEvent() {
@@ -1127,8 +1151,9 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
         param_remove.x = x_cord_remove;
         param_remove.y = y_cord_remove;
-
-        windowManager.updateViewLayout(removeView, param_remove);
+        if(removeView.getWindowToken() != null) {
+            windowManager.updateViewLayout(removeView, param_remove);
+        }
     }
 
     private void showMsg(String sMsg) {
@@ -1192,22 +1217,27 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     }
 
     public void destroy() {
-        if (txtView != null) {
-            windowManager.removeView(txtView);
+        try {
+            if (txtView != null) {
+                windowManager.removeView(txtView);
+            }
+            if (removeView != null) {
+                windowManager.removeView(removeView);
+            }
+            if (poll != null) {
+                poll.clearFocus();
+                windowManager.removeView(poll);
+            }
+            if (options != null) {
+                windowManager.removeView(options);
+            }
+            if (chatheadView != null) {
+                windowManager.removeView(chatheadView);
+            }
+        } catch (Exception e){
+            Log.d(LogTag, "Exception Error:"+e.toString());
         }
-        if (removeView != null) {
-            windowManager.removeView(removeView);
-        }
-        if (poll != null) {
-            poll.clearFocus();
-            windowManager.removeView(poll);
-        }
-        if (options != null) {
-            windowManager.removeView(options);
-        }
-        if (chatheadView != null) {
-            windowManager.removeView(chatheadView);
-        }
+
         unregisterReceiver(bridge);
         isRunning = false;
     }

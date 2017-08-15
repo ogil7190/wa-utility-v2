@@ -21,7 +21,6 @@ public class ResetManager extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
-            Log.d("WA:XXX:","REBOOT COMPLETE!");
             MainActivity.haveAutoStartPerm = true;
             startBackgroundProcesses(context);
             if(!OverlayUtil.canDrawOverlays(context)){

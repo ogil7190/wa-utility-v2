@@ -17,13 +17,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
-import com.bluebulls.apps.whatsapputility.adapters.DataAdapter;
-import com.bluebulls.apps.whatsapputility.entity.actors.Data;
+import com.bluebulls.apps.whatsapputility.adapters.PollAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.FadingTextViewAnimator;
 import com.bluebulls.apps.whatsapputility.entity.actors.Option;
 import com.bluebulls.apps.whatsapputility.entity.actors.Poll;
@@ -74,7 +70,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     private TextView ref_tag;
     private AlertDialog alertDialog;
 
-    private DataAdapter dataAdapter;
+    private PollAdapter pollAdapter;
     private EditText option1,option2,option3,option4,option5,option6;
 
 
@@ -82,7 +78,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     private CircularProgressView chatHeadImg;
     private EditText title;
     private String pollTitle;
-    private ArrayList<Data> dataArrayList=new ArrayList<>();
+    private ArrayList<Poll> pollArrayList =new ArrayList<>();
     private int number;
 
     public final int LENGTH = 6;
@@ -106,7 +102,6 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         if(pollid.equals("") || pollid.equals(null)){
             isReply = false; /* resetting on empty poll */
         }
-
         return fragment;
     }
 
@@ -189,8 +184,8 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         });
 
         refreshTopPolls();
-        dataAdapter=new DataAdapter(dataArrayList,getContext(),this);
-        listView.setAdapter(dataAdapter);
+        pollAdapter =new PollAdapter(pollArrayList,getContext(),this);
+        listView.setAdapter(pollAdapter);
         alertDialog.hide();
         if(isReply) {
             setupReply();
@@ -198,24 +193,28 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         return v;
     }
 
-    private void setupReply(){ /* setting reply on coming from WhatsApp */
+    private void setupReply() { /* setting reply on coming from WhatsApp */
         ProgressDialog d = new ProgressDialog(getContext());
         d.setMessage("Loading Poll...");
         d.setCanceledOnTouchOutside(false);
         if (!dbHelper.pollExists(poll_id)) {
             d.show();
             getPoll(d);
-        } else if (pollAnswered(poll_id, dbHelper)) {
+        } else if (isPollAnswered(poll_id)) {
             Toast.makeText(getContext(), "You have answered this poll already!", Toast.LENGTH_SHORT).show();
             isReply = false;
         } else {
             isReply = true;
             Poll poll = dbHelper.getPoll(poll_id);
-            setOptions(retrieveOptions(poll.getOptions()));
+            setOptions(poll.getOptions());
             title.setText(poll.getTitle());
             disableEditText(title);
             alertDialog.show();
         }
+    }
+
+    private boolean isPollAnswered(String poll_id){
+        return !dbHelper.getPoll(poll_id).getAns().equals("-1");
     }
 
     private void setupReply(String poll_id){
@@ -223,18 +222,17 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         ProgressDialog d = new ProgressDialog(getContext());
         d.setMessage("Loading Poll...");
         d.setCanceledOnTouchOutside(false);
-
         if (!dbHelper.pollExists(poll_id)) {
             d.show();
             getPoll(d);
-        } else if (pollAnswered(poll_id, dbHelper)) {
+        } else if (isPollAnswered(poll_id)) {
             Toast.makeText(getContext(), "You have answered this poll already!", Toast.LENGTH_SHORT).show();
             isReply = false;
         } else {
             if (dbHelper.pollExists(poll_id)) {
                 isReply = true;
                 Poll poll = dbHelper.getPoll(poll_id);
-                setOptions(retrieveOptions(poll.getOptions()));
+                setOptions(poll.getOptions());
                 title.setText(poll.getTitle());
                 disableEditText(title);
                 alertDialog.show();
@@ -250,13 +248,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Activity activity = getActivity();
-                            if(activity!=null && isAdded()) {
-                                handlePoll(response);
-                            }
-                            else
-                                Log.d(TAG,"Fragment missing");
-
+                            handlePoll(response);
                             d.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -266,7 +258,9 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        if(getContext()!=null) {
+                            Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        }
                         d.dismiss();
                         Log.d(LogTag,"Network-Error:"+error);
                     }
@@ -299,13 +293,12 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 updatePolls();
             }
 
-            if(!pollAnswered(poll_id,dbHelper)) {
+            if(!isPollAnswered(poll_id)) {
                 title.setText(topic);
                 disableEditText(title);
                 Option[] op = retrieveOptions(opt);
                 setOptions(op);
                 alertDialog.show();
-
             }
             else
                 Toast.makeText(getContext(),"You have answered this poll already!",Toast.LENGTH_SHORT).show();
@@ -344,7 +337,9 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        if(getContext()!=null) {
+                            Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        }
                         Log.d(LogTag,"Network-Error:"+error);
                     }
                 }) {
@@ -381,7 +376,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     private void setOptions(Option[] opt) {
         while(true)
         if (isAdded()) {
-            items = opt[0].getCount();
+            items = opt.length;
             RadioButton b = (RadioButton) l.findViewById(R.id.radio1);
             b.setChecked(true);
             option.stepper.setValue(items);
@@ -400,7 +395,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 EditText editText = (EditText) l.findViewById(getResources().getIdentifier("option" + i, "id", getContext().getPackageName()));
                 button.setVisibility(View.VISIBLE);
                 editText.setVisibility(View.VISIBLE);
-                editText.setText(opt[i].getName());
+                editText.setText(opt[i-1].getName());
                 disableEditText(editText);
             }
             break;
@@ -519,7 +514,9 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        if(getContext()!=null) {
+                            Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        }
                         chatHeadImg.stopAnimation();
                         chatHeadImg.setVisibility(View.GONE);
                         Log.d(LogTag,"Network-Error:"+error);
@@ -558,7 +555,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         if (obj.get("error").equals(false)) {
             String poll_id = obj.get("poll_id").toString();
             pollTitle = title.getText().toString();
-            savePoll(poll_id,pref.getString(PREF_USER_KEY_PHONE,"null"),pollTitle,options_str,ans);
+            savePoll(poll_id,pref.getString(PREF_USER_KEY_PHONE,"null"), pollTitle, options_str, ans);
             sharePoll(poll_id, pollTitle);
         }
         else
@@ -566,62 +563,39 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     }
 
     private DBHelper dbHelper;
-
     private void savePoll(String poll_id, String user, String title, String options,String ans){
         dbHelper.insertPoll(poll_id,title,user,options,ans);
     }
 
     int poll_count = 0;
     private void updatePolls(){
-        dataArrayList.clear();
+        pollArrayList.clear();
         polls = dbHelper.getAllPolls();
         for(Poll poll : polls)
         {
-            String pollTitle = poll.getTitle();
-            String options = poll.getOptions();
-            Option opt[] = retrieveOptions(options);
-            if (poll.getAns().equals("-1"))
-                dataArrayList.add(new Data(pollTitle,opt[1],opt[2],opt[3],opt[4],opt[5],opt[6], opt[0].getCount() ,false, poll));
-                else
-                dataArrayList.add(new Data(pollTitle,opt[1],opt[2],opt[3],opt[4],opt[5],opt[6], opt[0].getCount() ,true, poll));
+            pollArrayList.add(poll);
             poll_count++;
         }
-
-        if(dataAdapter!=null)
-            dataAdapter.notifyDataSetChanged();
-    }
-
-    public static boolean pollAnswered(String poll_id, DBHelper dbHelper){
-        ArrayList<Poll> polls = dbHelper.getAllPolls();
-        boolean b = true;
-        for(Poll poll : polls) {
-            if(poll.getPoll_id().equals(poll_id)){
-                if (poll.getAns().equals("-1")) {
-                    b = false;
-                    break;
-                }
-            }
-        }
-        return b;
+        if(pollAdapter !=null)
+            pollAdapter.notifyDataSetChanged();
     }
 
     public static Option[] retrieveOptions(String options){
-        Option opt[] = new Option[8];
         try {
             JSONObject o = new JSONObject(options);
-            opt[0] = new Option();
-            opt[0].setCount(o.length());
+            Option[] opt = new Option[o.names().length()];
             for(int i = 0; i<o.names().length(); i++){
                 String key = o.names().getString(i);
                 Option option = new Option();
                 option.setName(key);
                 option.setCount(Integer.valueOf(o.getString(key)));
-                opt[i+1] = option;
+                opt[i] = option;
             }
+            return opt;
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return opt;
     }
 
     private void reset(){
@@ -654,7 +628,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                     rotate.setRepeatMode(Animation.INFINITE);
                     rotate.setInterpolator(new LinearInterpolator());
                     currentRefresh.startAnimation(rotate);
-                    getPoll(dataArrayList.get(pos).getPoll().getPoll_id(), currentRefresh);
+                    getPoll(pollArrayList.get(pos).getPoll_id(), currentRefresh);
                 }
             };
             return listener;
@@ -666,7 +640,10 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                     pos = listView.getPositionForView(v);
                     currentReply = v;
                     currentRefresh = ref;
-                    setupReply(dataArrayList.get(pos).getPoll().getPoll_id());
+                    if(pollArrayList.get(pos).getAns().equals("-1"))
+                        setupReply(pollArrayList.get(pos).getPoll_id());
+                    else
+                        Toast.makeText(getContext(), "Poll already answered!", Toast.LENGTH_SHORT).show();
                 }
             };
             return listener;
@@ -679,7 +656,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                     d.setMessage("Removing Poll!");
                     d.show();
                     pos = listView.getPositionForView(v);
-                    deletePoll(dataArrayList.get(pos).getPoll().getPoll_id());
+                    deletePoll(pollArrayList.get(pos).getPoll_id());
                     d.dismiss();
                 }
             };
@@ -691,7 +668,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 @Override
                 public void onClick(View v) {
                     pos = listView.getPositionForView(v);
-                    sharePoll(dataArrayList.get(pos).getPoll().getPoll_id(),dataArrayList.get(pos).getPoll().getTitle());
+                    sharePoll(pollArrayList.get(pos).getPoll_id(), pollArrayList.get(pos).getTitle());
                 }
             };
             return listener;
@@ -727,7 +704,9 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        if(getContext()!=null) {
+                            Toast.makeText(getContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        }
                         Log.d(LogTag,"Network-Error:"+error);
                         refresh.clearAnimation();
                     }

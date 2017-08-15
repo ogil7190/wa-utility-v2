@@ -23,10 +23,8 @@ public class SearchAdapter extends BaseAdapter {
 
     private ArrayList<Query> queries;
     private Context context;
-    private SearchActivity activity;
 
     public SearchAdapter(ArrayList<Query> queries, SearchActivity activity) {
-        this.activity = activity;
         this.context = activity.getApplicationContext();
         this.queries = queries;
     }
@@ -51,7 +49,6 @@ public class SearchAdapter extends BaseAdapter {
         LayoutInflater l= LayoutInflater.from(context);
         View v;
         final Query q=  queries.get(position);
-
         ViewHolder viewHolder;
 
         if(convertView==null) {
@@ -71,6 +68,6 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     static class ViewHolder{
-        TextView query;
+        private TextView query;
     }
 }

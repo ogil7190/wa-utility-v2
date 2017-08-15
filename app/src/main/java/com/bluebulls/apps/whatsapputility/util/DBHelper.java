@@ -7,12 +7,18 @@ import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.bluebulls.apps.whatsapputility.entity.actors.Event;
+import com.bluebulls.apps.whatsapputility.entity.actors.Option;
 import com.bluebulls.apps.whatsapputility.entity.actors.Poll;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentPoll.TAG;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentPoll.retrieveOptions;
 
 /**
  * Created by ogil on 03/08/17.
@@ -70,10 +76,12 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(POLL_TITLE_COLUMN, title);
         contentValues.put(POLL_USER_COLUMN, user);
         contentValues.put(POLL_OPTION_COLUMN, options);
+        Log.d(TAG, "Options:"+ options);
         contentValues.put(POLL_ANSWER_COL, ans);
         db.insert(POLL_TABLE_NAME, null, contentValues);
         return true;
     }
+
 
     public boolean insertEvent (String event_id, String topic, String description, String participants, String time, String user, String joined) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -108,12 +116,12 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from "+POLL_TABLE_NAME, null );
         res.moveToFirst();
-
         while(res.isAfterLast() == false) {
             String pollid = res.getString(res.getColumnIndex(POLL_ID_COLUMN));
             if(poll_id.equals(pollid)){
                 String user = res.getString(res.getColumnIndex(POLL_USER_COLUMN));
-                String options = res.getString(res.getColumnIndex(POLL_OPTION_COLUMN));
+                Option[] options = retrieveOptions(res.getString(res.getColumnIndex(POLL_OPTION_COLUMN)));
+                Log.d(TAG, "Options:"+ Arrays.toString(options));
                 String title = res.getString(res.getColumnIndex(POLL_TITLE_COLUMN));
                 String ans = res.getString(res.getColumnIndex(POLL_ANSWER_COL));
                 poll = new Poll(poll_id,title,options,user,ans);
@@ -247,7 +255,8 @@ public class DBHelper extends SQLiteOpenHelper {
         while(res.isAfterLast() == false){
             String poll_id = res.getString(res.getColumnIndex(POLL_ID_COLUMN));
             String user = res.getString(res.getColumnIndex(POLL_USER_COLUMN));
-            String options = res.getString(res.getColumnIndex(POLL_OPTION_COLUMN));
+            Option[] options = retrieveOptions(res.getString(res.getColumnIndex(POLL_OPTION_COLUMN)));
+            Log.d(TAG, "Options:"+ Arrays.toString(options));
             String title = res.getString(res.getColumnIndex(POLL_TITLE_COLUMN));
             String ans = res.getString(res.getColumnIndex(POLL_ANSWER_COL));
             Poll poll = new Poll(poll_id,title,options,user,ans);

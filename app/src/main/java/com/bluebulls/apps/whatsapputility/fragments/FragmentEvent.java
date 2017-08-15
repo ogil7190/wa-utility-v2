@@ -518,7 +518,9 @@ public class FragmentEvent extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         chatHeadImg.stopAnimation();
                         chatHeadImg.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        if (getContext() != null) {
+                            Toast.makeText(getApplicationContext(), "Check your network and try again!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }) {
             @Override

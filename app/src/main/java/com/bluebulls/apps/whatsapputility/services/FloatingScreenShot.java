@@ -1,7 +1,6 @@
 package com.bluebulls.apps.whatsapputility.services;
 
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -9,11 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,13 +18,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bluebulls.apps.whatsapputility.R;
-import com.bluebulls.apps.whatsapputility.util.CustomBridge;
 import com.bluebulls.apps.whatsapputility.util.CustomLayout;
 import com.bluebulls.apps.whatsapputility.util.SSBridge;
 
 import java.io.File;
 
-import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
 import static com.bluebulls.apps.whatsapputility.util.SSBridge.STOP_SS_SERV;
 
 /**
@@ -50,10 +44,10 @@ public class FloatingScreenShot extends Service implements CustomLayout.BackButt
         if (startId == Service.START_STICKY) {
             Bundle bundle = intent.getExtras();
             Uri uri = Uri.parse(bundle.getString("img_uri"));
-            Log.d("FSS","URI:"+uri.toString());
             handleStart(uri);
             return super.onStartCommand(intent, flags, startId);
-        } else {
+        }
+        else {
             return Service.START_NOT_STICKY;
         }
     }
@@ -157,41 +151,26 @@ public class FloatingScreenShot extends Service implements CustomLayout.BackButt
             public void run() {
                 stopSelf();
             }
-        }, 30000);
+        }, 30000); /* close screen shot after 30 sec */
     }
 
-    private void moveUp(final int y_cord_now) {
-        final int y = y_cord_now;
-            new CountDownTimer(2000, 10) {
-                WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) mFloatingSS.getLayoutParams();
-
-                public void onTick(long t) {
-                    mParams.y = y + (int)t/10;
-                    Log.d("PP:","T:"+mParams.y);
-                    mWindowManager.updateViewLayout(mFloatingSS, mParams);
-                }
-
-                public void onFinish() {
-                    mWindowManager.removeView(mFloatingSS);
-                }
-            }.start();
-    }
-
-    public static final String WHATSAPP_PACKAGE = "com.whatsapp";
+    public static final String WHATS_APP_PACKAGE = "com.whatsapp";
 
     private void shareOnWhatsApp(Uri imgUri){
         Intent intent = new Intent();
-        intent.setPackage(WHATSAPP_PACKAGE);
+        intent.setPackage(WHATS_APP_PACKAGE);
         intent.setAction(Intent.ACTION_SEND);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Intent.EXTRA_TEXT, "ScreenShot using WhatsApp Utility!");
+        intent.putExtra(Intent.EXTRA_TEXT, "ScreenShot using Paradox: WhatsApp Utility!");
         intent.putExtra(Intent.EXTRA_STREAM, imgUri);
         intent.setType("image/*");
         startActivity(intent);
+        stopSelf();
     }
 
     @Override
     public void onDestroy() {
+        isVisible = false;
         super.onDestroy();
         if (mFloatingSS != null) mWindowManager.removeView(mFloatingSS);
         unregisterReceiver(bridge);

@@ -66,14 +66,12 @@ public class EventAdapter extends BaseAdapter {
             viewHolder.time=(TextView)v.findViewById(R.id.time);
             viewHolder.imageButton=(SparkButton) v.findViewById(R.id.addToReminder);
             viewHolder.imageButton.setOnClickListener(event.getListener(1));
-
             if(!pref.getBoolean(PREF_REM_EVENT_ID + eventArrayList.get(position).getEvent_id(), true)){
                 viewHolder.imageButton.setInactiveImage(R.drawable.ic_alarm_off_black_18dp);
                 viewHolder.imageButton.setChecked(true);
             }
             else
                 viewHolder.imageButton.setChecked(false);
-
             v.setTag(viewHolder);
         }
         else {

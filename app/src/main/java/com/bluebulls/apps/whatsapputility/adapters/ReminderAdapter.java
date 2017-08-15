@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.bluebulls.apps.whatsapputility.entity.actors.Data;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.entity.actors.Reminder;
 import com.varunest.sparkbutton.SparkButton;
@@ -49,7 +48,7 @@ public class ReminderAdapter extends BaseAdapter {
         final Reminder s = reminderArrayList.get(position);
         ViewHolder viewHolder;
         if(convertView==null) {
-            v = l.inflate(R.layout.single_list_event, parent, false);
+            v = l.inflate(R.layout.single_list_reminder, parent, false);
             viewHolder=new ViewHolder();
             viewHolder.eventTxt=(TextView)v.findViewById(R.id.eventTxt);
             viewHolder.descriptionTxt=(TextView)v.findViewById(R.id.eventDescription);

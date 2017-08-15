@@ -18,8 +18,8 @@ import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.activities.HomeActivity;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
-    MediaPlayer mp;
-    Context context;
+    private Context context;
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         this.context = context;
@@ -48,8 +48,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_alarm_on_black_18dp)
                         .setContentTitle(title)
-                        .setContentText(text)
-                        .setSound(Uri.parse("android.resource://com.bluebulls.apps.whatsapputility/"+R.raw.audio));
+                        .setContentText(text);
 
         Intent resultIntent = new Intent(context, HomeActivity.class);
         resultIntent.setAction(Intent.ACTION_VIEW);

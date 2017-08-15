@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.ReminderAdapter;
-import com.bluebulls.apps.whatsapputility.entity.actors.Data;
 import com.bluebulls.apps.whatsapputility.entity.actors.Reminder;
 import com.bluebulls.apps.whatsapputility.services.MyAlarmReceiver;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
@@ -58,14 +57,6 @@ public class FragmentReminder extends Fragment {
 
     private SharedPreferences pref;
 
-    private String DATE="date";
-    private String MONTH="month";
-    private String YEAR="year";
-    private String HOUR="hour";
-    private String MINUTE="minute";
-    private String EVENT="event";
-    private String DESCRIPTION="description";
-    private String SIZE="reminderArrayListSize";
     private String eve,des;
     private ReminderAdapter reminderAdapter;
     public static TextView datetxt,timetxt;
@@ -173,8 +164,9 @@ public class FragmentReminder extends Fragment {
                         date_time= datetxt.getText().toString()+"|"+timetxt.getText().toString();
                         int rem_id = pref.getInt(PREF_REM_ID_KEY, -1) +1;
                         pref.edit().putInt(PREF_REM_ID_KEY, rem_id).commit();
-                        saveReminder(new Reminder(rem_id, eve, des, date_time));
-                        addToReminder(rem_id, getAlarmTime(date_time));
+                        saveReminder(pref, new Reminder(rem_id, eve, des, date_time));
+                        addToReminder(getContext(), rem_id, getAlarmTime(date_time));
+                        Toast.makeText(getContext(), "Alarm Set!", Toast.LENGTH_SHORT).show();
                         loadReminder();
                     }
                 })
@@ -198,7 +190,7 @@ public class FragmentReminder extends Fragment {
         return v;
     }
 
-    private long getAlarmTime(String date_time){
+    public static long getAlarmTime(String date_time){
         String date = date_time.substring(0, date_time.indexOf("|"));
         String time = date_time.substring(date_time.indexOf("|") + 1, date_time.length());
         Calendar calendar = Calendar.getInstance();
@@ -212,7 +204,7 @@ public class FragmentReminder extends Fragment {
         return calendar.getTime().getTime();
     }
 
-    private int getMonth(String month){
+    public static int getMonth(String month){
         switch (month.toLowerCase()){
             case "jan": return 0;
             case "feb": return 1;
@@ -230,15 +222,15 @@ public class FragmentReminder extends Fragment {
         }
     }
 
-    private boolean addToReminder(int rem_id, long alarmTime){
-        Intent i = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+    public static boolean addToReminder(Context context, int rem_id, long alarmTime){
+        Intent i = new Intent(context, MyAlarmReceiver.class);
         i.setAction("NEW_REM_ALARM#"+rem_id);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
         AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         long time = alarmTime - System.currentTimeMillis();
 
         if(time<0){
-            Toast.makeText(getContext(), "Reminder Already gone!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Reminder Already gone!", Toast.LENGTH_SHORT).show();
             return false;
         }
         else {
@@ -247,7 +239,7 @@ public class FragmentReminder extends Fragment {
         }
     }
 
-    private boolean saveReminder(Reminder reminder)
+    public static boolean saveReminder(SharedPreferences pref, Reminder reminder)
     {
         SharedPreferences.Editor editor = pref.edit();
         int i = reminder.getRem_id();
@@ -258,12 +250,11 @@ public class FragmentReminder extends Fragment {
         editor.putInt(PREF_REM_SIZE_KEY, reminder.getRem_id() + 1);
        return editor.commit();
     }
+
     private void loadReminder()
     {
         reminderArrayList.clear();
         int size = pref.getInt(PREF_REM_SIZE_KEY, 0);
-        Log.e("TAG", "loadReminder: "+size );
-
         if(size!=0)
             for(int i=0; i<size; i++)
             {

@@ -36,8 +36,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="16"
                     android:text="raman"
-                    android:textColor="#000066"
-                    android:textSize="30sp" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="23dp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -74,13 +74,14 @@
                         android:id="@+id/eventDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="13"
+                        android:layout_weight="12"
                         android:text="kataria"
-                        android:textColor="#3340bd"
-                        android:textSize="15dp" />
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18dp" />
 
                 <com.varunest.sparkbutton.SparkButton
                     android:id="@+id/addToReminder"
+                    android:backgroundTint="@color/colorPrimaryDark"
                     android:layout_width="0dp"
                     android:layout_height="42dp"
                     android:layout_alignParentBottom="true"
