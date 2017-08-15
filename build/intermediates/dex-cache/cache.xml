@@ -3,102 +3,21 @@
 
     <item
         is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/239bf1ad528bbb59c685c27d4c7ce1bde435cbf7/output/jars/classes.jar"
+        jar="C:\Users\dell\.android\build-cache\dd3c54741a2a536dcf55dbb12a76ce23c02bc943\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="bc853652fcf47d99e37ab1362c228d1ef90a2a1f">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_2886aa62fa6819318982b906b038b947d3532f81.jar" />
+        sha1="379a48c2da13ffb7ec7134f2c715663834357670">
+        <dex dex="E:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\classes_bf6b05fd1a7c32c178d99f860cd774fc6576f72d.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/b71073bf1b9e2799437357dab264b358cfc8470d/output/jars/classes.jar"
+        jar="C:\Users\dell\.android\build-cache\932b99abdafa047d3014704a95a88cd5a69fbb78\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="ecccaad4cf8a2b4ab6d86370a81c2cc752032c2f">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_6399df9939ce974924acdca1b604af08019475d9.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/75c8bc33004ab26533bfd3917454f0cbe62e995a/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a990fa3bd2a345eb88fb47e9910a5f647f978ab4">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_e20ce0e098201e92605a8dfe26728b345e4d39a4.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="919f0dfe192fb4e063e7dacadee7f8bb9a2672a9">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/annotations-13.0_a9775139f6965ecf981f301e2db5736db9deb8b8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/610bfb429793b8e052ea9d0ad014054a20b5cef2/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="451e07e95c9f662049ab14915bd1c8114e8acc2b">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_f166bf1adacee5b58a0da02433df5e8b3a4083f8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/5875e9426b6a2e583d85143d3efe6f3313ca4b85/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="dce3b09be94e30554913f3e3e537b3517478bfd7">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_2f577ba0e752f8bd651595dafbc4f18ad45e16d5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/8cd86c68fab79d5043dad9b385e65097dc5f11fd/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4413b04a700c86376ca0bcd94fbff82d47147d66">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_b98f548004f990dc76e41c5a2b862f6431a5d544.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jre7/1.1.1/e3be78b463658ae5a8c8b446b811671998c91f5/kotlin-stdlib-jre7-1.1.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0e3be78b463658ae5a8c8b446b811671998c91f5">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/kotlin-stdlib-jre7-1.1.1_bccf0ab408d0356456ffd44e05f879d53430c545.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/178ecaed1c43f4a5f2392104861a7085568a950a/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a21dce88bb15a61e8adfd12182ca469a5ef5d084">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_52d0a7f11baeed9cc310e90e1342e505a431a8d9.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.1.1/98e484e67f913e934559f7f55f0c94be5593f03c/kotlin-stdlib-1.1.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="98e484e67f913e934559f7f55f0c94be5593f03c">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/kotlin-stdlib-1.1.1_2ac5ea5b938ab9f0a5935756e59f61abb4d7ae4f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/bd4ed518dc5d074cb8ab675a7182a5a95b52fddd/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8c3c0d3ceebee48f2c7ecf2b45246e01ca5292af">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_1772302cb9e8bb808e7f9ebdd78d318003093aee.jar" />
+        <dex dex="E:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\classes_7c289b5d42be7dcdcaf551f4bf43fa26d8cc6f0a.jar" />
     </item>
 
 </items>

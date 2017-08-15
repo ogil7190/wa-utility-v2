@@ -46,7 +46,6 @@ import com.varunest.sparkbutton.SparkButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -415,14 +414,26 @@ public class FragmentEvent extends Fragment {
                 public void onClick(View v) {
                     pos = listView2.getPositionForView(v);
                     SparkButton b = (SparkButton) v;
-                    if (b.isChecked()){
+                    /*if (b.isChecked()){
                         b.setActiveImage(R.drawable.ic_alarm_on_black_18dp);
                         addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
                         b.setChecked(false);
                     }
                     b.setInactiveImage(R.drawable.ic_alarm_off_black_18dp);
                     b.setChecked(true);
-                    b.playAnimation();
+                    b.playAnimation();*/
+                    if(!b.isChecked())
+                    {
+                        b.setActiveImage(R.drawable.ic_alarm_on_black_18dp);
+                        addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
+                        b.setChecked(true);
+                        b.playAnimation();
+                    }
+                    else {
+                        b.setInactiveImage(R.drawable.ic_alarm_on_black_18dp);
+                        b.setChecked(true);
+                        //b.playAnimation();
+                    }
                 }
             };
             return listener;

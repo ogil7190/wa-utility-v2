@@ -92,7 +92,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 25 Platform (3)" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="sparkbutton-1.0.5" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="runner-0.5" level="project" />
@@ -128,6 +128,7 @@
     <orderEntry type="library" exported="" name="Stepper-Touch-0.6" level="project" />
     <orderEntry type="library" exported="" name="fgchecker-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-11.0.1" level="project" />
+    <orderEntry type="library" exported="" name="palette-v7-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="library-1.2.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.3.1" level="project" />

@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 
 import com.bluebulls.apps.whatsapputility.R;
@@ -149,20 +148,28 @@ public class HomeActivity extends AppCompatActivity {
                 else
                     return FragmentPoll.newInstance(false, data);
             }
+
             if(position == 1) {
                 if(selection == position)
                     return FragmentEvent.newInstance(fragmentManager, true, data);
                 else
                     return FragmentEvent.newInstance(fragmentManager, false, data);
             }
+
             if(position == 2) {
                 if(selection == position)
                     return FragmentReminder.newInstance(fragmentManager);
                 else
                     return FragmentReminder.newInstance(fragmentManager);
             }
-            else
-                return FragmentReminder.newInstance(fragmentManager);
+
+            else{
+                if(selection == position)
+                    return FragmentPoll.newInstance(true, data);
+                else
+                    return FragmentPoll.newInstance(false, data);
+            }
+                /*return FragmentReminder.newInstance(fragmentManager);*/
         }
 
         @Override

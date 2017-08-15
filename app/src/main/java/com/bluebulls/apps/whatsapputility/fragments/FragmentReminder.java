@@ -4,9 +4,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +24,6 @@ import android.widget.TextView;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.ReminderAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.Data;
-import com.bluebulls.apps.whatsapputility.services.MyAlarmReceiver;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
@@ -42,7 +42,16 @@ public class FragmentReminder extends Fragment {
     private static AlertDialog alertDialog;
     static FragmentManager manager;
     private SparkButton addReminder;
-
+    private String DATE="date";
+    private String MONTH="month";
+    private String YEAR="year";
+    private String HOUR="hour";
+    private String MINUTE="minute";
+    private String EVENT="event";
+    private String DESCRIPTION="description";
+    private String SIZE="reminderArrayListSize";
+    String eve,des;
+    ReminderAdapter reminderAdapter;
     public static TextView datetxt,timetxt;
     public static int date2, year2;
     private PendingIntent pi;
@@ -74,14 +83,15 @@ public class FragmentReminder extends Fragment {
         addReminder = (SparkButton) v.findViewById(R.id.reminderbtn);
         addReminder.setAnimationSpeed(1.5f);
         listView3 = (ListView) v.findViewById(R.id.list_view2);
-        alarmManager=(AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+        /*alarmManager=(AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
         final Intent intent=new Intent(getContext(),MyAlarmReceiver.class);
-        pi=PendingIntent.getBroadcast(getContext(),0,intent,0);
-        final ReminderAdapter reminderAdapter = new ReminderAdapter(reminderArrayList, getContext());
+        pi=PendingIntent.getBroadcast(getContext(),0,intent,0);*/
+        reminderAdapter = new ReminderAdapter(reminderArrayList, getContext());
         listView3.setAdapter(reminderAdapter);
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
-
+        loadReminder(getContext());
+        reminderAdapter.notifyDataSetChanged();
         singleDateAndTimePickerDialog=new SingleDateAndTimePickerDialog.Builder(getContext())
                 //.bottomSheet()
                 .curved()
@@ -143,20 +153,20 @@ public class FragmentReminder extends Fragment {
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String eve = event.getText().toString();
-                        String des = description.getText().toString();
+                        eve = event.getText().toString();
+                        des = description.getText().toString();
                         reminderArrayList.add(new Data(eve, des, date2, month2, year2, hour2, minute2));
                         reminderAdapter.notifyDataSetChanged();
-                        event.setText(null);
-                        description.setText(null);
+                        saveReminder();
                         Log.e("TAG", "onClick: "+(alarmTime-System.currentTimeMillis()) );
-                        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,10000,pi);
+                       // alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,10000,pi);
                     }
                 })
                 .setNegativeButton("Set Date & Time", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         singleDateAndTimePickerDialog.display();
+
                     }
                 })
                 .create();
@@ -164,9 +174,48 @@ public class FragmentReminder extends Fragment {
             @Override
             public void onClick(View v) {
                 addReminder.playAnimation();
+                event.setText(null);
+                description.setText(null);
                 alertDialog.show();
             }
         });
         return v;
     }
+    private boolean saveReminder()
+    {
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putInt(SIZE,reminderArrayList.size());
+        int i=reminderArrayList.size()-1;
+        editor.putInt(DATE+i,reminderArrayList.get(i).getDate());
+        editor.putString(MONTH+i,reminderArrayList.get(i).getMonth());
+        editor.putInt(YEAR+i,reminderArrayList.get(i).getYear());
+        editor.putInt(HOUR+i,reminderArrayList.get(i).getHour());
+        editor.putInt(MINUTE+i,reminderArrayList.get(i).getMinute());
+        editor.putString(EVENT+i,reminderArrayList.get(i).getEvent());
+        editor.putString(DESCRIPTION+i,reminderArrayList.get(i).getDescription());
+        Log.e("TAG", "saveReminder: "+reminderArrayList.size() );
+       return editor.commit();
+    }
+    private void loadReminder(Context c)
+    {
+        SharedPreferences sharedPreferences1 =   PreferenceManager.getDefaultSharedPreferences(c);
+        reminderArrayList.clear();
+        int size = sharedPreferences1.getInt(SIZE, 0);
+        Log.e("TAG", "loadReminder: "+size );
+        if(size!=0)
+            for(int i=0;i<size;i++)
+            {
+               Data d=new Data();
+                d.setDate(sharedPreferences1.getInt(DATE+i,0));
+                d.setMonth(sharedPreferences1.getString(MONTH+i,null));
+                d.setYear(sharedPreferences1.getInt(YEAR+i,0));
+                d.setHour(sharedPreferences1.getInt(HOUR+i,0));
+                d.setMinute(sharedPreferences1.getInt(MINUTE+i,0));
+                d.setEvent(sharedPreferences1.getString(EVENT+i,null));
+                d.setDescription(sharedPreferences1.getString(DESCRIPTION+i,null));
+                reminderArrayList.add(d);
+            }
+    }
+
 }
