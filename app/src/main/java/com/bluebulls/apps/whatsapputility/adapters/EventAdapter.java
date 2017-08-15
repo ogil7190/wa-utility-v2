@@ -1,6 +1,7 @@
 package com.bluebulls.apps.whatsapputility.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +15,24 @@ import com.varunest.sparkbutton.SparkButton;
 
 import java.util.ArrayList;
 
+import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentEvent.PREF_REM_EVENT_ID;
+
 /**
  * Created by dell on 8/5/2017.
  */
 
 public class EventAdapter extends BaseAdapter {
-    ArrayList<Event> eventArrayList;
-    Context c;
-    FragmentEvent event;
+    private ArrayList<Event> eventArrayList;
+    private Context c;
+    private FragmentEvent event;
+
+    private SharedPreferences pref;
 
     public EventAdapter(ArrayList<Event> eventArrayList, Context c, FragmentEvent event) {
         this.eventArrayList = eventArrayList;
         this.c = c;
         this.event = event;
-
     }
 
     @Override
@@ -47,6 +52,7 @@ public class EventAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        pref = c.getSharedPreferences(PREF_USER, Context.MODE_PRIVATE);
         LayoutInflater l= LayoutInflater.from(c);
         View v;
         final Event e=  eventArrayList.get(position);
@@ -60,6 +66,14 @@ public class EventAdapter extends BaseAdapter {
             viewHolder.time=(TextView)v.findViewById(R.id.time);
             viewHolder.imageButton=(SparkButton) v.findViewById(R.id.addToReminder);
             viewHolder.imageButton.setOnClickListener(event.getListener(1));
+
+            if(!pref.getBoolean(PREF_REM_EVENT_ID + eventArrayList.get(position).getEvent_id(), true)){
+                viewHolder.imageButton.setInactiveImage(R.drawable.ic_alarm_off_black_18dp);
+                viewHolder.imageButton.setChecked(true);
+            }
+            else
+                viewHolder.imageButton.setChecked(false);
+
             v.setTag(viewHolder);
         }
         else {

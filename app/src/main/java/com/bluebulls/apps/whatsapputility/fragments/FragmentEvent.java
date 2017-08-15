@@ -378,7 +378,6 @@ public class FragmentEvent extends Fragment {
                 params.put(KEY_USER, user);
                 return params;
             }
-
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -421,10 +420,12 @@ public class FragmentEvent extends Fragment {
                     if(!b.isChecked())
                     {
                         b.setActiveImage(R.drawable.ic_alarm_on_black_18dp);
-                        if(pref.getBoolean(PREF_REM_EVENT_ID + eventArrayList.get(pos).getEvent_id(), false)) {
-                            addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
+                        if(pref.getBoolean(PREF_REM_EVENT_ID + eventArrayList.get(pos).getEvent_id(), true)) {
+                            boolean  alarm = addToReminder(eventArrayList.get(pos).getEvent_id(), getAlarmTime(eventArrayList.get(pos).getTime()));
+                            pref.edit().putBoolean(PREF_REM_EVENT_ID + eventArrayList.get(pos).getEvent_id(), false).commit(); /* to set reminder is false now */
+                            if(alarm)
+                                Toast.makeText(getContext(), "Alarm Set!", Toast.LENGTH_SHORT).show();
                         }
-
                         b.setChecked(true);
                         b.playAnimation();
                     }
@@ -551,7 +552,7 @@ public class FragmentEvent extends Fragment {
             showToast("Something went wrong. Try again!");
     }
 
-    private void addToReminder(String event_id, long alarmTime){
+    private boolean addToReminder(String event_id, long alarmTime){
         Intent i = new Intent(getApplicationContext(), MyAlarmReceiver.class);
         i.setAction("NEW_EVENT_ALARM#"+event_id);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
@@ -560,10 +561,12 @@ public class FragmentEvent extends Fragment {
 
         if(time<0){
             Toast.makeText(getContext(), "Event Already gone!", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
-        else
+        else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
+            return true;
+        }
     }
 
     private void saveEvent(String event_id, String user, String title, String description){

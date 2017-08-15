@@ -229,7 +229,7 @@ public class FragmentReminder extends Fragment {
         }
     }
 
-    private void addToReminder(int rem_id, long alarmTime){
+    private boolean addToReminder(int rem_id, long alarmTime){
         Intent i = new Intent(getApplicationContext(), MyAlarmReceiver.class);
         i.setAction("NEW_REM_ALARM#"+rem_id);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
@@ -238,10 +238,12 @@ public class FragmentReminder extends Fragment {
 
         if(time<0){
             Toast.makeText(getContext(), "Reminder Already gone!", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
-        else
+        else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
+            return true;
+        }
     }
 
     private boolean saveReminder(Reminder reminder)

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bluebulls.apps.whatsapputility.entity.actors.Data;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.entity.actors.Reminder;
+import com.varunest.sparkbutton.SparkButton;
 
 import java.util.ArrayList;
 
@@ -77,5 +78,6 @@ public class ReminderAdapter extends BaseAdapter {
 
     static class ViewHolder{
         private TextView eventTxt,descriptionTxt,date,time;
+        private SparkButton alarmButton;
     }
 }
