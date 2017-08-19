@@ -230,7 +230,6 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
         bitmap.copyPixelsFromBuffer(buffer);
         tearDown();
         image.close();
-        Log.d(TAG,"Image Acquired!");
         cb.onScreenshot(bitmap);
     }
 

@@ -17,8 +17,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -32,12 +35,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.activities.LoginActivity;
+import com.bluebulls.apps.whatsapputility.adapters.AboutPollAdapter;
 import com.bluebulls.apps.whatsapputility.adapters.PollAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.FadingTextViewAnimator;
 import com.bluebulls.apps.whatsapputility.entity.actors.Option;
 import com.bluebulls.apps.whatsapputility.entity.actors.Poll;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.hbb20.CountryCodePicker;
 import com.twotoasters.jazzylistview.JazzyListView;
 import com.twotoasters.jazzylistview.effects.ZipperEffect;
 import com.varunest.sparkbutton.SparkButton;
@@ -241,6 +247,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     }
 
     public static final String GET_POLL_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/GetPoll.php";
+
     private void getPoll(final ProgressDialog d){
         final String KEY_POLL_ID = "poll_id";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_POLL_URL,
@@ -282,14 +289,34 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         requestQueue.add(stringRequest);
     }
 
+    private String getAns(String reply) {
+        String ans = "-1";
+        String phone = pref.getString(PREF_USER_KEY_PHONE,"null");
+        try {
+            JSONObject o = new JSONObject(reply);
+            for (int i = 0; i < o.names().length(); i++) {
+                String key = o.names().getString(i);
+                if(key.equals(phone)){
+                    return o.getString(key);
+                }
+            }
+            return ans;
+        } catch (JSONException e) {
+            Log.d(TAG, e.toString());
+            return null;
+        }
+    }
+
     private void handlePoll(String response) throws JSONException{
         JSONObject o = new JSONObject(response);
         if(o.get("error").equals(false)){
             poll_id = o.getString("poll_id");
             String opt = o.getString("options").replace("\\","");
             String topic = o.getString("topic");
+            String reply = o.getString("poll_reply");
+            String ans = getAns(reply);
             if(!dbHelper.pollExists(poll_id)){
-                savePoll(poll_id,o.getString("user"), topic, opt, "-1" );
+                savePoll(poll_id,o.getString("user"), topic, opt, ans, reply);
                 updatePolls();
             }
 
@@ -370,6 +397,13 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                 refreshCurrentPoll();
             reset();
             isReply = false;
+        }
+
+        if(o.get("error").equals(true)){
+            if(o.get("error_type").equals(1)){
+                dbHelper.updatePollAns(poll_id, o.getString("ans"));
+                Toast.makeText(getContext(),"Poll Already Answered!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -555,7 +589,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         if (obj.get("error").equals(false)) {
             String poll_id = obj.get("poll_id").toString();
             pollTitle = title.getText().toString();
-            savePoll(poll_id,pref.getString(PREF_USER_KEY_PHONE,"null"), pollTitle, options_str, ans);
+            savePoll(poll_id,pref.getString(PREF_USER_KEY_PHONE,"null"), pollTitle, options_str, ans, obj.getString("poll_reply"));
             sharePoll(poll_id, pollTitle);
         }
         else
@@ -563,8 +597,8 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     }
 
     private DBHelper dbHelper;
-    private void savePoll(String poll_id, String user, String title, String options,String ans){
-        dbHelper.insertPoll(poll_id,title,user,options,ans);
+    private void savePoll(String poll_id, String user, String title, String options,String ans, String reply){
+        dbHelper.insertPoll(poll_id,title,user,options,ans, reply);
     }
 
     int poll_count = 0;
@@ -612,7 +646,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         option6.setText("");
     }
 
-    private View currentRefresh, currentReply, currentClear;
+    private View currentRefresh, currentReply;
 
     public View.OnClickListener setListeners(int x, final View ref){
         if(x == 1) {
@@ -674,8 +708,57 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
             return listener;
         }
 
+        if(x==5){
+            final View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pos = listView.getPositionForView(v);
+                    showAboutPoll(pollArrayList.get(pos));
+                }
+            };
+            return listener;
+        }
         else
             return null;
+    }
+
+    private void showAboutPoll(Poll poll){
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.poll_show, null);
+        View title = inflater.inflate(R.layout.custom_title_poll_show, null);
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        dialogBuilder.setCancelable(true);
+        dialogBuilder.setCustomTitle(title);
+        dialogBuilder.setView(view);
+        ListView listView = (ListView)view.findViewById(R.id.poll_about_listview);
+        AboutPollAdapter aboutPollAdapter = new AboutPollAdapter(getParticipants(poll.getPoll_reply()),getContext());
+        listView.setAdapter(aboutPollAdapter);
+        dialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog d = dialogBuilder.create();
+        d.show();
+    }
+
+    private ArrayList<String> getParticipants(String poll_reply){
+        ArrayList<String> participants  = new ArrayList<>();
+        try {
+            JSONObject o = new JSONObject(poll_reply);
+            for (int i = 0; i < o.names().length(); i++) {
+                String key = o.names().getString(i);
+                participants.add(key);
+            }
+        }
+
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+        return participants;
     }
 
     private boolean deletePoll(String poll_id){
@@ -732,7 +815,9 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         JSONObject o = new JSONObject(response);
         if (o.get("error").equals(false)) {
             String opt = o.getString("options").replace("\\", "");
+            String reply = o.getString("poll_reply");
             dbHelper.updatePollOptions(poll_id_refresh,opt);
+            dbHelper.updatePollReply(poll_id_refresh, reply);
             updatePolls();
             listView.smoothScrollToPosition(pos);
             return true;
@@ -828,7 +913,9 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         if(o.get("error").equals(false)){
             String poll_id = o.getString("poll_id");
             String opt = o.getString("options").replace("\\","");
+            String reply = o.getString("poll_reply");
             dbHelper.updatePollOptions(poll_id,opt);
+            dbHelper.updatePollReply(poll_id, reply);
             return true;
         }
         else

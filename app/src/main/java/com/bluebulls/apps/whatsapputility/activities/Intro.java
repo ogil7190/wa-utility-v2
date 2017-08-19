@@ -3,17 +3,21 @@ package com.bluebulls.apps.whatsapputility.activities;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +25,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.util.DBHelper;
+import com.hbb20.CountryCodePicker;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -31,14 +44,23 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
+import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.LogTag;
 
 public class Intro extends AppCompatActivity {
     private SharedPreferences pref;
 
+    public static final String CONTACT_PUSH_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/UploadContacts.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +104,7 @@ public class Intro extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.login_dialog,null);
         View title = inflater.inflate(R.layout.custom_title_login_dialog, null);
+        final CountryCodePicker picker = (CountryCodePicker) view.findViewById(R.id.country_picker);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setCancelable(false);
         dialogBuilder.setCustomTitle(title);
@@ -94,7 +117,7 @@ public class Intro extends AppCompatActivity {
             public void onClick(View v) {
                 if(tnc.isChecked()){
                     if(name.getText().length()>4){
-                        saveUserName(name.getText().toString());
+                        saveUserName(name.getText().toString(), picker.getSelectedCountryCode());
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
                     else
@@ -114,9 +137,11 @@ public class Intro extends AppCompatActivity {
     }
 
     public static final String PREF_USER_KEY_NAME = "user_name";
+    public static final String PREF_USER_KEY_COUNTRY = "user_country";
 
-    private void saveUserName(String name){
+    private void saveUserName(String name, String code){
         pref.edit().putString(PREF_USER_KEY_NAME, name).commit();
+        pref.edit().putString(PREF_USER_KEY_COUNTRY, code).commit();
     }
 
     private void showDialog(){

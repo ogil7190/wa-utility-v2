@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.bluebulls.apps.whatsapputility.util.CustomLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/color_layout_background"
     android:layout_width="match_parent"
@@ -61,11 +62,15 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18dp" />
 
-            <ProgressBar
+            <com.github.rahatarmanahmed.cpv.CircularProgressView
                 android:id="@+id/progress"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                app:cpv_color="#075e54"
+                app:cpv_thickness="4dp"
+                app:cpv_animAutostart="false"
+                app:cpv_maxProgress="100"
+                app:theme="@style/Base.AccountKit.ProgressBar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_centerInParent="true"
                 android:visibility="visible" />
 

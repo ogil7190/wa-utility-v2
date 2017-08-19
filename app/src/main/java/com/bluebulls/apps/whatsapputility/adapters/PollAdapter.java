@@ -69,16 +69,19 @@ public class PollAdapter extends BaseAdapter {
 
             viewHolder.refresh = (ImageButton)v.findViewById(R.id.refresh_poll);
             viewHolder.reply = (ImageButton)v.findViewById(R.id.reply_poll);
-            viewHolder.forward=(ImageButton)v.findViewById(R.id.forward_poll);
+            viewHolder.forward = (ImageButton)v.findViewById(R.id.forward_poll);
+            viewHolder.about = (ImageButton)v.findViewById(R.id.about_poll);
             setPieChart(o);
             v.setTag(viewHolder);
             View.OnClickListener refreshListener = fragmentPoll.setListeners(1,null);
             View.OnClickListener replyListener = fragmentPoll.setListeners(2,viewHolder.refresh);
             View.OnClickListener forwardListener=fragmentPoll.setListeners(4, null);
+            View.OnClickListener aboutListener = fragmentPoll.setListeners(5, null);
 
             viewHolder.refresh.setOnClickListener(refreshListener);
             viewHolder.reply.setOnClickListener(replyListener);
             viewHolder.forward.setOnClickListener(forwardListener);
+            viewHolder.about.setOnClickListener(aboutListener);
         }
         else {
             v=convertView;
@@ -177,7 +180,7 @@ public class PollAdapter extends BaseAdapter {
     }
 
     static class ViewHolder{
-        ImageButton refresh, reply,forward;
+        ImageButton refresh, reply,forward, about;
         TextView title;
         PieChart pollChart;
     }

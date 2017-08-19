@@ -12,7 +12,7 @@
         android:text="Join Event"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="30dp"
         android:textColor="#ffffff"
         android:background="@color/background_title_poll"/>
 

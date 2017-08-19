@@ -1,10 +1,7 @@
 package com.bluebulls.apps.whatsapputility.services;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -18,24 +15,19 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,38 +47,25 @@ import com.bluebulls.apps.whatsapputility.util.CustomLayout;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
-import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
-import com.nightonke.boommenu.BoomMenuButton;
-import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import nl.dionsegijn.steppertouch.OnStepCallback;
 import nl.dionsegijn.steppertouch.StepperTouch;
-import rjsv.floatingmenu.floatingmenubutton.FloatingMenuButton;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
-import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_DATE_TIME_KEY;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_ID_KEY;
-import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_SIZE_KEY;
-import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_TITLE_KEY;
-import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PRE_REM_DESC_KEY;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.addToReminder;
-import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.datetxt;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.getAlarmTime;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.saveReminder;
-import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.timetxt;
 import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
-import static com.facebook.accountkit.internal.AccountKitController.getApplicationContext;
 
 public class ChatHeadService extends Service implements CustomLayout.BackButtonListener, CustomLayout.HomeButtonListener {
     public static final String LogTag = "ChatHead";
@@ -96,7 +75,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     public static final String REGISTER_EVENT_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/RegisterEvent.php";
 
     public WindowManager windowManager;
-    private RelativeLayout chatheadView, removeView;
+    private RelativeLayout chatHeadView, removeView;
     private ImageView chatHead;
 
     private CustomLayout options;
@@ -144,9 +123,9 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         windowManager.addView(removeView, paramRemove);
 
 
-        chatheadView = (RelativeLayout) inflater.inflate(R.layout.chathead, null);
-        chatheadImg = (CircularProgressView) chatheadView.findViewById(R.id.chathead_img);
-        chatHead = (ImageView) chatheadView.findViewById(R.id.chatHead);
+        chatHeadView = (RelativeLayout) inflater.inflate(R.layout.chathead, null);
+        chatheadImg = (CircularProgressView) chatHeadView.findViewById(R.id.chathead_img);
+        chatHead = (ImageView) chatHeadView.findViewById(R.id.chatHead);
 
         chatheadImg.setVisibility(View.GONE);
 
@@ -283,7 +262,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         params.x = 100;
         params.y = 150;
 
-        windowManager.addView(chatheadView, params);
+        windowManager.addView(chatHeadView, params);
 
         chatHead.setOnTouchListener(new View.OnTouchListener() {
             long time_start = 0, time_end = 0;
@@ -301,7 +280,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) chatheadView.getLayoutParams();
+                WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) chatHeadView.getLayoutParams();
 
                 int x_cord = (int) event.getRawX();
                 int y_cord = (int) event.getRawY();
@@ -356,10 +335,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                                     windowManager.updateViewLayout(removeView, param_remove);
                                 }
 
-                                layoutParams.x = x_cord_remove + (Math.abs(removeView.getWidth() - chatheadView.getWidth())) / 2;
-                                layoutParams.y = y_cord_remove + (Math.abs(removeView.getHeight() - chatheadView.getHeight())) / 2;
+                                layoutParams.x = x_cord_remove + (Math.abs(removeView.getWidth() - chatHeadView.getWidth())) / 2;
+                                layoutParams.y = y_cord_remove + (Math.abs(removeView.getHeight() - chatHeadView.getHeight())) / 2;
 
-                                windowManager.updateViewLayout(chatheadView, layoutParams);
+                                windowManager.updateViewLayout(chatHeadView, layoutParams);
                                 break;
                             } else {
                                 inBounded = false;
@@ -381,7 +360,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                         layoutParams.x = x_cord_Destination;
                         layoutParams.y = y_cord_Destination;
 
-                        windowManager.updateViewLayout(chatheadView, layoutParams);
+                        windowManager.updateViewLayout(chatHeadView, layoutParams);
                         break;
                     case MotionEvent.ACTION_UP:
                         isLongclick = false;
@@ -412,8 +391,8 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                         int BarHeight = getStatusBarHeight();
                         if (y_cord_Destination < 0) {
                             y_cord_Destination = 0;
-                        } else if (y_cord_Destination + (chatheadView.getHeight() + BarHeight) > szWindow.y) {
-                            y_cord_Destination = szWindow.y - (chatheadView.getHeight() + BarHeight);
+                        } else if (y_cord_Destination + (chatHeadView.getHeight() + BarHeight) > szWindow.y) {
+                            y_cord_Destination = szWindow.y - (chatHeadView.getHeight() + BarHeight);
                         }
                         layoutParams.y = y_cord_Destination;
 
@@ -454,7 +433,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                 timeSet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(xdate1!=null || !xdate1.equals("")) {
+                        if(xdate1!=null) {
                             String test = xdate1.toString().replace("Mon", "").replace("Tue", "").replace("Wed", "").replace("Thu", "")
                                     .replace("Mon", "").replace("Fri", "").replace("Sat", "").replace("Sun", "")
                                     .replace("GMT+05:30", "");
@@ -549,7 +528,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                 timeSet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!xdate2.equals("") || xdate2!=null) {
+                        if (xdate2!=null) {
                             String test = xdate2.toString().replace("Mon", "").replace("Tue", "").replace("Wed", "").replace("Thu", "")
                                     .replace("Mon", "").replace("Fri", "").replace("Sat", "").replace("Sun", "")
                                     .replace("GMT+05:30", "");
@@ -976,7 +955,8 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         JSONObject obj = new JSONObject(response);
         if (obj.get("error").equals(false)) {
             String poll_id = obj.get("poll_id").toString();
-            savePoll(poll_id,phone,topic_msg,options_str);
+            String poll_reply = obj.getString("poll_reply");
+            savePoll(poll_id,phone,topic_msg,options_str, poll_reply);
             sharePoll(poll_id);
         } else
             showToast("Something went wrong. Try again!");
@@ -988,8 +968,8 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         dbHelper.insertEvent(event_id,title,description,"me",date_time,user,"yeah");
     }
 
-    private void savePoll(String poll_id, String user, String title, String options){
-        dbHelper.insertPoll(poll_id,title,user,options,ans);
+    private void savePoll(String poll_id, String user, String title, String options, String reply){
+        dbHelper.insertPoll(poll_id,title,user,options,ans,reply);
     }
 
     private void shareEvent(String event_id){
@@ -1033,16 +1013,16 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             szWindow.set(w, h);
         }
 
-        WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) chatheadView.getLayoutParams();
+        WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) chatHeadView.getLayoutParams();
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if (txtView != null) {
                 txtView.setVisibility(View.GONE);
             }
 
-            if (layoutParams.y + (chatheadView.getHeight() + getStatusBarHeight()) > szWindow.y) {
-                layoutParams.y = szWindow.y - (chatheadView.getHeight() + getStatusBarHeight());
-                windowManager.updateViewLayout(chatheadView, layoutParams);
+            if (layoutParams.y + (chatHeadView.getHeight() + getStatusBarHeight()) > szWindow.y) {
+                layoutParams.y = szWindow.y - (chatHeadView.getHeight() + getStatusBarHeight());
+                windowManager.updateViewLayout(chatHeadView, layoutParams);
             }
 
             if (layoutParams.x != 0 && layoutParams.x < szWindow.x) {
@@ -1079,36 +1059,36 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         final int x = szWindow.x - x_cord_now;
 
         new CountDownTimer(500, 5) {
-            WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) chatheadView.getLayoutParams();
+            WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) chatHeadView.getLayoutParams();
 
             public void onTick(long t) {
                 long step = (500 - t) / 5;
                 mParams.x = 0 - (int) (double) bounceValue(step, x);
-                windowManager.updateViewLayout(chatheadView, mParams);
+                windowManager.updateViewLayout(chatHeadView, mParams);
             }
 
             public void onFinish() {
                 mParams.x = 0;
-                windowManager.updateViewLayout(chatheadView, mParams);
+                windowManager.updateViewLayout(chatHeadView, mParams);
             }
         }.start();
     }
 
     private void moveToRight(final int x_cord_now) {
         new CountDownTimer(500, 5) {
-            WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) chatheadView.getLayoutParams();
+            WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) chatHeadView.getLayoutParams();
 
             public void onTick(long t) {
                 long step = (500 - t) / 5;
-                mParams.x = szWindow.x + (int) (double) bounceValue(step, x_cord_now) - chatheadView.getWidth();
-                if(chatheadView.getWindowToken()!=null)
-                    windowManager.updateViewLayout(chatheadView, mParams);
+                mParams.x = szWindow.x + (int) (double) bounceValue(step, x_cord_now) - chatHeadView.getWidth();
+                if(chatHeadView.getWindowToken()!=null)
+                    windowManager.updateViewLayout(chatHeadView, mParams);
             }
 
             public void onFinish() {
-                mParams.x = szWindow.x - chatheadView.getWidth();
-                if(chatheadView.getWindowToken()!=null)
-                    windowManager.updateViewLayout(chatheadView, mParams);
+                mParams.x = szWindow.x - chatHeadView.getWidth();
+                if(chatHeadView.getWindowToken()!=null)
+                    windowManager.updateViewLayout(chatHeadView, mParams);
             }
         }.start();
     }
@@ -1157,15 +1137,15 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     }
 
     private void showMsg(String sMsg) {
-        if (txtView != null && chatheadView != null) {
+        if (txtView != null && chatHeadView != null) {
             Log.d(LogTag, "ChatHeadService.showMsg -> sMsg=" + sMsg);
             txt1.setText(sMsg);
             myHandler.removeCallbacks(myRunnable);
 
-            WindowManager.LayoutParams param_chathead = (WindowManager.LayoutParams) chatheadView.getLayoutParams();
+            WindowManager.LayoutParams param_chathead = (WindowManager.LayoutParams) chatHeadView.getLayoutParams();
             WindowManager.LayoutParams param_txt = (WindowManager.LayoutParams) txtView.getLayoutParams();
 
-            txt_linearlayout.getLayoutParams().height = chatheadView.getHeight();
+            txt_linearlayout.getLayoutParams().height = chatHeadView.getHeight();
             txt_linearlayout.getLayoutParams().width = szWindow.x / 2;
 
             if (isLeft) {
@@ -1231,8 +1211,8 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             if (options != null) {
                 windowManager.removeView(options);
             }
-            if (chatheadView != null) {
-                windowManager.removeView(chatheadView);
+            if (chatHeadView != null) {
+                windowManager.removeView(chatHeadView);
             }
         } catch (Exception e){
             Log.d(LogTag, "Exception Error:"+e.toString());

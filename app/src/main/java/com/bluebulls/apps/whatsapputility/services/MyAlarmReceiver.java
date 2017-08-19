@@ -35,12 +35,31 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             v.vibrate(new long[]{ 1000,500,500,1000 }, 3);
             String rem_id = intent.getAction().substring(intent.getAction().indexOf("#")+1, intent.getAction().length());
             int remID = Integer.valueOf(rem_id);
-            showNotificationRem(remID);
+            showNotificationRem(remID, "Here is your reminder","Tap to view reminder");
         }
     }
 
-    private void showNotificationRem(int remId){
-        Log.d("ALARM","Reminder :"+remId);
+    private void showNotificationRem(int remId, String title, String text){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_alarm_add_black_48dp)
+                        .setContentTitle(title)
+                        .setContentText(text);
+
+        Intent resultIntent = new Intent(context, HomeActivity.class);
+        resultIntent.setAction(Intent.ACTION_VIEW);
+        resultIntent.setData(Uri.parse("rem_id/"+remId));
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        7180,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(0, mBuilder.build());
     }
 
     private void showNotificationEvent(String title, String text, String event_id){

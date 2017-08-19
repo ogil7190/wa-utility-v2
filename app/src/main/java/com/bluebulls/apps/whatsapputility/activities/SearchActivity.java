@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.SearchAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.Query;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -42,15 +43,14 @@ public class SearchActivity extends Activity {
     private ArrayList<Query> queries = new ArrayList<>();
     private SearchAdapter adapter;
     String orig_empty_search_str;
-    private ProgressBar progress;
+    private CircularProgressView progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_SearchFloat);
         super.onCreate(savedInstanceState);
-        //getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_search);
-        progress = (ProgressBar)findViewById(R.id.progress);
+        progress = (CircularProgressView) findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
         suggestionList = (ListView) findViewById(R.id.suggestions);
         suggestionList.setEmptyView(findViewById(R.id.search_empty));
@@ -82,20 +82,20 @@ public class SearchActivity extends Activity {
         final Activity activity = this;
 
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if(newProgress<100) {
                     progress.setVisibility(View.VISIBLE);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        progress.setProgress(newProgress, true);
-                    } else progress.setProgress(newProgress);
+                    progress.setProgress(newProgress);
+                    progress.startAnimation();
                 }
-                else
+                else {
                     progress.setVisibility(View.GONE);
-
-                Log.d("WEB","Progress:"+newProgress);
+                    progress.resetAnimation();
+                }
                 super.onProgressChanged(view, newProgress);
             }
         });
@@ -168,6 +168,20 @@ public class SearchActivity extends Activity {
             });
             queue.add(stringRequest);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState )
+    {
+        super.onSaveInstanceState(outState);
+        webView.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        webView.restoreState(savedInstanceState);
     }
 
     private void handleResponse(String response, String query){

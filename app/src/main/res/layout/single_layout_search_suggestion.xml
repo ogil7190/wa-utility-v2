@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:paddingLeft="5dp"
+        android:textColor="#3e3e3e"
         android:text=""
         android:textSize="20dp" />
 

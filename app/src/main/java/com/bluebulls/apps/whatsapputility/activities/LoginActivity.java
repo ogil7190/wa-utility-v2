@@ -1,9 +1,12 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.facebook.accountkit.AccessToken;
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
@@ -31,9 +35,16 @@ import com.facebook.accountkit.ui.LoginType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static com.bluebulls.apps.whatsapputility.activities.Intro.CONTACT_PUSH_URL;
+import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_COUNTRY;
 import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_NAME;
 import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.LogTag;
 import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGISTER_POLL_URL;
@@ -43,8 +54,7 @@ import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGIST
  */
 
 public class LoginActivity extends AppCompatActivity {
-    AccessToken accessToken = AccountKit.getCurrentAccessToken();
-
+    private AccessToken accessToken = AccountKit.getCurrentAccessToken();
     public static final String REGISTER_USER_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/Login.php";
     public static final String PREF_USER = "wa-user-data";
     private SharedPreferences pref;
@@ -54,6 +64,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         pref = getSharedPreferences(PREF_USER,MODE_PRIVATE);
+        dialog = new ProgressDialog(this);
+        dbHelper = new DBHelper(getApplicationContext());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+              saveContacts();
+            }
+        }).start();
 
         if (accessToken != null) {
             goToMyLoggedInActivity();
@@ -80,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == APP_REQUEST_CODE) {
-            Log.d("App","RESULT_LOGIN_ACTIVITY:"+resultCode);
             AccountKitLoginResult loginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
             String toastMessage;
             if (loginResult.getError() != null) {
@@ -96,9 +113,11 @@ public class LoginActivity extends AppCompatActivity {
                             "Success:%s...",
                             loginResult.getAuthorizationCode().substring(0,10));
                 }
+
                 accessToken = loginResult.getAccessToken();
                 getNumberAndSave();
             }
+            Log.d("Login",toastMessage);
         }
     }
 
@@ -158,13 +177,97 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void saveContacts(){
+        int i = 0, factor = 1;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.setMessage("Getting ready! Please wait!\nIt can take few minutes please have patience!");
+                dialog.show();
+            }
+        });
+        String code = pref.getString(PREF_USER_KEY_COUNTRY, "");
+        ArrayList<String[]> contacts = new ArrayList<>();
+        ContentResolver cr = getContentResolver();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+
+        if (cur.getCount() > 0) {
+            while (cur.moveToNext()) {
+                String id = cur.getString(
+                        cur.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cur.getString(cur.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME));
+
+                if (cur.getInt(cur.getColumnIndex(
+                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Cursor pCur = cr.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        i++;
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(
+                                ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        if (phoneNo.length() > 5)
+                            contacts.add(new String[]{ name.toLowerCase(), samplePhoneNo(phoneNo, code) });
+                        if(i/500 == factor){
+                            factor++;
+                            saveToJson(contacts, i);
+                            contacts.clear();
+                        }
+                    }
+                    pCur.close();
+                }
+            }
+        }
+
+        if(cur!=null) {
+            cur.close();
+            saveToJson(contacts, 0);
+        }
+    }
+
+    private DBHelper dbHelper;
+    private boolean contactDone = false, userDone = false;
+    private void saveToJson(ArrayList<String[]> contacts, int par){
+        String json = dbHelper.pushContacts(contacts, par);
+        Log.d("App",json);
+        if(json!=null)
+            uploadContacts(json);
+        if(par==0) {
+            dialog.dismiss();
+            contactDone = true;
+            if(userDone)
+                startMainActivity();
+        }
+    }
+
+    private String samplePhoneNo(String phone, String code) {
+        phone = phone.replaceFirst("^0+(?!$)", ""); /* removing leading zeros */
+        phone =  phone.replaceAll("[^\\d+]", ""); /* removing non numeric characters */
+        if(phone.contains("+")){
+            return phone;
+        }
+        else
+            phone = code + phone; /* adding code to numbers*/
+        return phone;
+    }
+
+    private ProgressDialog dialog;
+
     private void pushUserToServer(){
+        dialog.setMessage("Setting up for you!\nPlease wait...");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
         final String KEY_PHONE = "phone";
         final String KEY_NAME = "name";
         final String KEY_FB_TOKEN = "fb_token";
 
-        final String phone = pref.getString(PREF_USER_KEY_PHONE,"NULL");
-        final String name = pref.getString(PREF_USER_KEY_NAME,"NULL");
+        final String phone = pref.getString(PREF_USER_KEY_PHONE, "NULL");
+        final String name = pref.getString(PREF_USER_KEY_NAME, "NULL");
         final String fb_token = "NULL"; /* FireBase token will go here */
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_USER_URL,
@@ -173,8 +276,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             handleResponse(response);
+                            dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            dialog.dismiss();
                         }
                     }
                 },
@@ -184,6 +289,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
                         pref.edit().putBoolean(PREF_USER_KEY_USER_STORED,false).commit();
                         Log.d(LogTag,"Network-Error:"+error);
+                        dialog.dismiss();
                     }
                 }) {
             @Override
@@ -194,7 +300,6 @@ public class LoginActivity extends AppCompatActivity {
                 params.put(KEY_FB_TOKEN, fb_token);
                 return params;
             }
-
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -204,6 +309,8 @@ public class LoginActivity extends AppCompatActivity {
 
         requestQueue.add(stringRequest);
     }
+
+    public static final String PREF_USER_KEY_CONTACTS_JSON = "contacts_json";
 
     private void handleResponse(String response) throws JSONException{
         Log.d("RES:",response);
@@ -216,7 +323,41 @@ public class LoginActivity extends AppCompatActivity {
             }
         else
             pref.edit().putBoolean(PREF_USER_KEY_USER_STORED,false).commit();
-        startMainActivity();
+        userDone = true;
+        if(contactDone)
+            startMainActivity();
+    }
+
+    private void uploadContacts(final String json){
+        dialog.show();
+        final String KEY_DATA = "data";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CONTACT_PUSH_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("LOGIN",response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(LogTag,"Network-Error:"+error);
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(KEY_DATA, json);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(stringRequest);
     }
 
     public static final String PREF_USER_KEY_USER_STORED = "user_stored";

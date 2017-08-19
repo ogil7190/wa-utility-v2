@@ -13,18 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
     </com.twotoasters.jazzylistview.JazzyListView>
-   <!-- <ImageView
-        android:id="@+id/eventbtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:elevation="5dp"
-        android:src="@drawable/icon"/>-->
+
     <com.varunest.sparkbutton.SparkButton
         android:id="@+id/eventbtn"
         android:layout_width="50dp"

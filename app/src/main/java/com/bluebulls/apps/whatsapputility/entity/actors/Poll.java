@@ -6,12 +6,13 @@ package com.bluebulls.apps.whatsapputility.entity.actors;
 
 public class Poll {
     public Poll(){}
-    public Poll(String poll_id, String title, Option[] options, String user, String ans){
+    public Poll(String poll_id, String title, Option[] options, String user, String ans, String poll_reply){
         this.poll_id = poll_id;
         this.title = title;
         this.options = options;
         this.user = user;
         this.ans = ans;
+        this.poll_reply = poll_reply;
     }
 
     private String poll_id;
@@ -19,7 +20,15 @@ public class Poll {
     private String user;
     private Option[] options;
     private String ans;
-    private int optionCount;
+    private String poll_reply;
+
+    public String getPoll_reply() {
+        return poll_reply;
+    }
+
+    public void setPoll_reply(String poll_reply) {
+        this.poll_reply = poll_reply;
+    }
 
     public String getPoll_id() {
         return poll_id;

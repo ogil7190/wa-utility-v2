@@ -46,5 +46,6 @@ dependencies {
     compile 'com.roger.catloadinglibrary:catloadinglibrary:1.0.1'
     compile 'com.github.rjsvieira:floatingMenu:1.2.0'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+    compile 'com.hbb20:ccp:2.0.3'
     testCompile 'junit:junit:4.12'
 }

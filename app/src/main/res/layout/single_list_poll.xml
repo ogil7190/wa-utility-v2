@@ -71,7 +71,7 @@
                 android:drawableTint="@color/colorPrimaryDark"
                 android:text="Title"
                 android:textColor="@color/colorPrimary"
-                android:textSize="24sp" />
+                android:textSize="24dp" />
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/piechart"

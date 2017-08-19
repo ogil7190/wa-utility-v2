@@ -150,8 +150,15 @@ public class FloatingScreenShot extends Service implements CustomLayout.BackButt
             @Override
             public void run() {
                 stopSelf();
+                deleteShot(imgUri);
             }
         }, 30000); /* close screen shot after 30 sec */
+    }
+
+    private void deleteShot(Uri uri){
+        File file = new File(uri.getPath());
+        if (file.exists())
+            file.delete();
     }
 
     public static final String WHATS_APP_PACKAGE = "com.whatsapp";

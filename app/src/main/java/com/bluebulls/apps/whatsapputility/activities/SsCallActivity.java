@@ -25,6 +25,8 @@ import com.bluebulls.apps.whatsapputility.services.FloatingScreenShot;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 public class SsCallActivity extends Activity {
@@ -61,10 +63,10 @@ public class SsCallActivity extends Activity {
                                     success = folder.mkdirs();
                                 }
                                 if (success) {
-                                    File img = new File(folder,"wa-img-"+getRandFileName()+".jpg");
+                                    File img = new File(folder,"wau-img-"+getDate()+"-"+getRandFileName()+".jpg");
                                     try {
                                         FileOutputStream outputStream = new FileOutputStream(img);
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, outputStream);
                                         outputStream.flush();
                                         outputStream.close();
                                         Intent i = new Intent(getApplicationContext(), FloatingScreenShot.class);
@@ -88,16 +90,20 @@ public class SsCallActivity extends Activity {
     }
 
     protected String getRandFileName() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
+        String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
-        while (salt.length() < 10) {
+        while (salt.length() < 5) {
             int index = (int) (rnd.nextFloat() * SALTCHARS.length());
             salt.append(SALTCHARS.charAt(index));
         }
         String saltStr = salt.toString();
         return saltStr;
+    }
 
+    private String getDate(){
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+        return date;
     }
 
     private void shutterEffect(){

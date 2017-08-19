@@ -13,9 +13,12 @@ import com.bluebulls.apps.whatsapputility.entity.actors.Event;
 import com.bluebulls.apps.whatsapputility.entity.actors.Option;
 import com.bluebulls.apps.whatsapputility.entity.actors.Poll;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentPoll.TAG;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentPoll.retrieveOptions;
@@ -34,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String POLL_USER_COLUMN = "user";
     public static final String POLL_OPTION_COLUMN = "options";
     public static final String POLL_ANSWER_COL = "answer";
+    public static final String POLL_REPLY_COL = "poll_reply";
 
     public static final String EVENT_TABLE_NAME = "events";
     public static final String EVENT_ID_COLUMN = "event_id";
@@ -44,6 +48,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String EVENT_TIME_COLUMN = "time";
     public static final String EVENT_JOINED_COLUMN = "joined";
 
+    public static final String CONTACTS_TABLE_NAME = "conatacts";
+    public static final String CONTACTS_ID_COLUMN = "id";
+    public static final String CONTACTS_NAME_COLUMN = "name";
+    public static final String CONTACTS_PHONE_NUMBER_COLUMN = "phone_number";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, 1);
@@ -51,9 +59,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL(
+                "create table " + CONTACTS_TABLE_NAME +
+                        "("+ CONTACTS_ID_COLUMN +" text primary key, "+ CONTACTS_NAME_COLUMN + " text," + CONTACTS_PHONE_NUMBER_COLUMN + " text)"
+        );
+
         db.execSQL(
                 "create table " + POLL_TABLE_NAME +
-                        "("+ POLL_ID_COLUMN +" text primary key, "+ POLL_TITLE_COLUMN + " text," + POLL_USER_COLUMN +" text,"+ POLL_OPTION_COLUMN + " text,"+ POLL_ANSWER_COL + " text)"
+                        "("+ POLL_ID_COLUMN +" text primary key, "+ POLL_TITLE_COLUMN + " text," + POLL_USER_COLUMN +" text,"+ POLL_OPTION_COLUMN + " text,"+ POLL_REPLY_COL + " text,"+ POLL_ANSWER_COL + " text)"
         );
 
         db.execSQL(
@@ -69,15 +83,15 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertPoll (String poll_id, String title, String user, String options, String ans) {
+    public boolean insertPoll (String poll_id, String title, String user, String options, String ans, String reply) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(POLL_ID_COLUMN, poll_id);
         contentValues.put(POLL_TITLE_COLUMN, title);
         contentValues.put(POLL_USER_COLUMN, user);
         contentValues.put(POLL_OPTION_COLUMN, options);
-        Log.d(TAG, "Options:"+ options);
         contentValues.put(POLL_ANSWER_COL, ans);
+        contentValues.put(POLL_REPLY_COL, reply);
         db.insert(POLL_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -124,7 +138,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.d(TAG, "Options:"+ Arrays.toString(options));
                 String title = res.getString(res.getColumnIndex(POLL_TITLE_COLUMN));
                 String ans = res.getString(res.getColumnIndex(POLL_ANSWER_COL));
-                poll = new Poll(poll_id,title,options,user,ans);
+                String reply = res.getString(res.getColumnIndex(POLL_REPLY_COL));
+                poll = new Poll(poll_id,title,options,user,ans, reply);
                 return poll;
             }
             else res.moveToNext();
@@ -224,6 +239,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updatePollReply(String poll_id, String reply){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(POLL_REPLY_COL, reply);
+        db.update(POLL_TABLE_NAME, contentValues, POLL_ID_COLUMN + " = ? ", new String[] { poll_id } );
+        return true;
+    }
+
     public boolean updateEventParticipants(String event_id, String participants){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -259,7 +282,8 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.d(TAG, "Options:"+ Arrays.toString(options));
             String title = res.getString(res.getColumnIndex(POLL_TITLE_COLUMN));
             String ans = res.getString(res.getColumnIndex(POLL_ANSWER_COL));
-            Poll poll = new Poll(poll_id,title,options,user,ans);
+            String reply = res.getString(res.getColumnIndex(POLL_REPLY_COL));
+            Poll poll = new Poll(poll_id,title,options,user,ans, reply);
             polls.add(poll);
             res.moveToNext();
         }
@@ -289,4 +313,29 @@ public class DBHelper extends SQLiteOpenHelper {
         return events;
     }
 
+    public String pushContacts(ArrayList<String[]> contacts, int par) {
+        HashMap<String, String> contactJson = new HashMap<>();
+        int i;
+        if(par==0)
+            i =0;
+        else
+            i = par;
+
+        for (String[] contact : contacts) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(CONTACTS_ID_COLUMN, ++i);
+            contentValues.put(CONTACTS_NAME_COLUMN, contact[0]);
+            contentValues.put(CONTACTS_PHONE_NUMBER_COLUMN, contact[1]);
+            db.insert(CONTACTS_TABLE_NAME, null, contentValues);
+            contactJson.put(contact[0], contact[1]);
+        }
+
+        return getContactString(contactJson);
+    }
+
+    private String getContactString(HashMap<String, String>  map){
+        JSONObject o = new JSONObject(map);
+        return o.toString();
+    }
 }

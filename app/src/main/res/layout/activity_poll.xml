@@ -39,7 +39,7 @@
                     android:background="@color/background_title_poll"
                     android:text="Create A Poll"
                     android:textColor="#ffffff"
-                    android:textSize="20sp" />
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -60,7 +60,7 @@
                     android:maxLength="1000"
                     android:textColor="#000000"
                     android:textColorHint="#3d3c3c"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -77,7 +77,7 @@
                     android:layout_gravity="center"
                     android:text="Number of options :"
                     android:textColor="#075e54"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
 
                 <nl.dionsegijn.steppertouch.StepperTouch
                     android:id="@+id/option"
@@ -113,14 +113,14 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="#075e54"
                                 android:checked="true"
-                                android:textSize="37sp" />
+                                android:textSize="37dp" />
 
                             <RadioButton
                                 android:id="@+id/radio2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:buttonTint="#075e54"
-                                android:textSize="37sp" />
+                                android:textSize="37dp" />
 
                             <RadioButton
                                 android:id="@+id/radio3"
@@ -128,7 +128,7 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="#075e54"
                                 android:textColor="#003399"
-                                android:textSize="37sp"
+                                android:textSize="37dp"
                                 android:visibility="gone" />
 
                             <RadioButton
@@ -137,7 +137,7 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="#075e54"
                                 android:textColor="#003399"
-                                android:textSize="37sp"
+                                android:textSize="37dp"
                                 android:visibility="gone" />
 
                             <RadioButton
@@ -146,7 +146,7 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="#075e54"
                                 android:textColor="#003399"
-                                android:textSize="37sp"
+                                android:textSize="37dp"
                                 android:visibility="gone" />
 
                             <RadioButton
@@ -155,7 +155,7 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="#075e54"
                                 android:textColor="#003399"
-                                android:textSize="37sp"
+                                android:textSize="37dp"
                                 android:visibility="gone" />
                         </RadioGroup>
 
@@ -176,7 +176,7 @@
                                 android:maxLines="1"
                                 android:textColor="#000000"
                                 android:textColorHint="#696868"
-                                android:textSize="20sp" />
+                                android:textSize="20dp" />
 
                             <EditText
                                 android:id="@+id/option2"
@@ -189,7 +189,7 @@
                                 android:maxLines="1"
                                 android:textColor="#000000"
                                 android:textColorHint="#696868"
-                                android:textSize="20sp" />
+                                android:textSize="20dp" />
 
                             <EditText
                                 android:id="@+id/option3"
@@ -202,7 +202,7 @@
                                 android:maxLines="1"
                                 android:textColor="#000000"
                                 android:textColorHint="#696868"
-                                android:textSize="20sp"
+                                android:textSize="20dp"
                                 android:visibility="gone" />
 
                             <EditText
@@ -216,7 +216,7 @@
                                 android:maxLines="1"
                                 android:textColor="#000000"
                                 android:textColorHint="#696868"
-                                android:textSize="20sp"
+                                android:textSize="20dp"
                                 android:visibility="gone" />
 
                             <EditText
@@ -230,7 +230,7 @@
                                 android:maxLines="1"
                                 android:textColor="#000000"
                                 android:textColorHint="#696868"
-                                android:textSize="20sp"
+                                android:textSize="20dp"
                                 android:visibility="gone" />
 
                             <EditText
@@ -244,7 +244,7 @@
                                 android:maxLines="1"
                                 android:textColor="#000000"
                                 android:textColorHint="#696868"
-                                android:textSize="20sp"
+                                android:textSize="20dp"
                                 android:visibility="gone" />
                         </LinearLayout>
                     </LinearLayout>

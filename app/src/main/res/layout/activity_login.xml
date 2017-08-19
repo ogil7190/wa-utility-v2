@@ -6,7 +6,11 @@
     tools:context="com.bluebulls.apps.whatsapputility.activities.LoginActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:layout_alignParentBottom="true"
+        android:text="Got something? huh!"
+        android:textSize="18dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </RelativeLayout>

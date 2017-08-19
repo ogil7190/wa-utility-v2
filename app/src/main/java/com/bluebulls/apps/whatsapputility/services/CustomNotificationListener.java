@@ -113,6 +113,11 @@ public class CustomNotificationListener extends NotificationListenerService {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+        Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
+        PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7180, i, 0);
+        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pi);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pi);
         super.onTaskRemoved(rootIntent);
     }
 

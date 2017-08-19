@@ -51,7 +51,7 @@
             app:ntb_badge_gravity="top"
             app:ntb_badge_position="right"
             app:ntb_badge_size="12dp"
-            app:ntb_badge_title_color="#28d731"
+            app:ntb_badge_title_color="#000000"
             app:ntb_badge_use_typeface="false"
             app:ntb_badged="true"
             app:ntb_bg_color="#faf9f9"
