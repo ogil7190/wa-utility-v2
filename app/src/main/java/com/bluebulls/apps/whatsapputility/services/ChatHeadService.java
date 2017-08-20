@@ -41,12 +41,14 @@ import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.activities.SearchActivity;
 import com.bluebulls.apps.whatsapputility.activities.SsCallActivity;
+import com.bluebulls.apps.whatsapputility.entity.actors.ChatMessage;
 import com.bluebulls.apps.whatsapputility.entity.actors.Reminder;
 import com.bluebulls.apps.whatsapputility.util.CustomBridge;
 import com.bluebulls.apps.whatsapputility.util.CustomLayout;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +61,7 @@ import nl.dionsegijn.steppertouch.OnStepCallback;
 import nl.dionsegijn.steppertouch.StepperTouch;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_NAME;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_ID_KEY;
@@ -78,10 +81,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     private RelativeLayout chatHeadView, removeView;
     private ImageView chatHead;
 
-    private CustomLayout options;
+    private CustomLayout options, chat;
     private LinearLayout txtView, txt_linearlayout, dateTimePicker;
     private TextView removeImg;
-    private LinearLayout action_pol, action_eve, action_ss, action_rem,action_search;
+    private LinearLayout action_pol, action_eve, action_ss, action_rem,action_search, action_chat;
     private CircularProgressView chatheadImg;
     private TextView txt1;
     private Date xdate1,xdate2;
@@ -130,6 +133,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         chatheadImg.setVisibility(View.GONE);
 
         options = (CustomLayout) inflater.inflate(R.layout.new_options, null);
+
         WindowManager.LayoutParams paramOptions = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -148,7 +152,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         action_rem = (LinearLayout) options.findViewById(R.id.reminder);
         action_ss = (LinearLayout) options.findViewById(R.id.screenshot);
         action_search=(LinearLayout)options.findViewById(R.id.search);
-
+        action_chat = (LinearLayout) options.findViewById(R.id.Chat);
         poll = (CustomLayout) inflater.inflate(R.layout.activity_poll, null);
         poll.setBackButtonListener(this);
         poll.setHomeButtonListner(this);
@@ -170,6 +174,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         setupReminder();
         reminder.setVisibility(View.GONE);
 
+        chat = (CustomLayout) inflater.inflate(R.layout.activity_chat, null);
+        chat.setBackButtonListener(this);
+        setupChat();
+        chat.setVisibility(View.GONE);
         action_pol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,6 +230,17 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             }
         });
 
+        action_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (chat.getVisibility() != View.VISIBLE) {
+                options.setVisibility(View.GONE);
+                chat.setVisibility(View.VISIBLE);
+                chat.requestFocusFromTouch();
+            } else
+                    chat.setVisibility(View.GONE);
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             windowManager.getDefaultDisplay().getSize(szWindow);
         } else {
@@ -602,6 +621,29 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             }
         });
         windowManager.addView(reminder, paramOptions);
+    }
+
+    private void setupChat(){
+        final WindowManager.LayoutParams paramOptions = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                PixelFormat.TRANSLUCENT);
+        paramOptions.gravity = Gravity.CENTER;
+        options.setVisibility(View.GONE);
+
+        final EditText mssg = (EditText)chat.findViewById(R.id.mssg);
+        Button submit = (Button) chat.findViewById(R.id.sendbtn);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    FirebaseDatabase.getInstance()
+                            .getReference().push()
+                            .setValue(new ChatMessage(mssg.getText().toString(), pref.getString(PREF_USER_KEY_NAME,"")));
+            }
+        });
+        windowManager.addView(chat, paramOptions);
     }
 
     private CustomLayout poll;
@@ -1246,6 +1288,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         if(reminder!=null){
             reminder.setVisibility(View.GONE);
             reminder.clearFocus();
+        }
+        if(chat!=null){
+            chat.setVisibility(View.GONE);
+            chat.clearFocus();
         }
     }
 

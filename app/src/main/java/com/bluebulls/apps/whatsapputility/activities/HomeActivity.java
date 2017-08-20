@@ -8,13 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.ToxicBakery.viewpager.transforms.AccordionTransformer;
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.adapters.MyViewPager;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentEvent;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentPoll;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentReminder;
@@ -30,7 +30,7 @@ import devlight.io.library.ntb.NavigationTabBar;
 public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private String data = "";
-    private ViewPager viewPager;
+    private MyViewPager viewPager;
     private NavigationTabBar navigationTabBar;
     private ArrayList<NavigationTabBar.Model> models=new ArrayList<>();
     private Toolbar toolbar;
@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         fragmentManager = getSupportFragmentManager();
-        viewPager=(ViewPager)findViewById(R.id.viewPager);
+        viewPager=(MyViewPager) findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setPageTransformer(true, new AccordionTransformer());
