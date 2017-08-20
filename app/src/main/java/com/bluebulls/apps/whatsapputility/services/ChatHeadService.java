@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -39,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.activities.GlobalChatActivity;
 import com.bluebulls.apps.whatsapputility.activities.SearchActivity;
 import com.bluebulls.apps.whatsapputility.activities.SsCallActivity;
 import com.bluebulls.apps.whatsapputility.entity.actors.ChatMessage;
@@ -46,9 +48,9 @@ import com.bluebulls.apps.whatsapputility.entity.actors.Reminder;
 import com.bluebulls.apps.whatsapputility.util.CustomBridge;
 import com.bluebulls.apps.whatsapputility.util.CustomLayout;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +63,6 @@ import nl.dionsegijn.steppertouch.OnStepCallback;
 import nl.dionsegijn.steppertouch.StepperTouch;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_NAME;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF_REM_ID_KEY;
@@ -95,6 +96,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     private boolean isLeft = false;
     private SharedPreferences pref;
     private CustomBridge bridge = new CustomBridge();
+    private FirebaseListAdapter<ChatMessage> adapter;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -176,7 +178,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
 
         chat = (CustomLayout) inflater.inflate(R.layout.activity_chat, null);
         chat.setBackButtonListener(this);
-        setupChat();
         chat.setVisibility(View.GONE);
         action_pol.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,14 +234,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         action_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (chat.getVisibility() != View.VISIBLE) {
-                options.setVisibility(View.GONE);
-                chat.setVisibility(View.VISIBLE);
-                chat.requestFocusFromTouch();
-            } else
-                    chat.setVisibility(View.GONE);
+                startActivity(new Intent(getApplicationContext(), GlobalChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             windowManager.getDefaultDisplay().getSize(szWindow);
         } else {
@@ -623,7 +620,8 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         windowManager.addView(reminder, paramOptions);
     }
 
-    private void setupChat(){
+    private ListView chatList;
+   /* private void setupChat(){
         final WindowManager.LayoutParams paramOptions = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -632,19 +630,27 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                 PixelFormat.TRANSLUCENT);
         paramOptions.gravity = Gravity.CENTER;
         options.setVisibility(View.GONE);
+        chatList = (ListView) chat.findViewById(R.id.chat_list);
+        adapter = new FirebaseListAdapter<ChatMessage>(, ChatMessage.class,
+                R.layout.single_layout_chat_mssg, FirebaseDatabase.getInstance().getReference()) {
+            @Override
+            protected void populateView(View v, ChatMessage model, int position) {
 
+            }
+        };
         final EditText mssg = (EditText)chat.findViewById(R.id.mssg);
         Button submit = (Button) chat.findViewById(R.id.sendbtn);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    FirebaseDatabase.getInstance()
-                            .getReference().push()
-                            .setValue(new ChatMessage(mssg.getText().toString(), pref.getString(PREF_USER_KEY_NAME,"")));
+                FirebaseDatabase.getInstance()
+                        .getReference().push()
+                        .setValue(new ChatMessage(mssg.getText().toString(), pref.getString(PREF_USER_KEY_NAME,"")));
+                mssg.setText("");
             }
         });
         windowManager.addView(chat, paramOptions);
-    }
+    }*/
 
     private CustomLayout poll;
     private int items = 0;

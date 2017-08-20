@@ -90,6 +90,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <data android:scheme="https" />
                 <data android:host="wa.bluebulls" />
 
@@ -127,6 +128,8 @@
         <activity
             android:name=".activities.SearchActivity"
             android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".activities.GlobalChatActivity"
+            android:theme="@android:style/Theme.Dialog"></activity>
     </application>
 
 </manifest>
