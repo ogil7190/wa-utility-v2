@@ -166,9 +166,9 @@ public class HomeActivity extends AppCompatActivity {
             }
             if(position == 3) {
                 if(selection == position)
-                    return FragmentWish.newInstance();
+                    return FragmentWish.newInstance(fragmentManager, viewPager);
                 else
-                    return FragmentWish.newInstance();
+                    return FragmentWish.newInstance(fragmentManager, viewPager);
             }
             if(position == 4) {
                 if(selection == position)

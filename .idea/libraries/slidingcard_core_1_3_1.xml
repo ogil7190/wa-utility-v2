@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="slidingcard-core-1.3.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/e01d857b98fa3ac52d9efe245398d4171131aa44/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/e01d857b98fa3ac52d9efe245398d4171131aa44/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mxn.soul/slidingcard-core/1.3.1/9fb52a30ee80d13ff73b0b2bc06ffdbcfe00fcd9/slidingcard-core-1.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -3,21 +3,39 @@
 
     <item
         is-multidex="false"
-        jar="C:\Users\dell\.android\build-cache\dbd81e7924fb9b8862a229cce6300f70122e3425\output\jars\classes.jar"
+        jar="/Users/ogil/.android/build-cache/bbf3e0a52e6381e54971d1c3bc511350216d6979/output/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="1ee075177bd403c333d4843b92c4b6c55db929ed">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\classes_ef29ffb8a0dcdf4ecc2b79bcbdd516c59d2f0670.jar" />
+        sha1="52aa18abf5391e5ceb45747d18b9426a77df7fb0">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/pre-dexed/debug/classes_7ee0f800c99f27fb3563a6482f7dc96f9c53a4f7.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\dell\.android\build-cache\c09dbe92ca92c569840f7b369290000f58503c03\output\jars\classes.jar"
+        jar="/Users/ogil/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/3.6.1/86b122e640af09b0723e1fa44083c354ba6d9089/glide-3.6.1.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="34db2fe846ce5c54f06f0097646e7ac22ca62926">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\classes_e5867a5cd905015b43ca82571a58e16449f46526.jar" />
+        sha1="86b122e640af09b0723e1fa44083c354ba6d9089">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/pre-dexed/debug/glide-3.6.1_7f14066c29566e711c315cfe4f99076bb698ca75.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/ogil/.android/build-cache/e01d857b98fa3ac52d9efe245398d4171131aa44/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c328a8bee10b4947839bad6995cadb03af234142">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/pre-dexed/debug/classes_e083ad12dbec6cb49f03c3daf1aae45341df50ca.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/ogil/.android/build-cache/6d12f0f3722ffa1dab799848255735d3f0f17968/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6931c60cbdc65fb8dfffde8520b7c8528bcf0a76">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/pre-dexed/debug/classes_7a60c10a161d73c0b999670c283a0a3cfdcf0aa7.jar" />
     </item>
 
 </items>
