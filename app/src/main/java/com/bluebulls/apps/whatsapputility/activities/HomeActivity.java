@@ -14,11 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.ToxicBakery.viewpager.transforms.AccordionTransformer;
-import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentEvent;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentPoll;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentReminder;
+import com.bluebulls.apps.whatsapputility.fragments.FragmentSettings;
+import com.bluebulls.apps.whatsapputility.fragments.FragmentWish;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,14 +73,14 @@ public class HomeActivity extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        ContextCompat.getDrawable(this,R.drawable.ic_settings_black_18dp),
+                        ContextCompat.getDrawable(this,R.drawable.ic_card_giftcard_black_48dp),
                         Color.RED
                 ).title("Settings")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        ContextCompat.getDrawable(this,R.drawable.ic_error_outline_black_18dp),
+                        ContextCompat.getDrawable(this,R.drawable.ic_settings_black_18dp),
                         Color.BLACK
                 ).title("About")
                         .build()
@@ -163,7 +164,18 @@ public class HomeActivity extends AppCompatActivity {
                 else
                     return FragmentReminder.newInstance(fragmentManager);
             }
-
+            if(position == 3) {
+                if(selection == position)
+                    return FragmentWish.newInstance();
+                else
+                    return FragmentWish.newInstance();
+            }
+            if(position == 4) {
+                if(selection == position)
+                    return FragmentSettings.newInstance();
+                else
+                    return FragmentSettings.newInstance();
+            }
             else{
                 if(selection == position)
                     return FragmentPoll.newInstance(true, data);

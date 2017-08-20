@@ -3,39 +3,21 @@
 
     <item
         is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/fc3cbe4caa518b9551ef01d0d6c3e40cf70c583e/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="392c97a8270ccf3cc7fe6e0a5d97a5e97a61e65c">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_e2c3371cc2d015c9b75e82591202555387e8a2a3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/f5a292e1957b0d7f0926cf6df3637a1e5d8a8eb8/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="379a48c2da13ffb7ec7134f2c715663834357670">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_1e8739a613cc628a1b4d6719426452504055ee5d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/fe46a149a3f3935a890c5f1479137de131cd9838/output/jars/classes.jar"
+        jar="C:\Users\dell\.android\build-cache\dbd81e7924fb9b8862a229cce6300f70122e3425\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="1ee075177bd403c333d4843b92c4b6c55db929ed">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_3b40f68e634571bc00644ca5aad977c8e2f4c396.jar" />
+        <dex dex="F:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\classes_ef29ffb8a0dcdf4ecc2b79bcbdd516c59d2f0670.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/Users/ogil/.android/build-cache/0fa2957568715039ba5079af8057e219fa98d623/output/jars/classes.jar"
+        jar="C:\Users\dell\.android\build-cache\c09dbe92ca92c569840f7b369290000f58503c03\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="34db2fe846ce5c54f06f0097646e7ac22ca62926">
-        <dex dex="/Users/ogil/Ogil/WhatsAppUtility_V2/app/build/intermediates/pre-dexed/debug/classes_061b4fe390ba321adfdef7e68e0078b9861e86cd.jar" />
+        <dex dex="F:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\classes_e5867a5cd905015b43ca82571a58e16449f46526.jar" />
     </item>
 
 </items>
