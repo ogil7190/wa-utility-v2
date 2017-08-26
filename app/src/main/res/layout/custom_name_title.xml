@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/nameTitle">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/CustomTitle1"
+        android:text="Name"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="24dp"
+        android:textColor="#ffffff"
+        android:background="@color/background_title_poll"/>
+</LinearLayout>
