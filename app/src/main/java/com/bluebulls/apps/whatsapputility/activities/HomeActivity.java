@@ -1,6 +1,10 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
+import android.app.NotificationManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.AccordionTransformer;
 import com.bluebulls.apps.whatsapputility.R;
@@ -26,6 +31,8 @@ import java.util.List;
 
 import devlight.io.library.ntb.NavigationTabBar;
 
+import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
+
 
 public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
@@ -35,17 +42,32 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<NavigationTabBar.Model> models=new ArrayList<>();
     private Toolbar toolbar;
     private static final int COUNT=4;
+    public static final String PREF_BATTERY_ENABLE = "to_enable_battery_fraud_os";
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        String manufacturer = android.os.Build.MANUFACTURER;
-        if ("xiaomi".equalsIgnoreCase(manufacturer)) {
-            Intent intent = new Intent();
-            intent.setClassName("com.miui.powerkeeper",
-                    "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity");
-            startActivity(intent);
+        clearNotification();
+        pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
+        if(pref.getBoolean(PREF_BATTERY_ENABLE, true)) {
+            String manufacturer = android.os.Build.MANUFACTURER;
+            if ("xiaomi".equalsIgnoreCase(manufacturer)) {
+                Intent intent = new Intent();
+                intent.setClassName("com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity");
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Set Battery Saver to\nNO RESTRICTION\nfor WhatsApp Utility",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "This is very important step", Toast.LENGTH_SHORT).show();
+                pref.edit().putBoolean(PREF_BATTERY_ENABLE,false).commit();
+            } else if ("oppo".equalsIgnoreCase(manufacturer)) {
+                Intent intent = new Intent();
+                intent.setClassName("com.coloros.oppoguardelf", "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity");
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Set Battery Saver to\nNO RESTRICTION\nfor WhatsApp Utility",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "This is very important step", Toast.LENGTH_SHORT).show();
+                pref.edit().putBoolean(PREF_BATTERY_ENABLE,false).commit();
+            }
         }
         fragmentManager = getSupportFragmentManager();
         viewPager=(MyViewPager) findViewById(R.id.viewPager);
@@ -181,5 +203,10 @@ public class HomeActivity extends AppCompatActivity {
         public int getCount() {
             return COUNT;
         }
+    }
+
+    private void clearNotification(){
+        NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nMgr.cancelAll();
     }
 }

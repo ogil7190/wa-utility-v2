@@ -383,14 +383,15 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
                                 param_remove.x = x_cord_remove;
                                 param_remove.y = y_cord_remove;
 
-                                windowManager.updateViewLayout(removeView, param_remove);
+                                if (removeView.getWindowToken() != null) {
+                                    windowManager.updateViewLayout(removeView, param_remove);
+                                }
                             }
-
                         }
 
                         layoutParams.x = x_cord_Destination;
                         layoutParams.y = y_cord_Destination;
-
+                        if (chatHeadView.getWindowToken() != null)
                         windowManager.updateViewLayout(chatHeadView, layoutParams);
                         break;
                     case MotionEvent.ACTION_UP:

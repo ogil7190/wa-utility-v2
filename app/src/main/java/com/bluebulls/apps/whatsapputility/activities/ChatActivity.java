@@ -1,14 +1,19 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.ChatAdapter;
@@ -18,39 +23,38 @@ import com.bluebulls.apps.whatsapputility.entity.actors.ChatUser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.Socket;
 import java.util.ArrayList;
 
 import io.socket.client.IO;
 import io.socket.emitter.Emitter;
-
-import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_NAME;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 
 public class ChatActivity extends Activity {
 
     private ListView listview;
     private EditText msg;
-    private Button send;
+    private ImageButton send;
     private String user;
     private SharedPreferences pref;
     private ChatAdapter adapter;
+    public static final String PREF_USER_CHAT_NAME = "user_chat_name";
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         setTheme(R.style.Theme_SearchFloat);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
-        user = pref.getString(PREF_USER_KEY_NAME, "null");
+        user = pref.getString(PREF_USER_CHAT_NAME, "Chotu");
         connectSocket();
         listview = (ListView)  findViewById(R.id.chat_list);
         listview.setDivider(null);
         listview.setDividerHeight(0);
+        listview.setVerticalScrollBarEnabled(true);
         adapter = new ChatAdapter(mssgs, this);
         listview.setAdapter(adapter);
         msg = (EditText) findViewById(R.id.mssg);
-        send = (Button) findViewById(R.id.sendbtn);
+        send = (ImageButton) findViewById(R.id.sendbtn);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +82,7 @@ public class ChatActivity extends Activity {
     private io.socket.client.Socket socket;
     private void connectSocket(){
         try{
-            socket = IO.socket("http://192.168.0.8:8080");
+            socket = IO.socket("https://glochatv10.herokuapp.com/");
             socket.connect();
             socket.emit("data", getPlayerData());
             handleSocketEvents();
@@ -186,6 +190,7 @@ public class ChatActivity extends Activity {
         });
     }
     private String LogTag = "TAG";
+
     private ChatUser getUsers(JSONObject object) throws  JSONException{
         Log.d(LogTag, "USERS:"+object.toString());
         String id = object.getString("id");
@@ -194,6 +199,7 @@ public class ChatActivity extends Activity {
         ChatUser user = new ChatUser(name, id);
         return user;
     }
+
     private void scrollToChatBottom() {
         listview.post(new Runnable() {
             @Override

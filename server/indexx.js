@@ -19,20 +19,20 @@ io.on('connection', function(socket){
 		room_id = getRoomID(socket.id, data);
 		socket.join(room_id);
 		users = getUsers(room_id);
-		console.log("Joined:"+room_id);
+		//console.log("Joined:"+room_id);
 		socket.emit('data_join', { id: socket.id, room: room_id, users: users, mssgs: getRoomMssgs(room_id) });
 		socket.broadcast.to(room_id).emit('new_user_join', { id:socket.id, data:data });
 	});
 
 	socket.on('new_mssg', function(data) {
 		socket.broadcast.to(room_id).emit('new_mssg', data);
-		console.log("Message:"+JSON.stringify(data));
+		//console.log("Message:"+JSON.stringify(data));
 		pushMessage(data, getRoom(room_id));
 	});
 
 	socket.on('disconnect', function(){
 		socket.broadcast.to(room_id).emit('user_disconnected', { id: socket.id });
-		console.log("Disconnect:"+room_id);
+		//console.log("Disconnect:"+room_id);
 		updateRooms(room_id, socket.id);
 		count--;
 	});
@@ -65,7 +65,7 @@ function getRoomMssgs(room_id){
 
 function pushMessage(data, room){
 	mssgs = getMssgs(room);
-	console.log(JSON.stringify(mssgs));
+	//console.log(JSON.stringify(mssgs));
 	mssgs.push(data);
 	if(mssgs.length>50)
 		mssgs.shift();
@@ -73,9 +73,8 @@ function pushMessage(data, room){
 }
 
 function getMssgs(room){
-	console.log("INDEX:"+room_index);
+	//console.log("INDEX:"+room_index);
 	if(rooms[room_index][3]==null){
-		console.log("yeah");
 		return [];
 	}
 	return rooms[room_index][3];
@@ -95,13 +94,13 @@ function removeUser(socket_id, json_array){
 	for(i=0; i<json_array.length; i++){
 		if(json_array[i]['id'] == socket_id){
 			json_array.splice(i, 1);
-			console.log("JSON_ARRAY:"+json_array);
+			//console.log("JSON_ARRAY:"+json_array);
 			return json_array;
 		}
 	}
 }
 
-var LIMIT = 2;
+var LIMIT = 20; /* room users size */
 
 function getRoomID(socket_id,data){
 	for(i=0; i<rooms.length; i++){
