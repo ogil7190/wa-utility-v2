@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="sparkbutton-1.0.5">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/8e7afae8663e04c59b499a19d5326ad4e488079f/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/8e7afae8663e04c59b499a19d5326ad4e488079f/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/8cd86c68fab79d5043dad9b385e65097dc5f11fd/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/8cd86c68fab79d5043dad9b385e65097dc5f11fd/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

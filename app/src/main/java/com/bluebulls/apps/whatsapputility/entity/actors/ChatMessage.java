@@ -8,24 +8,25 @@ public class ChatMessage {
 
     private String messageText;
     private String messageUser;
+    private boolean isMine = false;
 
-        public ChatMessage(String messageText, String messageUser) {
-            this.messageText = messageText;
-            this.messageUser = messageUser;
-        }
+    public ChatMessage(String messageText, String messageUser, boolean isMine) {
+        this.messageText = messageText;
+        this.messageUser = messageUser;
+        this.isMine = isMine;
+    }
 
-        public ChatMessage(){
-}
+    public ChatMessage(){}
 
-        public String getMessageText() {
+    public String getMessageText() {
 return messageText;
 }
 
-        public void setMessageText(String messageText) {
+    public void setMessageText(String messageText) {
 this.messageText = messageText;
 }
 
-        public String getMessageUser() {
+    public String getMessageUser() {
 return messageUser;
 }
 
@@ -33,4 +34,11 @@ return messageUser;
         this.messageUser = messageUser;
         }
 
+    public boolean isMine() {
+        return isMine;
+    }
+
+    public void setMine(boolean mine) {
+        isMine = mine;
+    }
 }

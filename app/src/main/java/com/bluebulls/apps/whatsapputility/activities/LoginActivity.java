@@ -329,7 +329,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void uploadContacts(final String json){
-        dialog.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
+
         final String KEY_DATA = "data";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, CONTACT_PUSH_URL,
                 new Response.Listener<String>() {

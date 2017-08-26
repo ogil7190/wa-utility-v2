@@ -34,13 +34,19 @@ public class HomeActivity extends AppCompatActivity {
     private NavigationTabBar navigationTabBar;
     private ArrayList<NavigationTabBar.Model> models=new ArrayList<>();
     private Toolbar toolbar;
-    private static final int COUNT=5;
+    private static final int COUNT=4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        String manufacturer = android.os.Build.MANUFACTURER;
+        if ("xiaomi".equalsIgnoreCase(manufacturer)) {
+            Intent intent = new Intent();
+            intent.setClassName("com.miui.powerkeeper",
+                    "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity");
+            startActivity(intent);
+        }
         fragmentManager = getSupportFragmentManager();
         viewPager=(MyViewPager) findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
@@ -69,13 +75,6 @@ public class HomeActivity extends AppCompatActivity {
                         ContextCompat.getDrawable(this,R.drawable.ic_alarm_black_24dp),
                         Color.BLUE
                 ).title("Reminder")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        ContextCompat.getDrawable(this,R.drawable.ic_card_giftcard_black_48dp),
-                        Color.RED
-                ).title("Settings")
                         .build()
         );
         models.add(
@@ -165,12 +164,6 @@ public class HomeActivity extends AppCompatActivity {
                     return FragmentReminder.newInstance(fragmentManager);
             }
             if(position == 3) {
-                if(selection == position)
-                    return FragmentWish.newInstance(fragmentManager, viewPager);
-                else
-                    return FragmentWish.newInstance(fragmentManager, viewPager);
-            }
-            if(position == 4) {
                 if(selection == position)
                     return FragmentSettings.newInstance();
                 else

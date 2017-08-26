@@ -62,7 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(
                 "create table " + CONTACTS_TABLE_NAME +
-                        "("+ CONTACTS_ID_COLUMN +" text primary key, "+ CONTACTS_NAME_COLUMN + " text," + CONTACTS_PHONE_NUMBER_COLUMN + " text)"
+                        "("+ CONTACTS_ID_COLUMN +" text, "+ CONTACTS_NAME_COLUMN + " text," + CONTACTS_PHONE_NUMBER_COLUMN + " text)"
         );
 
         db.execSQL(

@@ -84,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(dr==true&&no==true&&us==true)
-        {
-            gotoHome();
-        }
         if(pref.getBoolean(PREF_KEY_FIRST_TIME_BOOL,true)) {
             fraudOS();
             pref.edit().putBoolean(PREF_KEY_FIRST_TIME_BOOL,false).commit();
+        }
+        if(dr==true&&no==true&&us==true)
+        {
+            gotoHome();
         }
     }
 
@@ -167,14 +167,24 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
-        Intent i = new Intent(getApplicationContext(), PackageService.class);
-        PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7190, i, 0);
         AlarmManager alarm = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pi);
 
-        Intent in = new Intent(getApplicationContext(), CustomNotificationListener.class);
+        /*Intent i = new Intent(getApplicationContext(), PackageService.class);
+        PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7190, i, 0);
+        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pi); */
+
+
+        /*Intent in = new Intent(getApplicationContext(), CustomNotificationListener.class);
         PendingIntent p = PendingIntent.getService(getApplicationContext(), 7191, in, 0);
-        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), p);
+        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), p); */
+        Thread service = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Intent in = new Intent(getApplicationContext(), CustomNotificationListener.class);
+                startService(in);
+            }
+        });
+        service.start();
     }
 
     private boolean isAccessibilitySettingsOn(Context mContext) {

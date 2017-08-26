@@ -43,7 +43,7 @@
             android:id="@+id/navigation"
             android:elevation="50dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             app:ntb_active_color="#ffffff"
             app:ntb_animation_duration="400"
             app:ntb_badge_bg_color="#ffff0000"

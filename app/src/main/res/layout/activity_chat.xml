@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.bluebulls.apps.whatsapputility.util.CustomLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/color_layout_background"
+    android:background="#ffffff"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,14 +13,19 @@
         android:textAlignment="center"
         android:text="GLOBAL CHAT"
         android:textSize="25dp"
+        android:padding="5dp"
         android:textStyle="bold"
         android:background="@color/colorPrimaryDark"
         android:textColor="#ffffff"/>
-<ListView
-    android:layout_width="match_parent"
-    android:layout_height="350dp"
-    android:id="@+id/chat_list">
-</ListView>
+
+    <ListView
+        android:id="@+id/chat_list"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        ></ListView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +33,8 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="7"
+            android:layout_weight="9"
+            android:background="@drawable/round"
             android:hint="Type Here"
             android:textColor="@color/colorPrimary"
             android:id="@+id/mssg" />
@@ -37,8 +43,9 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:textSize="18dp"
-            android:text="Send"
-            android:background="@color/colorPrimaryDark"
+            android:drawableLeft="@drawable/check"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:background="@drawable/round"
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:id="@+id/sendbtn"/>

@@ -19,10 +19,13 @@ import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.activities.HomeActivity;
+import com.rvalerio.fgchecker.AppChecker;
 
 import java.util.Arrays;
 
 import static android.support.v4.app.NotificationCompat.EXTRA_TEXT_LINES;
+import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
+import static com.bluebulls.apps.whatsapputility.util.SSBridge.STOP_SS_SERV;
 
 /**
  * Created by ogil on 29/07/17.
@@ -30,18 +33,46 @@ import static android.support.v4.app.NotificationCompat.EXTRA_TEXT_LINES;
 
 public class CustomNotificationListener extends NotificationListenerService {
 
+    private AppChecker appChecker = new AppChecker();
     public static String TAG = "Listener";
+    private boolean isTargetActive = false, isChatHeadServiceStopped = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
         resetItself();
+        handleStart();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 stopSelf();
             }
-        }, (60*10000)-500);
+        }, (60*1000)-500);
+    }
+
+    private void handleStart(){
+        appChecker.when("com.whatsapp", new AppChecker.Listener() {
+            @Override
+            public void onForeground(String process) {
+                if(!isTargetActive){
+                    isTargetActive = true;
+                    isChatHeadServiceStopped = false;
+                    if(!ChatHeadService.isRunning) {
+                        startChatHead();
+                    }
+                }
+            }
+
+        }).other(new AppChecker.Listener() {
+            @Override
+            public void onForeground(String process) {
+                isTargetActive = false;
+                if(!isChatHeadServiceStopped) {
+                    isChatHeadServiceStopped = true;
+                    stopChatHead();
+                }
+            }
+        }).timeout(500).start(getApplicationContext());
     }
 
     @Override
@@ -54,7 +85,19 @@ public class CustomNotificationListener extends NotificationListenerService {
         Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
         PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7160, i, 0);
         AlarmManager alarm = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60*10000, pi);
+        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60*1000, pi);
+    }
+
+    private void startChatHead(){
+        startService(new Intent(getApplicationContext(), ChatHeadService.class));
+    }
+
+    private void stopChatHead() {
+        Intent i = new Intent(STOP_SELF);
+        sendBroadcast(i);
+        /* stopping any floating ss */
+        Intent x = new Intent(STOP_SS_SERV);
+        sendBroadcast(x);
     }
 
     @Override
@@ -113,12 +156,24 @@ public class CustomNotificationListener extends NotificationListenerService {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+        Log.d("App", "Removed");
         Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
         PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7180, i, 0);
         AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pi);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pi);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pi);
         super.onTaskRemoved(rootIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("App", "Destroyed");
+        Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
+        PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7180, i, 0);
+        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pi);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 6000, pi);
+        super.onDestroy();
     }
 
     @Override

@@ -50,6 +50,10 @@
             android:name=".services.PackageService"
             android:enabled="true" />
         <service
+        android:stopWithTask="false"
+        android:name=".services.FraudService"
+            android:enabled="true" />
+        <service
             android:name=".services.CustomNotificationListener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -112,6 +116,17 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".util.ScreenBroadcast"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activities.SsCallActivity"
             android:theme="@android:style/Theme.Dialog" />
@@ -127,9 +142,27 @@
 
         <activity
             android:name=".activities.SearchActivity"
-            android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".activities.GlobalChatActivity"
-            android:theme="@android:style/Theme.Dialog"></activity>
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.ChatActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait"
+            ></activity>
+
+        <activity
+            android:name=".activities.DummyActivity"
+            android:allowTaskReparenting="true"
+            android:alwaysRetainTaskState="false"
+            android:clearTaskOnLaunch="true"
+            android:enabled="true"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true"
+            android:noHistory="true"
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.NoDisplay" />
     </application>
 
 </manifest>

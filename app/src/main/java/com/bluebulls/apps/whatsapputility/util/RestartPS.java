@@ -16,9 +16,11 @@ public class RestartPS  extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        System.out.println("Restarted! Pack");
         switch (intent.getAction()){
             case PACK_RESTART:
                 context.startService(new Intent(context, PackageService.class));
+                System.out.println("Restarted! PackKKK");
                 break;
         }
     }
