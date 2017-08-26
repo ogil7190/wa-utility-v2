@@ -15,7 +15,7 @@
         android:id="@+id/ss"
         android:scaleType="fitXY"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="3dp"
+        android:layout_marginLeft="4dp"
         android:layout_width="75dp"
         android:layout_height="130dp" />
     </RelativeLayout>

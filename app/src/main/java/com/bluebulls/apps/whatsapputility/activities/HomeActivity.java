@@ -51,24 +51,24 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         clearNotification();
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
+
         if(pref.getBoolean(PREF_BATTERY_ENABLE, true)) {
             String manufacturer = android.os.Build.MANUFACTURER;
             if ("xiaomi".equalsIgnoreCase(manufacturer)) {
                 Intent intent = new Intent();
                 intent.setClassName("com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity");
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Set Battery Saver to\nNO RESTRICTION\nfor WhatsApp Utility",Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "This is very important step", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Disable Battery Saving Mode to\n NO RESTRICTION \n for WhatsApp Utility Here", Toast.LENGTH_LONG).show();
                 pref.edit().putBoolean(PREF_BATTERY_ENABLE,false).commit();
             } else if ("oppo".equalsIgnoreCase(manufacturer)) {
                 Intent intent = new Intent();
                 intent.setClassName("com.coloros.oppoguardelf", "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity");
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Set Battery Saver to\nNO RESTRICTION\nfor WhatsApp Utility",Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "This is very important step", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Disable Battery Saving Mode to\n NO RESTRICTION MODE \n for WhatsApp Utility Here", Toast.LENGTH_LONG).show();
                 pref.edit().putBoolean(PREF_BATTERY_ENABLE,false).commit();
             }
         }
+
         fragmentManager = getSupportFragmentManager();
         viewPager=(MyViewPager) findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());

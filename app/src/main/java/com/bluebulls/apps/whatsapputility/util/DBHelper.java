@@ -315,16 +315,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String pushContacts(ArrayList<String[]> contacts, int par) {
         HashMap<String, String> contactJson = new HashMap<>();
-        int i;
-        if(par==0)
-            i =0;
-        else
-            i = par;
 
         for (String[] contact : contacts) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(CONTACTS_ID_COLUMN, ++i);
+            contentValues.put(CONTACTS_ID_COLUMN, ++par);
             contentValues.put(CONTACTS_NAME_COLUMN, contact[0]);
             contentValues.put(CONTACTS_PHONE_NUMBER_COLUMN, contact[1]);
             db.insert(CONTACTS_TABLE_NAME, null, contentValues);
