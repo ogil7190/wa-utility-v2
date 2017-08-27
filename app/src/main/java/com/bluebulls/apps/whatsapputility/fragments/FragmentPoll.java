@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,7 +33,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bluebulls.apps.whatsapputility.R;
-import com.bluebulls.apps.whatsapputility.activities.LoginActivity;
 import com.bluebulls.apps.whatsapputility.adapters.AboutPollAdapter;
 import com.bluebulls.apps.whatsapputility.adapters.PollAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.FadingTextViewAnimator;
@@ -43,10 +40,10 @@ import com.bluebulls.apps.whatsapputility.entity.actors.Option;
 import com.bluebulls.apps.whatsapputility.entity.actors.Poll;
 import com.bluebulls.apps.whatsapputility.util.DBHelper;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
-import com.hbb20.CountryCodePicker;
 import com.twotoasters.jazzylistview.JazzyListView;
 import com.twotoasters.jazzylistview.effects.ZipperEffect;
 import com.varunest.sparkbutton.SparkButton;
+import com.wooplr.spotlight.SpotlightView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,12 +82,13 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     private EditText title;
     private String pollTitle;
     private ArrayList<Poll> pollArrayList =new ArrayList<>();
-    private int number;
+    private static int number;
 
     public final int LENGTH = 6;
     private StepperTouch option;
     private static boolean isReply = false;
     private static String poll_id = "";
+    private static int position;
     private LinearLayout l;
     private DialogInterface.OnClickListener submitClickListner;
 
@@ -99,12 +97,13 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     public static String poll_id_refresh = "";
 
 
-    public static FragmentPoll newInstance(boolean reply, String pollid) {
+    public static FragmentPoll newInstance(boolean reply, String pollid,int pos) {
         Bundle args = new Bundle();
         FragmentPoll fragment = new FragmentPoll();
         fragment.setArguments(args);
         isReply = reply;
         poll_id = pollid;
+        position=pos;
         if(pollid.equals("") || pollid.equals(null)){
             isReply = false; /* resetting on empty poll */
         }
@@ -158,7 +157,28 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
 
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
-
+        if(position==0) {
+            SpotlightView spotlightView1 = new SpotlightView.Builder(getActivity())
+                    .introAnimationDuration(400)
+                    .enableRevealAnimation(true)
+                    .performClick(true)
+                    .fadeinTextDuration(400)
+                    .headingTvColor(Color.parseColor("#eb273f"))
+                    .headingTvSize(32)
+                    .headingTvText("Poll")
+                    .subHeadingTvColor(Color.parseColor("#ffffff"))
+                    .subHeadingTvSize(16)
+                    .subHeadingTvText("Click to add an Poll")
+                    .maskColor(Color.parseColor("#dc000000"))
+                    .target(addPole)
+                    .lineAnimDuration(400)
+                    .lineAndArcColor(Color.parseColor("#eb273f"))
+                    .dismissOnTouch(true)
+                    .dismissOnBackPress(true)
+                    .enableDismissAfterShown(true)
+                    .usageId("addPole") //UNIQUE ID
+                    .show();
+        }
         alertDialog=new AlertDialog.Builder(getContext())
                 .setCancelable(true)
                 .setView(l)

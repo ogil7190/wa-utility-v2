@@ -1,7 +1,6 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,7 +23,6 @@ import com.bluebulls.apps.whatsapputility.fragments.FragmentEvent;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentPoll;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentReminder;
 import com.bluebulls.apps.whatsapputility.fragments.FragmentSettings;
-import com.bluebulls.apps.whatsapputility.fragments.FragmentWish;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,16 +165,16 @@ public class HomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             if(position == 0) {
                 if(selection == position)
-                    return FragmentPoll.newInstance(true, data);
+                    return FragmentPoll.newInstance(true, data,position);
                 else
-                    return FragmentPoll.newInstance(false, data);
+                    return FragmentPoll.newInstance(false, data,position);
             }
 
             if(position == 1) {
                 if(selection == position)
-                    return FragmentEvent.newInstance(fragmentManager, true, data);
+                    return FragmentEvent.newInstance(fragmentManager, true, data,position);
                 else
-                    return FragmentEvent.newInstance(fragmentManager, false, data);
+                    return FragmentEvent.newInstance(fragmentManager, false, data,position);
             }
 
             if(position == 2) {
@@ -193,9 +191,9 @@ public class HomeActivity extends AppCompatActivity {
             }
             else{
                 if(selection == position)
-                    return FragmentPoll.newInstance(true, data);
+                    return FragmentPoll.newInstance(true, data,position);
                 else
-                    return FragmentPoll.newInstance(false, data);
+                    return FragmentPoll.newInstance(false, data,position);
             }
         }
 

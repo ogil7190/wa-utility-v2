@@ -47,7 +47,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,6 +63,7 @@ import static com.facebook.accountkit.internal.AccountKitController.getApplicati
  */
 
 public class FragmentEvent extends Fragment {
+    private static int position;
     private JazzyListView listView2;
     private ArrayList<Event> eventArrayList = new ArrayList<>();
     private static AlertDialog alertDialog;
@@ -92,13 +92,14 @@ public class FragmentEvent extends Fragment {
 
     public static final String PREF_REM_EVENT_ID = "event_rem -";
 
-    public static FragmentEvent newInstance(FragmentManager man, boolean incomingData, String data) {
+    public static FragmentEvent newInstance(FragmentManager man, boolean incomingData, String data,int pos) {
         Bundle args = new Bundle();
         manager = man;
         FragmentEvent fragment = new FragmentEvent();
         fragment.setArguments(args);
         dataComing = incomingData;
         event_data = data;
+        position=pos;
         if(event_data.equals("") || event_data.equals(null)){
             dataComing = false; /* resetting on empty data */
         }
@@ -130,6 +131,7 @@ public class FragmentEvent extends Fragment {
 
         pref = getContext().getSharedPreferences(PREF_USER,MODE_PRIVATE);
         phone=pref.getString(PREF_USER_KEY_PHONE,"null");
+
         singleDateAndTimePickerDialog=new SingleDateAndTimePickerDialog.Builder(getContext())
                 .curved()
                 .minutesStep(1)

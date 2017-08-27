@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,9 +30,9 @@ import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.varunest.sparkbutton.SparkButton;
+import com.wooplr.spotlight.SpotlightView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -99,7 +98,26 @@ public class FragmentReminder extends Fragment {
         addReminder = (SparkButton) v.findViewById(R.id.reminderbtn);
         addReminder.setAnimationSpeed(1.5f);
         listView3 = (ListView) v.findViewById(R.id.list_view2);
-
+        SpotlightView spotlightView = new SpotlightView.Builder(getActivity())
+                .introAnimationDuration(400)
+                .enableRevealAnimation(true)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvSize(32)
+                .headingTvText("Event")
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText("Click the button below to add an Event")
+                .maskColor(Color.parseColor("#dc000000"))
+                .target(addReminder)
+                .lineAnimDuration(400)
+                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .dismissOnTouch(true)
+                .dismissOnBackPress(true)
+                .enableDismissAfterShown(true)
+                .usageId("addEvent") //UNIQUE ID
+                .show();
         reminderAdapter = new ReminderAdapter(reminderArrayList, getContext());
         listView3.setAdapter(reminderAdapter);
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);

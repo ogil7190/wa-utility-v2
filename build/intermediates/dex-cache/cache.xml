@@ -3,21 +3,30 @@
 
     <item
         is-multidex="false"
-        jar="C:\Users\dell\.gradle\caches\modules-2\files-2.1\io.socket\engine.io-client\1.0.0\45fc6115750f06a9cd5dd71632cb7fc052cd66de\engine.io-client-1.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="45fc6115750f06a9cd5dd71632cb7fc052cd66de">
-        <dex dex="E:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\engine.io-client-1.0.0_085414a2193a79402af88fdf3c4573f4dc81ff18.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\dell\.gradle\caches\modules-2\files-2.1\io.socket\socket.io-client\1.0.0\28dde99672ed62a85e85a7df096c6bec698785b4\socket.io-client-1.0.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="28dde99672ed62a85e85a7df096c6bec698785b4">
         <dex dex="E:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\socket.io-client-1.0.0_f6ad9f3178e57273a5cc87b9450f939b730a96bc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\dell\.android\build-cache\adf395e387a6be1a63d10d0f4a1a49ebaa33e216\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0948ecc991ac51d76edc96bcb3725ec1c650b430">
+        <dex dex="F:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\classes_2f234631227c7c3d56d1a14150daf9c417b18954.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\dell\.gradle\caches\modules-2\files-2.1\io.socket\engine.io-client\1.0.0\45fc6115750f06a9cd5dd71632cb7fc052cd66de\engine.io-client-1.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="45fc6115750f06a9cd5dd71632cb7fc052cd66de">
+        <dex dex="E:\wa-utility-v2\app\build\intermediates\pre-dexed\debug\engine.io-client-1.0.0_085414a2193a79402af88fdf3c4573f4dc81ff18.jar" />
     </item>
     <item
         is-multidex="false"

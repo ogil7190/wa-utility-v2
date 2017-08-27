@@ -2,6 +2,7 @@ package com.bluebulls.apps.whatsapputility.fragments;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
+import com.wooplr.spotlight.SpotlightView;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.bluebulls.apps.whatsapputility.activities.ChatActivity.PREF_USER_CHAT_NAME;
@@ -44,6 +46,26 @@ public class FragmentSettings extends Fragment {
         LinearLayout l=(LinearLayout)inflater.inflate(R.layout.new_name_dialog,null);
         LinearLayout l2=(LinearLayout)inflater.inflate(R.layout.custom_name_title,null);
         final EditText newName=(EditText)l.findViewById(R.id.newName);
+        SpotlightView spotlightView2 = new SpotlightView.Builder(getActivity())
+                .introAnimationDuration(400)
+                .enableRevealAnimation(true)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvSize(32)
+                .headingTvText("Reminder")
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText("Click the button below to add a Reminder")
+                .maskColor(Color.parseColor("#dc000000"))
+                .target(currentName)
+                .lineAnimDuration(400)
+                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .dismissOnTouch(true)
+                .dismissOnBackPress(true)
+                .enableDismissAfterShown(true)
+                .usageId("addReminder") //UNIQUE ID
+                .show();
         final AlertDialog alertDialog=new AlertDialog.Builder(getContext())
                 .setCancelable(false)
                 .setCustomTitle(l2)
