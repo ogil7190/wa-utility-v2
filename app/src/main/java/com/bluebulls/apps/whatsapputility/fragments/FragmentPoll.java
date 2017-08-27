@@ -70,7 +70,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     private JazzyListView listView;
     private SharedPreferences pref;
 
-    private TextView ref_tag;
+    private TextView ref_tag,emptyText;
     private AlertDialog alertDialog;
 
     private PollAdapter pollAdapter;
@@ -147,8 +147,10 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         option4=(EditText)l.findViewById(R.id.option4);
         option5=(EditText)l.findViewById(R.id.option5);
         option6=(EditText)l.findViewById(R.id.option6);
+        emptyText=(TextView)v.findViewById(R.id.emptyPollText);
         listView =(JazzyListView) v.findViewById(R.id.list_view);
         listView.setTransitionEffect(new ZipperEffect());
+        listView.setEmptyView(emptyText);
         ref_tag = (TextView) v.findViewById(R.id.refresh_tag);
         ref_tag.setVisibility(View.GONE);
 

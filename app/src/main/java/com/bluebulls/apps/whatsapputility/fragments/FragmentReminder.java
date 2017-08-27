@@ -58,7 +58,7 @@ public class FragmentReminder extends Fragment {
 
     private String eve,des;
     private ReminderAdapter reminderAdapter;
-    public static TextView datetxt,timetxt;
+    public static TextView datetxt,timetxt,emptyText;
     public static int date2, year2;
 
     private String date_time = "";
@@ -93,6 +93,7 @@ public class FragmentReminder extends Fragment {
         LinearLayout l3 = (LinearLayout) inflater.inflate(R.layout.custom_dialog_title3, null);
         datetxt=(TextView)l.findViewById(R.id.date);
         timetxt=(TextView)l.findViewById(R.id.time);
+        emptyText=(TextView)v.findViewById(R.id.emptyReminderText);
         final EditText event = (EditText) l.findViewById(R.id.event);
         final EditText description = (EditText) l.findViewById(R.id.description);
         addReminder = (SparkButton) v.findViewById(R.id.reminderbtn);
@@ -120,6 +121,7 @@ public class FragmentReminder extends Fragment {
                 .show();
         reminderAdapter = new ReminderAdapter(reminderArrayList, getContext());
         listView3.setAdapter(reminderAdapter);
+        listView3.setEmptyView(emptyText);
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
         loadReminder();

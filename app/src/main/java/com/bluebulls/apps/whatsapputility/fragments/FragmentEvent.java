@@ -71,7 +71,7 @@ public class FragmentEvent extends Fragment {
     private SparkButton addEvent;
     private static int date1,year1;
     private static String month1;
-    private static TextView datetxt,timetxt;
+    private static TextView datetxt,timetxt,emptyText;
     private static int hour1,minute1;
     private SharedPreferences pref;
     private EventAdapter eventAdapter;
@@ -118,6 +118,7 @@ public class FragmentEvent extends Fragment {
         LinearLayout l3 = (LinearLayout) inflater.inflate(R.layout.custom_dialog_title2, null);
         datetxt=(TextView)l.findViewById(R.id.date);
         timetxt=(TextView)l.findViewById(R.id.time);
+        emptyText=(TextView)v.findViewById(R.id.emptyEventText);
         final EditText event = (EditText) l.findViewById(R.id.event);
         final EditText description = (EditText) l.findViewById(R.id.description);
         addEvent = (SparkButton) v.findViewById(R.id.eventbtn);
@@ -126,6 +127,7 @@ public class FragmentEvent extends Fragment {
         eventAdapter = new EventAdapter(eventArrayList, getContext(),this);
         listView2.setAdapter(eventAdapter);
         listView2.setTransitionEffect(new FanEffect());
+        listView2.setEmptyView(emptyText);
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
 

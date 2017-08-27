@@ -24,6 +24,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </com.twotoasters.jazzylistview.JazzyListView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emptyPollText"
+        android:textSize="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Polls"/>
     <com.varunest.sparkbutton.SparkButton
         android:id="@+id/polebtn"
         android:layout_width="50dp"
