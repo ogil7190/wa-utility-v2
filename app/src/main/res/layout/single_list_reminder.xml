@@ -27,7 +27,7 @@
             android:id="@+id/eventTxt"
             android:text="raman"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="30dp"/>
+            android:textSize="23dp"/>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"

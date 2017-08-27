@@ -36,6 +36,7 @@ public class Intro extends AppCompatActivity {
 
     public static final String CONTACT_PUSH_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/UploadContacts.php";
     public static final String PREF_USER_KEY_GENDER="gender";
+    public static final String GLOBAL_FIREBASE_TOPIC = "global_fb";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +94,7 @@ public class Intro extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(tnc.isChecked()){
-                    if(name.getText().length()>4){
+                    if(name.getText().length()>3){
                         saveUserName(name.getText().toString(), picker.getSelectedCountryCode()
                                 ,radioGroup.getCheckedRadioButtonId()==id_male?"M":"F");
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));

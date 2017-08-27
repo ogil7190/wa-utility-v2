@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.widget.CardView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,35 +58,24 @@ public class ChatAdapter extends BaseAdapter {
         View v;
         final ChatMessage msg = mssgs.get(position);
         ViewHolder viewHolder;
-        if(convertView==null) {
-            v = l.inflate(R.layout.single_layout_chat_mssg, parent, false);
-            viewHolder=new ViewHolder();
-            viewHolder.name = (TextView) v.findViewById(R.id.name);
-            viewHolder.mssg = (TextView) v.findViewById(R.id.mssg);
-            viewHolder.chatCard=(CardView)v.findViewById(R.id.chat_card);
-            v.setTag(viewHolder);
-        }
-        else {
-            v=convertView;
-            viewHolder=(ViewHolder)v.getTag();
-        }
+
+        if(msg.isMine())
+            v = l.inflate(R.layout.single_chat_msg_me, parent, false);
+        else
+            v = l.inflate(R.layout.single_chat_msg_r, parent, false);
+
+        viewHolder=new ViewHolder();
+        viewHolder.name = (TextView) v.findViewById(R.id.name);
+        viewHolder.mssg = (TextView) v.findViewById(R.id.mssg);
+        v.setTag(viewHolder);
+
         viewHolder.mssg.setText(msg.getMessageText());
         viewHolder.name.setText(msg.getMessageUser());
-        LinearLayout.LayoutParams p1 = (LinearLayout.LayoutParams)viewHolder.mssg.getLayoutParams();
 
-        if(msg.isMine()){
-            //viewHolder.chatCard.setBackground();
-            p1.gravity = Gravity.RIGHT;
-            viewHolder.name.setGravity(Gravity.RIGHT);
-        }
-        else
-            viewHolder.chatCard.setBackgroundColor(Color.BLUE);
-        viewHolder.mssg.setLayoutParams(p1);
         return v;
     }
 
     static class ViewHolder {
-        CardView chatCard;
         private TextView name, mssg;
     }
 }

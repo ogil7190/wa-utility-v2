@@ -27,6 +27,7 @@
         android:id="@+id/mssg"
         android:textColor="@color/colorPrimary"
         android:textSize="18dp"
+        android:maxLines="10"
         android:layout_gravity="left"
         android:layout_marginRight="5dp"
         android:text="Mssg is here"

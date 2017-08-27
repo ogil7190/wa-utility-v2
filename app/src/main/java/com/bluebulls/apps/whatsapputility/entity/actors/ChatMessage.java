@@ -8,12 +8,27 @@ public class ChatMessage {
 
     private String messageText;
     private String messageUser;
-    private boolean isMine = false;
-
+    private boolean isMine;
+    private int type;
     public ChatMessage(String messageText, String messageUser, boolean isMine) {
         this.messageText = messageText;
         this.messageUser = messageUser;
         this.isMine = isMine;
+    }
+
+    public ChatMessage(String messageText, String messageUser, boolean isMine, int type) {
+        this.messageText = messageText;
+        this.messageUser = messageUser;
+        this.isMine = isMine;
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public ChatMessage(){}

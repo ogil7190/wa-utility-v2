@@ -1,13 +1,20 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.ChatAdapter;
@@ -20,6 +27,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 import io.socket.client.IO;
 import io.socket.emitter.Emitter;
 
@@ -35,6 +44,7 @@ public class ChatActivity extends Activity {
     private SharedPreferences pref;
     private ChatAdapter adapter;
     public static final String PREF_USER_CHAT_NAME = "user_chat_name";
+    private TextView chat_empty;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -44,10 +54,12 @@ public class ChatActivity extends Activity {
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
         user = pref.getString(PREF_USER_CHAT_NAME, "Chotu")+ "("+pref.getString(PREF_USER_KEY_GENDER,"0")+")";
         connectSocket();
+        chat_empty =(TextView)findViewById(R.id.emptyChat);
         listview = (ListView)  findViewById(R.id.chat_list);
         listview.setDivider(null);
         listview.setDividerHeight(0);
-        listview.setVerticalScrollBarEnabled(true);
+        listview.setVerticalScrollBarEnabled(false);
+        listview.setEmptyView(chat_empty);
         adapter = new ChatAdapter(mssgs, this);
         listview.setAdapter(adapter);
         msg = (EditText) findViewById(R.id.mssg);
@@ -57,7 +69,10 @@ public class ChatActivity extends Activity {
             public void onClick(View v) {
                 String message = msg.getText().toString();
                 socket.emit("new_mssg", getMssg(message));
-                mssgs.add(new ChatMessage(message, user, true));
+                mssgs.add(new ChatMessage(message, user, true, 1));
+                if(mssgs.size()>50){
+                    mssgs.remove(0);
+                }
                 adapter.notifyDataSetChanged();
                 scrollToChatBottom();
                 msg.setText("");
@@ -109,6 +124,9 @@ public class ChatActivity extends Activity {
 
                     for(int i=0; i<m.length(); i++){
                         mssgs.add(getMessage(m.getJSONObject(i)));
+                        if(mssgs.size()>50){
+                            mssgs.remove(0);
+                        }
                     }
                     runOnUiThread(new Runnable() {
                         @Override
@@ -129,7 +147,7 @@ public class ChatActivity extends Activity {
                 try {
                     ChatUser user = getUsers(object);
                     users.add(user);
-                    mssgs.add(new ChatMessage(user.getName().toUpperCase(),"Connected", false));
+                    mssgs.add(new ChatMessage(user.getName().toUpperCase(),"Connected", false, 2));
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -160,6 +178,18 @@ public class ChatActivity extends Activity {
                     e.printStackTrace();
                 }
             }
+        }).on("chat_request", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject object = (JSONObject) args[0];
+                try {
+                    String phoneNumber = object.getString("phone");
+                    String name = object.getString("name");
+                    showNotification("You have got a new Chat Request","Tap to see!",phoneNumber, name);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }).on("user_disconnected", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -169,7 +199,7 @@ public class ChatActivity extends Activity {
                     for(ChatUser user : users){
                         if(user.getSocket_id().equals(socket_id)){
                             users.remove(user);
-                            mssgs.add(new ChatMessage(user.getName().toUpperCase(), "Disconnected", false));
+                            mssgs.add(new ChatMessage(user.getName().toUpperCase(), "Disconnected", false, 2));
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -209,7 +239,7 @@ public class ChatActivity extends Activity {
     private ChatMessage getMessage(JSONObject object) throws JSONException{
         String name = String.valueOf(object.get("name"));
         String mssg = String.valueOf(object.get("mssg"));
-        ChatMessage chatMessage = new ChatMessage(mssg, name, false);
+        ChatMessage chatMessage = new ChatMessage(mssg, name, false, 2);
         return chatMessage;
     }
 
@@ -222,11 +252,32 @@ public class ChatActivity extends Activity {
         }
         return o;
     }
+    private int noti_id = 0;
+    private void showNotification(String title, String text, String phone, String name){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentTitle(title)
+                        .setContentText(text);
+        Intent resultIntent = new Intent(this, PendingChatRequest.class);
+        resultIntent.putExtra("phone",phone);
+        resultIntent.putExtra("name", name);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        7190,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(++noti_id, mBuilder.build());
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        socket.disconnect();
     }
 
     @Override

@@ -35,19 +35,15 @@ import com.facebook.accountkit.ui.LoginType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.bluebulls.apps.whatsapputility.activities.Intro.CONTACT_PUSH_URL;
 import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_COUNTRY;
+import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_GENDER;
 import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_NAME;
 import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.LogTag;
-import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGISTER_POLL_URL;
 
 /**
  * Created by ogil on 28/07/17.
@@ -58,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String REGISTER_USER_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/Login.php";
     public static final String PREF_USER = "wa-user-data";
     private SharedPreferences pref;
+    public static final String PREF_USER_FB_TOKEN = "fb_token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,10 +262,12 @@ public class LoginActivity extends AppCompatActivity {
         final String KEY_PHONE = "phone";
         final String KEY_NAME = "name";
         final String KEY_FB_TOKEN = "fb_token";
+        final String KEY_GENDER = "gender";
 
         final String phone = pref.getString(PREF_USER_KEY_PHONE, "NULL");
         final String name = pref.getString(PREF_USER_KEY_NAME, "NULL");
-        final String fb_token = "NULL"; /* FireBase token will go here */
+        final String fb_token = pref.getString(PREF_USER_FB_TOKEN, "NULL");
+        final String gender = pref.getString(PREF_USER_KEY_GENDER, "0");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_USER_URL,
                 new Response.Listener<String>() {
@@ -298,6 +297,7 @@ public class LoginActivity extends AppCompatActivity {
                 params.put(KEY_PHONE, phone);
                 params.put(KEY_NAME, name);
                 params.put(KEY_FB_TOKEN, fb_token);
+                params.put(KEY_GENDER, gender);
                 return params;
             }
         };

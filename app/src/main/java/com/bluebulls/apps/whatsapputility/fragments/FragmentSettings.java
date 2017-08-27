@@ -94,6 +94,8 @@ public class FragmentSettings extends Fragment {
                 .usageId("addReminder") //UNIQUE ID
                 .show();
         tedBottomPicker = new TedBottomPicker.Builder(getContext())
+                .setPreviewMaxCount(500)
+                .setTitle("Choose Icon")
                 .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                     @Override
                     public void onImageSelected(Uri uri) {
@@ -163,7 +165,7 @@ public class FragmentSettings extends Fragment {
         }
         if(getBitmap!=null)
         {
-            getBitmap=Bitmap.createScaledBitmap(getBitmap,120,120,false);
+            getBitmap=Bitmap.createScaledBitmap(getBitmap,128,128,false);
         }
         return getBitmap;
     }

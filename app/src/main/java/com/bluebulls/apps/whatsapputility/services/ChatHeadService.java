@@ -141,11 +141,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         chatHeadView = (RelativeLayout) inflater.inflate(R.layout.chathead, null);
         chatheadImg = (CircularProgressView) chatHeadView.findViewById(R.id.chathead_img);
         chatHead = (ImageView) chatHeadView.findViewById(R.id.chatHead);
-        if(!pref.getString(PREF_USER_CHAT_ICON, "x").equals("x")){
-            chatHead.setImageURI(Uri.parse(pref.getString(PREF_USER_CHAT_ICON," ")));
+        if(pref.getString(PREF_USER_CHAT_ICON, null) != null ) {
+            chatHead.setImageURI(Uri.parse(pref.getString(PREF_USER_CHAT_ICON, "")));
         }
         chatheadImg.setVisibility(View.GONE);
-
         options = (CustomLayout) inflater.inflate(R.layout.new_options, null);
 
         WindowManager.LayoutParams paramOptions = new WindowManager.LayoutParams(

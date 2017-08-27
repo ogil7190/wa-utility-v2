@@ -6,4 +6,5 @@
     <color name="color_layout_background">#f1f4f2</color>
 
     <color name="background_title_poll">#075e54</color>
+    <color name="chat_me">#1cc6ff</color>
 </resources>

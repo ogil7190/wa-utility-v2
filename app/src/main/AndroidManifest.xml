@@ -17,8 +17,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +26,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.Intro">
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activities.Intro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,9 +53,9 @@
             android:name=".services.PackageService"
             android:enabled="true" />
         <service
-        android:stopWithTask="false"
-        android:name=".services.FraudService"
-            android:enabled="true" />
+            android:name=".services.FraudService"
+            android:enabled="true"
+            android:stopWithTask="false" />
         <service
             android:name=".services.CustomNotificationListener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
@@ -76,8 +77,12 @@
             android:name="com.facebook.accountkit.ClientToken"
             android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
 
-        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
-        <activity android:name="com.facebook.accountkit.ui.AccountKitEmailRedirectActivity">
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.facebook.accountkit.ui.AccountKitActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.facebook.accountkit.ui.AccountKitEmailRedirectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -87,9 +92,10 @@
                 <data android:scheme="@string/ak_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:screenOrientation="portrait" android:name=".activities.MainActivity" />
+        <activity android:screenOrientation="portrait" android:name=".activities.LoginActivity" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.HomeActivity"
             android:icon="@drawable/icon"
             android:label="WhatsApp Utility"
@@ -115,14 +121,15 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".util.ScreenBroadcast"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
@@ -142,27 +149,15 @@
 
         <activity
             android:name=".activities.SearchActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activities.ChatActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="portrait"
-            ></activity>
-
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.DummyActivity"
-            android:allowTaskReparenting="true"
-            android:alwaysRetainTaskState="false"
-            android:clearTaskOnLaunch="true"
-            android:enabled="true"
-            android:excludeFromRecents="true"
-            android:finishOnTaskLaunch="true"
-            android:noHistory="true"
-            android:stateNotNeeded="true"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:name=".activities.ChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activities.PendingChatRequest"></activity>
     </application>
 
 </manifest>
