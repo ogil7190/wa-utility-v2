@@ -2,9 +2,17 @@ package com.bluebulls.apps.whatsapputility.fragments;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +28,12 @@ import android.widget.Toast;
 import com.bluebulls.apps.whatsapputility.R;
 import com.wooplr.spotlight.SpotlightView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import gun0912.tedbottompicker.TedBottomPicker;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -34,6 +48,7 @@ public class FragmentSettings extends Fragment {
     private static android.support.v4.app.FragmentManager manager;
     private SharedPreferences pref;
     private ImageView image;
+    private Bitmap bitmap;
     public static final String PREF_USER_CHAT_ICON ="imageUri";
     TedBottomPicker tedBottomPicker;
     public static FragmentSettings newInstance(android.support.v4.app.FragmentManager man) {
@@ -82,8 +97,9 @@ public class FragmentSettings extends Fragment {
                 .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                     @Override
                     public void onImageSelected(Uri uri) {
-                        pref.edit().putString(PREF_USER_CHAT_ICON,uri.toString()).commit();
-                        image.setImageURI(uri);
+                        bitmap=getCroppedBitmap(getBitmapFromUri(uri));
+                        pref.edit().putString(PREF_USER_CHAT_ICON,saveChatHead(bitmap)).commit();
+                        image.setImageBitmap(bitmap);
                     }
                 })
                 .create();
@@ -127,5 +143,75 @@ public class FragmentSettings extends Fragment {
             }
         });
         return v;
+    }
+    public Bitmap getBitmapFromUri(Uri uri)
+    {
+        Bitmap getBitmap=null;
+
+        try{
+            InputStream input_stream;
+            try {
+                input_stream = getContext().getContentResolver().openInputStream(uri);
+                getBitmap= BitmapFactory.decodeStream(input_stream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        if(getBitmap!=null)
+        {
+            getBitmap=Bitmap.createScaledBitmap(getBitmap,120,120,false);
+        }
+        return getBitmap;
+    }
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
+    }
+    private String saveChatHead(Bitmap bitmap)
+    {
+        File folder=new File(Environment.getExternalStorageDirectory()+File.separator+"System");
+        String path="";
+        boolean success=true;
+        if(!folder.exists())
+        {
+            success=folder.mkdir();
+        }
+        if(success)
+        {
+            File img=new File(folder,"chat_head_img.png");
+            try {
+                FileOutputStream outputStream=new FileOutputStream(img);
+                bitmap.compress(Bitmap.CompressFormat.PNG,50,outputStream);
+                outputStream.flush();
+                outputStream.close();
+                path=Uri.parse(img.toString()).toString();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return path;
     }
 }

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
-import android.widget.PopupWindow;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.lib.libscreenshotter.ScreenshotCallback;
@@ -63,10 +62,10 @@ public class SsCallActivity extends Activity {
                                     success = folder.mkdirs();
                                 }
                                 if (success) {
-                                    File img = new File(folder,"wau-img-"+getDate()+"-"+getRandFileName()+".jpg");
+                                    File img = new File(folder,"wau-img-"+getDate()+"-"+getRandFileName()+".png");
                                     try {
                                         FileOutputStream outputStream = new FileOutputStream(img);
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, outputStream);
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 60, outputStream);
                                         outputStream.flush();
                                         outputStream.close();
                                         Intent i = new Intent(getApplicationContext(), FloatingScreenShot.class);
