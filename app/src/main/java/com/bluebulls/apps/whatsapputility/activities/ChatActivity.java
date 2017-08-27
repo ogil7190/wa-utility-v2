@@ -68,14 +68,16 @@ public class ChatActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String message = msg.getText().toString();
-                socket.emit("new_mssg", getMssg(message));
-                mssgs.add(new ChatMessage(message, user, true, 1));
-                if(mssgs.size()>50){
-                    mssgs.remove(0);
+                if(message!=null && message.length()>0) {
+                    socket.emit("new_mssg", getMssg(message));
+                    mssgs.add(new ChatMessage(message, user, true, 1));
+                    if (mssgs.size() > 50) {
+                        mssgs.remove(0);
+                    }
+                    adapter.notifyDataSetChanged();
+                    scrollToChatBottom();
+                    msg.setText("");
                 }
-                adapter.notifyDataSetChanged();
-                scrollToChatBottom();
-                msg.setText("");
             }
         });
     }
