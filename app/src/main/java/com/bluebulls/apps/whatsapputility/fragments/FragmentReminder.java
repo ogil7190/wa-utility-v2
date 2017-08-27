@@ -123,6 +123,7 @@ public class FragmentReminder extends Fragment {
         chatHeadImg = (CircularProgressView)v.findViewById(R.id.chathead_img_main);
         chatHeadImg.setVisibility(View.GONE);
         loadReminder();
+
         singleDateAndTimePickerDialog=new SingleDateAndTimePickerDialog.Builder(getContext())
                 .curved()
                 .minutesStep(1)

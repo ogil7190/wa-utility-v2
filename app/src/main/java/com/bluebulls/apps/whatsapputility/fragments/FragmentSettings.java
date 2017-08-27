@@ -3,6 +3,7 @@ package com.bluebulls.apps.whatsapputility.fragments;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.wooplr.spotlight.SpotlightView;
+
+import gun0912.tedbottompicker.TedBottomPicker;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.bluebulls.apps.whatsapputility.activities.ChatActivity.PREF_USER_CHAT_NAME;
@@ -27,11 +31,15 @@ import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_U
  */
 
 public class FragmentSettings extends Fragment {
+    private static android.support.v4.app.FragmentManager manager;
     private SharedPreferences pref;
-    public static FragmentSettings newInstance() {
+    private ImageView image;
+    TedBottomPicker tedBottomPicker;
+    public static FragmentSettings newInstance(android.support.v4.app.FragmentManager man) {
         Bundle args = new Bundle();
         FragmentSettings fragment = new FragmentSettings();
         fragment.setArguments(args);
+        manager=man;
         return fragment;
     }
 
@@ -40,12 +48,14 @@ public class FragmentSettings extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         pref = getContext().getSharedPreferences(PREF_USER, MODE_PRIVATE);
         View v=inflater.inflate(R.layout.settings_fragment,null);
+        LinearLayout setImage=(LinearLayout)v.findViewById(R.id.setImage);
         TextView changeName=(TextView)v.findViewById(R.id.changeName);
         final TextView currentName = (TextView) v.findViewById(R.id.currentName);
         currentName.setText(pref.getString(PREF_USER_CHAT_NAME, "Chotu"));
         LinearLayout l=(LinearLayout)inflater.inflate(R.layout.new_name_dialog,null);
         LinearLayout l2=(LinearLayout)inflater.inflate(R.layout.custom_name_title,null);
         final EditText newName=(EditText)l.findViewById(R.id.newName);
+        image=(ImageView)v.findViewById(R.id.icon);
         SpotlightView spotlightView2 = new SpotlightView.Builder(getActivity())
                 .introAnimationDuration(400)
                 .enableRevealAnimation(true)
@@ -66,6 +76,20 @@ public class FragmentSettings extends Fragment {
                 .enableDismissAfterShown(true)
                 .usageId("addReminder") //UNIQUE ID
                 .show();
+        tedBottomPicker = new TedBottomPicker.Builder(getContext())
+                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                    @Override
+                    public void onImageSelected(Uri uri) {
+                        image.setImageURI(uri);
+                    }
+                })
+                .create();
+        setImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tedBottomPicker.show(manager);
+            }
+        });
         final AlertDialog alertDialog=new AlertDialog.Builder(getContext())
                 .setCancelable(false)
                 .setCustomTitle(l2)

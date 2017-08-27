@@ -185,9 +185,9 @@ public class HomeActivity extends AppCompatActivity {
             }
             if(position == 3) {
                 if(selection == position)
-                    return FragmentSettings.newInstance();
+                    return FragmentSettings.newInstance(fragmentManager);
                 else
-                    return FragmentSettings.newInstance();
+                    return FragmentSettings.newInstance(fragmentManager);
             }
             else{
                 if(selection == position)
