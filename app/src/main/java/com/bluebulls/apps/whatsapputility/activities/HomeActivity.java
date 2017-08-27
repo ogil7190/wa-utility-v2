@@ -165,9 +165,9 @@ public class HomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             if(position == 0) {
                 if(selection == position)
-                    return FragmentPoll.newInstance(true, data,position);
+                    return FragmentPoll.newInstance(true, data,position,viewPager);
                 else
-                    return FragmentPoll.newInstance(false, data,position);
+                    return FragmentPoll.newInstance(false, data,position,viewPager);
             }
 
             if(position == 1) {
@@ -191,9 +191,9 @@ public class HomeActivity extends AppCompatActivity {
             }
             else{
                 if(selection == position)
-                    return FragmentPoll.newInstance(true, data,position);
+                    return FragmentPoll.newInstance(true, data,position,viewPager);
                 else
-                    return FragmentPoll.newInstance(false, data,position);
+                    return FragmentPoll.newInstance(false, data,position,viewPager);
             }
         }
 

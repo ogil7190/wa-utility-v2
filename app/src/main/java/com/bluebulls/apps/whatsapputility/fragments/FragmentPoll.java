@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,6 +68,7 @@ import static com.bluebulls.apps.whatsapputility.services.ChatHeadService.REGIST
  */
 
 public class FragmentPoll extends Fragment implements OnStepCallback{
+    private static ViewPager viewPager;
     private JazzyListView listView;
     private SharedPreferences pref;
 
@@ -97,13 +99,14 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
     public static String poll_id_refresh = "";
 
 
-    public static FragmentPoll newInstance(boolean reply, String pollid,int pos) {
+    public static FragmentPoll newInstance(boolean reply, String pollid, int pos, ViewPager pager) {
         Bundle args = new Bundle();
         FragmentPoll fragment = new FragmentPoll();
         fragment.setArguments(args);
         isReply = reply;
         poll_id = pollid;
         position=pos;
+        viewPager=pager;
         if(pollid.equals("") || pollid.equals(null)){
             isReply = false; /* resetting on empty poll */
         }

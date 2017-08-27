@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -55,7 +57,7 @@ public class FragmentReminder extends Fragment {
     private SparkButton addReminder;
 
     private SharedPreferences pref;
-
+    private EditText event, description;
     private String eve,des;
     private ReminderAdapter reminderAdapter;
     public static TextView datetxt,timetxt,emptyText;
@@ -94,8 +96,8 @@ public class FragmentReminder extends Fragment {
         datetxt=(TextView)l.findViewById(R.id.date);
         timetxt=(TextView)l.findViewById(R.id.time);
         emptyText=(TextView)v.findViewById(R.id.emptyReminderText);
-        final EditText event = (EditText) l.findViewById(R.id.event);
-        final EditText description = (EditText) l.findViewById(R.id.description);
+        event = (EditText) l.findViewById(R.id.event);
+        description = (EditText) l.findViewById(R.id.description);
         addReminder = (SparkButton) v.findViewById(R.id.reminderbtn);
         addReminder.setAnimationSpeed(1.5f);
         listView3 = (ListView) v.findViewById(R.id.list_view2);
@@ -242,6 +244,48 @@ public class FragmentReminder extends Fragment {
             default: return -1;
         }
     }
+
+    private void showToast(final String mssg) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), mssg,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public boolean validateReminder()
+    {
+        String topic_msg = event.getText().toString().replaceFirst("\\s++$", "");
+        String description_str = description.getText().toString().replaceFirst("\\s++$", "");
+        date_time = datetxt.getText().toString().replaceFirst("\\s++$", "");
+
+        if(topic_msg.equals("") || topic_msg.equals(null)){
+            showToast("Check Topic!");
+            return false;
+        }
+        else if(topic_msg.length()<5){
+            showToast("Enter valid topic!");
+            return false;
+        }
+        else if(description.equals("") || description.equals(null)){
+            showToast("Check Description!");
+            return false;
+        }
+        else if(description.length()<5){
+            showToast("Enter Valid Description!");
+        }
+        else if(date_time.equals("") || date_time.equals(null)){
+            showToast("Choose Time and date first!");
+            return false;
+        }
+        else
+            return true;
+        return false;
+    }
+
 
     public static boolean addToReminder(Context context, int rem_id, long alarmTime){
         Intent i = new Intent(context, MyAlarmReceiver.class);

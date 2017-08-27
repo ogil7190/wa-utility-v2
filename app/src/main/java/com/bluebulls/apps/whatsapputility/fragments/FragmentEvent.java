@@ -69,9 +69,9 @@ public class FragmentEvent extends Fragment {
     private static AlertDialog alertDialog;
     static FragmentManager manager;
     private SparkButton addEvent;
-    private static int date1,year1;
-    private static String month1;
-    private static TextView datetxt,timetxt,emptyText;
+    private int date1,year1;
+    private String month1;
+    private TextView datetxt,timetxt,emptyText;
     private static int hour1,minute1;
     private SharedPreferences pref;
     private EventAdapter eventAdapter;
@@ -81,7 +81,7 @@ public class FragmentEvent extends Fragment {
     private static boolean dataComing = false;
     private static String event_data = "";
     private String phone = "";
-
+    private EditText event, description;
     public static final String PREF_USER_KEY_PHONE = "user_phone";
     private LayoutInflater inflater;
 
@@ -119,8 +119,8 @@ public class FragmentEvent extends Fragment {
         datetxt=(TextView)l.findViewById(R.id.date);
         timetxt=(TextView)l.findViewById(R.id.time);
         emptyText=(TextView)v.findViewById(R.id.emptyEventText);
-        final EditText event = (EditText) l.findViewById(R.id.event);
-        final EditText description = (EditText) l.findViewById(R.id.description);
+        event = (EditText) l.findViewById(R.id.event);
+        description = (EditText) l.findViewById(R.id.description);
         addEvent = (SparkButton) v.findViewById(R.id.eventbtn);
         addEvent.setAnimationSpeed(1.5f);
         listView2 = (JazzyListView) v.findViewById(R.id.list_view2);
@@ -193,7 +193,8 @@ public class FragmentEvent extends Fragment {
                         topic_msg = event.getText().toString();
                         description_str = description.getText().toString();
                         date_time= datetxt.getText().toString()+"|"+timetxt.getText().toString();
-                        uploadEvent();
+                        if(validateEvent())
+                            uploadEvent();
                         event.setText(null);
                         description.setText(null);
                     }
@@ -217,6 +218,38 @@ public class FragmentEvent extends Fragment {
             welcomeEvent();
         }
         return v;
+    }
+
+    public boolean validateEvent()
+    {
+        topic_msg = event.getText().toString().replaceFirst("\\s++$", "");
+        description_str = description.getText().toString().replaceFirst("\\s++$", "");
+        date_time = datetxt.getText().toString().replaceFirst("\\s++$", "");
+        date_time = date_time +"|"+ timetxt.getText().toString().replaceFirst("\\s++$", "");
+
+        if(topic_msg.equals("") || topic_msg.equals(null)){
+            showToast("Check Topic!");
+            return false;
+        }
+        else if(topic_msg.length()<5){
+            showToast("Enter valid topic!");
+            return false;
+        }
+        else if(description.equals("") || description.equals(null)){
+            showToast("Check Description!");
+            return false;
+        }
+        else if(description.length()<5){
+            showToast("Enter Valid Description!");
+        }
+        else if(date_time.equals("") || date_time.equals(null)){
+            showToast("Choose Time and date first!");
+            return false;
+        }
+        else
+            return true;
+
+        return false;
     }
 
     private void events(){

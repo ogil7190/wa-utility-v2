@@ -1,19 +1,13 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.ChatAdapter;
@@ -23,10 +17,13 @@ import com.bluebulls.apps.whatsapputility.entity.actors.ChatUser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import io.socket.client.IO;
 import io.socket.emitter.Emitter;
+
+import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_GENDER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 
 public class ChatActivity extends Activity {
@@ -45,7 +42,7 @@ public class ChatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
-        user = pref.getString(PREF_USER_CHAT_NAME, "Chotu");
+        user = pref.getString(PREF_USER_CHAT_NAME, "Chotu")+ "("+pref.getString(PREF_USER_KEY_GENDER,"0")+")";
         connectSocket();
         listview = (ListView)  findViewById(R.id.chat_list);
         listview.setDivider(null);

@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="20sp"
+    android:maxLines="1"
     android:hint="Enter Name Here"
     android:id="@+id/newName"/>
 </LinearLayout>

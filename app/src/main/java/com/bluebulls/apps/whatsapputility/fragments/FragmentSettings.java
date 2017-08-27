@@ -34,7 +34,7 @@ public class FragmentSettings extends Fragment {
     private static android.support.v4.app.FragmentManager manager;
     private SharedPreferences pref;
     private ImageView image;
-    public String IMAGE_URI="imageUri";
+    public static final String PREF_USER_CHAT_ICON ="imageUri";
     TedBottomPicker tedBottomPicker;
     public static FragmentSettings newInstance(android.support.v4.app.FragmentManager man) {
         Bundle args = new Bundle();
@@ -57,7 +57,7 @@ public class FragmentSettings extends Fragment {
         LinearLayout l2=(LinearLayout)inflater.inflate(R.layout.custom_name_title,null);
         final EditText newName=(EditText)l.findViewById(R.id.newName);
         image=(ImageView)v.findViewById(R.id.icon);
-        image.setImageURI(Uri.parse(pref.getString(IMAGE_URI,"not found")));
+        image.setImageURI(Uri.parse(pref.getString(PREF_USER_CHAT_ICON, "android.resource://com.bluebulls.apps.whatsapputility/drawable/icon")));
         SpotlightView spotlightView2 = new SpotlightView.Builder(getActivity())
                 .introAnimationDuration(400)
                 .enableRevealAnimation(true)
@@ -82,7 +82,7 @@ public class FragmentSettings extends Fragment {
                 .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                     @Override
                     public void onImageSelected(Uri uri) {
-                        pref.edit().putString(IMAGE_URI,uri.toString()).commit();
+                        pref.edit().putString(PREF_USER_CHAT_ICON,uri.toString()).commit();
                         image.setImageURI(uri);
                     }
                 })

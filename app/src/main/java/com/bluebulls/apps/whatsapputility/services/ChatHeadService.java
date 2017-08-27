@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -77,6 +78,7 @@ import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.PREF
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.addToReminder;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.getAlarmTime;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentReminder.saveReminder;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentSettings.PREF_USER_CHAT_ICON;
 import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
 
 public class ChatHeadService extends Service implements CustomLayout.BackButtonListener, CustomLayout.HomeButtonListener {
@@ -139,7 +141,9 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         chatHeadView = (RelativeLayout) inflater.inflate(R.layout.chathead, null);
         chatheadImg = (CircularProgressView) chatHeadView.findViewById(R.id.chathead_img);
         chatHead = (ImageView) chatHeadView.findViewById(R.id.chatHead);
-
+        if(!pref.getString(PREF_USER_CHAT_ICON, "x").equals("x")){
+            chatHead.setImageURI(Uri.parse(pref.getString(PREF_USER_CHAT_ICON," ")));
+        }
         chatheadImg.setVisibility(View.GONE);
 
         options = (CustomLayout) inflater.inflate(R.layout.new_options, null);

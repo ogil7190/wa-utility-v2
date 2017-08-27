@@ -12,14 +12,36 @@
         android:layout_margin="3dp"
         android:textAlignment="center"
         android:imeOptions="actionDone"
-        android:maxLength="30"
-        android:maxLines="1"
+        android:maxLength="25"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="22dp"
         android:backgroundTint="@color/colorAccent"
         android:hint="Your Full Name"
         android:layout_marginBottom="10dp"
         />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/gender">
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textSize="16dp"
+                android:layout_weight="1"
+                android:checked="true"
+                android:id="@+id/id_male"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Male"/>
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textSize="16dp"
+                android:id="@+id/id_female"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_weight="1"
+                android:text="Female"/>
+        </RadioGroup>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
@@ -26,6 +27,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
 
+import static com.bluebulls.apps.whatsapputility.R.id.id_male;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
 
@@ -33,6 +35,7 @@ public class Intro extends AppCompatActivity {
     private SharedPreferences pref;
 
     public static final String CONTACT_PUSH_URL = "http://syncx.16mb.com/android/whatsapp-utility/v1/UploadContacts.php";
+    public static final String PREF_USER_KEY_GENDER="gender";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,8 @@ public class Intro extends AppCompatActivity {
         dialogBuilder.setCancelable(false);
         dialogBuilder.setCustomTitle(title);
         dialogBuilder.setView(view);
+        final RadioGroup radioGroup=(RadioGroup)view.findViewById(R.id.gender);
+        //if(radioGroup.getCheckedRadioButtonId()==id_male)
         final CheckBox tnc = (CheckBox)view.findViewById(R.id.tnc);
         final EditText name = (EditText)view.findViewById(R.id.et_login_name);
         Button phoneVer = (Button) view.findViewById(R.id.btn_phone_ver);
@@ -89,7 +94,8 @@ public class Intro extends AppCompatActivity {
             public void onClick(View v) {
                 if(tnc.isChecked()){
                     if(name.getText().length()>4){
-                        saveUserName(name.getText().toString(), picker.getSelectedCountryCode());
+                        saveUserName(name.getText().toString(), picker.getSelectedCountryCode()
+                                ,radioGroup.getCheckedRadioButtonId()==id_male?"M":"F");
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
                     else
@@ -111,9 +117,10 @@ public class Intro extends AppCompatActivity {
     public static final String PREF_USER_KEY_NAME = "user_name";
     public static final String PREF_USER_KEY_COUNTRY = "user_country";
 
-    private void saveUserName(String name, String code){
+    private void saveUserName(String name, String code,String gender){
         pref.edit().putString(PREF_USER_KEY_NAME, name).commit();
         pref.edit().putString(PREF_USER_KEY_COUNTRY, code).commit();
+        pref.edit().putString(PREF_USER_KEY_GENDER,gender).commit();
     }
 
     private void showDialog(){
