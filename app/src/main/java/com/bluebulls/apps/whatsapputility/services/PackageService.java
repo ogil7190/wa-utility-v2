@@ -5,9 +5,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+
+import com.bluebulls.apps.whatsapputility.util.ForAllBroadcast;
 import com.rvalerio.fgchecker.AppChecker;
 
 import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
@@ -18,6 +21,7 @@ import static com.bluebulls.apps.whatsapputility.util.SSBridge.STOP_SS_SERV;
  */
 
 public class PackageService extends Service {
+    private ForAllBroadcast broadcast;
     private static final String TAG = "PackageService";
     private AppChecker appChecker = new AppChecker();
 

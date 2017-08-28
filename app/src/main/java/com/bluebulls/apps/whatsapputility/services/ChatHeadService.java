@@ -234,6 +234,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         action_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                options.setVisibility(View.GONE);
                 startActivity(new Intent(getApplicationContext(), SearchActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK ));
             }
         });
@@ -241,6 +242,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         action_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                options.setVisibility(View.GONE);
                 startActivity(new Intent(getApplicationContext(), ChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK ));
             }
         });
@@ -248,8 +250,10 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             windowManager.getDefaultDisplay().getSize(szWindow);
         } else {
-            int w = windowManager.getDefaultDisplay().getWidth();
-            int h = windowManager.getDefaultDisplay().getHeight();
+            Point size = new Point();
+            windowManager.getDefaultDisplay().getSize(size);
+            int w = size.x;
+            int h = size.y;
             szWindow.set(w, h);
         }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -42,8 +43,9 @@ public class SearchActivity extends Activity {
     private TextView empty_search;
     private ArrayList<Query> queries = new ArrayList<>();
     private SearchAdapter adapter;
-    String orig_empty_search_str;
+    private String orig_empty_search_str;
     private CircularProgressView progress;
+    private SwitchCompat contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class SearchActivity extends Activity {
         searchView = (SearchView)findViewById(R.id.search);
         empty_search = (TextView) findViewById(R.id.search_empty);
         orig_empty_search_str = empty_search.getText().toString();
+
+        contacts = (SwitchCompat) findViewById(R.id.contactSearch);
 
         webView = (WebView) findViewById(R.id.webView);
         webView.setVisibility(View.GONE);

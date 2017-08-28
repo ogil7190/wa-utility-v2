@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.activities.HomeActivity;
+import com.bluebulls.apps.whatsapputility.util.ForAllBroadcast;
 import com.rvalerio.fgchecker.AppChecker;
 
 import java.util.Arrays;
@@ -27,6 +29,7 @@ import java.util.Arrays;
 import static android.support.v4.app.NotificationCompat.EXTRA_TEXT_LINES;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
 import static com.bluebulls.apps.whatsapputility.fragments.FragmentSettings.PREF_USER_KEY_FOR_ALL;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentSettings.STOP_SELF_PACK;
 import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
 import static com.bluebulls.apps.whatsapputility.util.SSBridge.STOP_SS_SERV;
 
@@ -40,7 +43,6 @@ public class CustomNotificationListener extends NotificationListenerService {
     public static String TAG = "Listener";
     private boolean isTargetActive = false, isChatHeadServiceStopped = false;
     private SharedPreferences pref;
-
     public static boolean forAll = false;
 
     @Override
@@ -168,7 +170,6 @@ public class CustomNotificationListener extends NotificationListenerService {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.d("App", "Removed");
         Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
         PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7180, i, 0);
         AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -179,7 +180,6 @@ public class CustomNotificationListener extends NotificationListenerService {
 
     @Override
     public void onDestroy() {
-        Log.d("App", "Destroyed");
         Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
         PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7180, i, 0);
         AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);

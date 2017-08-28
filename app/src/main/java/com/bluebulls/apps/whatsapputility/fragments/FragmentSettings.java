@@ -43,6 +43,7 @@ import gun0912.tedbottompicker.TedBottomPicker;
 import static android.content.Context.MODE_PRIVATE;
 import static com.bluebulls.apps.whatsapputility.activities.ChatActivity.PREF_USER_CHAT_NAME;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
+import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
 
 /**
  * Created by dell on 8/20/2017.
@@ -66,6 +67,8 @@ public class FragmentSettings extends Fragment {
 
     public static final String PREF_USER_KEY_FOR_ALL = "for_all_bool";
 
+    public static final String STOP_SELF_PACK = "package_stop";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class FragmentSettings extends Fragment {
         final EditText newName=(EditText)l.findViewById(R.id.newName);
         image=(ImageView)v.findViewById(R.id.icon);
         forAll = (SwitchCompat) v.findViewById(R.id.for_all);
+        forAll.setChecked(pref.getBoolean(PREF_USER_KEY_FOR_ALL, false));
         forAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

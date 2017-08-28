@@ -54,12 +54,14 @@ public class ChatActivity extends Activity {
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
         user = pref.getString(PREF_USER_CHAT_NAME, "Chotu")+ "("+pref.getString(PREF_USER_KEY_GENDER,"0")+")";
         connectSocket();
+
         chat_empty =(TextView)findViewById(R.id.emptyChat);
         listview = (ListView)  findViewById(R.id.chat_list);
         listview.setDivider(null);
         listview.setDividerHeight(0);
         listview.setVerticalScrollBarEnabled(false);
         listview.setEmptyView(chat_empty);
+
         adapter = new ChatAdapter(mssgs, this);
         listview.setAdapter(adapter);
         msg = (EditText) findViewById(R.id.mssg);
@@ -97,6 +99,7 @@ public class ChatActivity extends Activity {
     private void connectSocket(){
         try{
             socket = IO.socket("https://glochatv10.herokuapp.com/");
+            //socket = IO.socket("http://192.168.0.8:8080");
             socket.connect();
             socket.emit("data", getPlayerData());
             handleSocketEvents();

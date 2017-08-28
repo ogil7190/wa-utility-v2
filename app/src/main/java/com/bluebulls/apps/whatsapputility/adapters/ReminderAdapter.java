@@ -18,8 +18,8 @@ import java.util.ArrayList;
  */
 
 public class ReminderAdapter extends BaseAdapter {
-    ArrayList<Reminder> reminderArrayList;
-    Context c;
+    private ArrayList<Reminder> reminderArrayList;
+    private Context c;
 
     public ReminderAdapter(ArrayList<Reminder> reminderArrayList, Context c) {
         this.reminderArrayList = reminderArrayList;
