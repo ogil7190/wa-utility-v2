@@ -99,17 +99,19 @@
                 android:layout_marginBottom="20dp"
                 android:text="This makes floating icon for all"/>
         </LinearLayout>
-
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/for_all"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:drawableTint="@color/colorPrimary"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:paddingRight="35dp"
             android:checked="false"
             android:theme="@style/SCBSwitch" />
+        </RelativeLayout>
 
     </LinearLayout>
 
