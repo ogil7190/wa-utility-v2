@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
               saveContacts();
             }
         }).start();
-
+        Toast.makeText(getApplicationContext(),"If SMS is not coming try Call Option in Didn't get Code",Toast.LENGTH_LONG).show();
         if (accessToken != null) {
             goToMyLoggedInActivity();
         } else {

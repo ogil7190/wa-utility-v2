@@ -43,7 +43,7 @@ public class CustomNotificationListener extends NotificationListenerService {
     public static String TAG = "Listener";
     private boolean isTargetActive = false, isChatHeadServiceStopped = false;
     private SharedPreferences pref;
-    public static boolean forAll = false;
+    public static boolean forAll = true;
 
     @Override
     public void onCreate() {
@@ -114,6 +114,7 @@ public class CustomNotificationListener extends NotificationListenerService {
         sendBroadcast(x);
     }
 
+    private String matchCase = "https://wa.bluebulls/";
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         String pack  = sbn.getPackageName();
@@ -132,10 +133,10 @@ public class CustomNotificationListener extends NotificationListenerService {
                         }
                         Log.d(TAG,"New Notification:"+res);
                         for(String s : res){
-                         if(s.contains("https://wa.bluebulls/poll_id/")){
-                             String poll_id = s.replace("https://wa.bluebulls/poll_id/","");
-                             Log.d(TAG,"Poll Received:"+poll_id);
-                             showNotification("Got a new poll!","Check out the new poll from WhatsApp",poll_id);
+                         if(s.contains(matchCase)){
+                             String id = s.substring(s.indexOf(matchCase) + matchCase.length(), s.indexOf("\nDownload"));
+                             Log.d(TAG,"Poll Received:"+id);
+                             showNotification("Something arrives for you!","Tap to check out!",id);
                              noti_id++;
                          }
                         }

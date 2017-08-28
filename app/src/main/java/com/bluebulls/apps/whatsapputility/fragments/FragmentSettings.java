@@ -83,7 +83,7 @@ public class FragmentSettings extends Fragment {
         final EditText newName=(EditText)l.findViewById(R.id.newName);
         image=(ImageView)v.findViewById(R.id.icon);
         forAll = (SwitchCompat) v.findViewById(R.id.for_all);
-        forAll.setChecked(pref.getBoolean(PREF_USER_KEY_FOR_ALL, false));
+        forAll.setChecked(pref.getBoolean(PREF_USER_KEY_FOR_ALL, true));
         forAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

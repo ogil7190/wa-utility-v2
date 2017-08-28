@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -88,6 +89,7 @@ public class Intro extends AppCompatActivity {
         final RadioGroup radioGroup=(RadioGroup)view.findViewById(R.id.gender);
         //if(radioGroup.getCheckedRadioButtonId()==id_male)
         final CheckBox tnc = (CheckBox)view.findViewById(R.id.tnc);
+        tnc.setMovementMethod(LinkMovementMethod.getInstance());
         final EditText name = (EditText)view.findViewById(R.id.et_login_name);
         Button phoneVer = (Button) view.findViewById(R.id.btn_phone_ver);
         phoneVer.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +105,7 @@ public class Intro extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Please enter valid name!",Toast.LENGTH_SHORT).show();
                 }
                 else
-                    Toast.makeText(getApplicationContext(),"Please check for terms and Conditions!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please check to terms and Conditions!",Toast.LENGTH_SHORT).show();
             }
         });
         AlertDialog d = dialogBuilder.create();

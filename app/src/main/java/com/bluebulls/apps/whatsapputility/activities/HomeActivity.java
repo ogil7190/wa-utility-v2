@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -62,7 +63,8 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClassName("com.coloros.oppoguardelf", "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity");
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Disable Battery Saving Mode to\n NO RESTRICTION MODE \n for WhatsApp Utility Here", Toast.LENGTH_LONG).show();
+                for(int i=0; i<5; i++)
+                    Toast.makeText(getApplicationContext(), "Disable Battery Saving Mode to\n NO RESTRICTION MODE \n for WhatsApp Utility Here", Toast.LENGTH_LONG).show();
                 pref.edit().putBoolean(PREF_BATTERY_ENABLE,false).commit();
             }
         }
@@ -124,10 +126,10 @@ public class HomeActivity extends AppCompatActivity {
     private void checkReply(){
         Intent intent = getIntent();
         fragmentManager=getSupportFragmentManager();
-
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri incomingData = intent.getData();
             List<String> params = incomingData.getPathSegments();
+
             switch (params.get(0)){
                 case STR_POLL_ID :
                     data = params.get(1);
@@ -150,6 +152,16 @@ public class HomeActivity extends AppCompatActivity {
         else if(Intent.ACTION_SEND.equals(intent.getAction())){
             if(intent.getType().equals("text/ogil")){
                 data = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if(data.contains(STR_POLL_ID)){
+                    data = data.replace("poll_id/","");
+                    selection = 0;
+                    viewPager.setCurrentItem(0,false);
+                }
+                if(data.contains(STR_EVENT_ID)){
+                    data = data.replace("event_id/","");
+                    selection = 1;
+                    viewPager.setCurrentItem(1,false);
+                }
                 getIntent().setAction("");
             }
         }

@@ -3,11 +3,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <TextView
+        android:textSize="18dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/pollShowTitle"
+        android:text="This is your poll"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <ListView
         android:id="@+id/poll_about_listview"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="wrap_content">
     </ListView>
 
 </LinearLayout>

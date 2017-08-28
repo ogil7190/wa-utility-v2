@@ -133,7 +133,7 @@ public class ChatActivity extends Activity {
                             mssgs.remove(0);
                         }
                     }
-                    
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

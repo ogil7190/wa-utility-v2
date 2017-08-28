@@ -17,4 +17,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_logout">Logout</string>
+    <string name="tnc"><a href="http://syncx.16mb.com/android/whatsapp-utility/v1/tnc.html"> Agree to terms and conditions</a></string>
 </resources>

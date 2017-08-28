@@ -110,6 +110,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         if(pollid.equals("") || pollid.equals(null)){
             isReply = false; /* resetting on empty poll */
         }
+        //poll_id = poll_id.replace("poll_id/","");
         return fragment;
     }
 
@@ -280,6 +281,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.d("Poll", "ResponsePoll:"+response+" PollID:"+poll_id);
                             handlePoll(response);
                             d.dismiss();
                         } catch (JSONException e) {
@@ -688,6 +690,7 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
                     rotate.setInterpolator(new LinearInterpolator());
                     currentRefresh.startAnimation(rotate);
                     getPoll(pollArrayList.get(pos).getPoll_id(), currentRefresh);
+                    Toast.makeText(getContext(), "Poll Refreshed", Toast.LENGTH_LONG).show();
                 }
             };
             return listener;
@@ -751,21 +754,23 @@ public class FragmentPoll extends Fragment implements OnStepCallback{
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.poll_show, null);
         View title = inflater.inflate(R.layout.custom_title_poll_show, null);
-
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setCancelable(true);
         dialogBuilder.setCustomTitle(title);
+        TextView pollShowTitle = (TextView)view.findViewById(R.id.pollShowTitle);
+        pollShowTitle.setText(poll.getTitle());
         dialogBuilder.setView(view);
         ListView listView = (ListView)view.findViewById(R.id.poll_about_listview);
+        listView.setDividerHeight(0);
+        listView.setDivider(null);
         AboutPollAdapter aboutPollAdapter = new AboutPollAdapter(getParticipants(poll.getPoll_reply()),getContext());
         listView.setAdapter(aboutPollAdapter);
         dialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
             }
         });
-
         AlertDialog d = dialogBuilder.create();
         d.show();
     }
