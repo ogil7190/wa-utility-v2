@@ -77,6 +77,5 @@ public class ReminderAdapter extends BaseAdapter {
 
     static class ViewHolder{
         private TextView eventTxt,descriptionTxt,date,time;
-        private SparkButton alarmButton;
     }
 }
