@@ -70,7 +70,7 @@ public class ChatActivity extends Activity {
                 String message = msg.getText().toString();
                 if(message!=null && message.length()>0) {
                     socket.emit("new_mssg", getMssg(message));
-                    mssgs.add(new ChatMessage(message, user, true, 1));
+                    mssgs.add(new ChatMessage(message, user, 1));
                     if (mssgs.size() > 50) {
                         mssgs.remove(0);
                     }
@@ -149,7 +149,7 @@ public class ChatActivity extends Activity {
                 try {
                     ChatUser user = getUsers(object);
                     users.add(user);
-                    mssgs.add(new ChatMessage(user.getName().toUpperCase(),"Connected", false, 2));
+                    mssgs.add(new ChatMessage(user.getName().toUpperCase()+" Connected", " ", 3));
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -201,7 +201,7 @@ public class ChatActivity extends Activity {
                     for(ChatUser user : users){
                         if(user.getSocket_id().equals(socket_id)){
                             users.remove(user);
-                            mssgs.add(new ChatMessage(user.getName().toUpperCase(), "Disconnected", false, 2));
+                            mssgs.add(new ChatMessage(user.getName().toUpperCase() +" DisConnected", " ", 3));
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -241,7 +241,7 @@ public class ChatActivity extends Activity {
     private ChatMessage getMessage(JSONObject object) throws JSONException{
         String name = String.valueOf(object.get("name"));
         String mssg = String.valueOf(object.get("mssg"));
-        ChatMessage chatMessage = new ChatMessage(mssg, name, false, 2);
+        ChatMessage chatMessage = new ChatMessage(mssg, name, 2);
         return chatMessage;
     }
 

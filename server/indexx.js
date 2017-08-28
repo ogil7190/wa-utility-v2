@@ -83,6 +83,7 @@ function getMssgs(room){
 function updateRooms(room_id, socket_id){
 	for(i=0; i<rooms.length; i++){
 		if(rooms[i][0]== room_id){
+			console.log(JSON.stringify(room[i]));
 			rooms[i][1] = 'need';
 			rooms[i][2] = removeUser(socket_id, rooms[i][2]);
 			break;
@@ -118,6 +119,6 @@ function getRoomID(socket_id,data){
 		}
 	}
 
-	rooms.push([rooms[0][0]+"-"+rooms.length, 'need',[{ id:socket_id, data:data }]]) /* push new room */
+	rooms.push([rooms[0][0]+"-"+rooms.length, 'need',[{ id:socket_id, data:data }], []]) /* push new room */
 	return rooms[rooms.length-1][0];
 }

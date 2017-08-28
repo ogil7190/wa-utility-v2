@@ -182,15 +182,17 @@ public class FragmentReminder extends Fragment {
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        eve = event.getText().toString();
-                        des = description.getText().toString();
-                        date_time= datetxt.getText().toString()+"|"+timetxt.getText().toString();
-                        int rem_id = pref.getInt(PREF_REM_ID_KEY, -1) +1;
-                        pref.edit().putInt(PREF_REM_ID_KEY, rem_id).commit();
-                        saveReminder(pref, new Reminder(rem_id, eve, des, date_time));
-                        addToReminder(getContext(), rem_id, getAlarmTime(date_time));
-                        Toast.makeText(getContext(), "Alarm Set!", Toast.LENGTH_SHORT).show();
-                        loadReminder();
+                        if(validateReminder()) {
+                            eve = event.getText().toString();
+                            des = description.getText().toString();
+                            date_time = datetxt.getText().toString() + "|" + timetxt.getText().toString();
+                            int rem_id = pref.getInt(PREF_REM_ID_KEY, -1) + 1;
+                            pref.edit().putInt(PREF_REM_ID_KEY, rem_id).commit();
+                            saveReminder(pref, new Reminder(rem_id, eve, des, date_time));
+                            addToReminder(getContext(), rem_id, getAlarmTime(date_time));
+                            Toast.makeText(getContext(), "Alarm Set!", Toast.LENGTH_SHORT).show();
+                            loadReminder();
+                        }
                     }
                 })
                 .setNegativeButton("Set Date & Time", new DialogInterface.OnClickListener() {

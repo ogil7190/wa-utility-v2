@@ -59,10 +59,20 @@ public class ChatAdapter extends BaseAdapter {
         final ChatMessage msg = mssgs.get(position);
         ViewHolder viewHolder;
 
-        if(msg.isMine())
-            v = l.inflate(R.layout.single_chat_msg_me, parent, false);
-        else
-            v = l.inflate(R.layout.single_chat_msg_r, parent, false);
+        switch (msg.getType()){
+            case 1: /* mine */
+                v = l.inflate(R.layout.single_chat_msg_me, parent, false);
+                break;
+            case 2: /* others */
+                v = l.inflate(R.layout.single_chat_msg_r, parent, false);
+                break;
+            case 3: /* events */
+                v = l.inflate(R.layout.single_chat_msg_e, parent, false);
+                break;
+            default:
+                v = l.inflate(R.layout.single_chat_msg_r, parent, false);
+                break;
+        }
 
         viewHolder=new ViewHolder();
         viewHolder.name = (TextView) v.findViewById(R.id.name);

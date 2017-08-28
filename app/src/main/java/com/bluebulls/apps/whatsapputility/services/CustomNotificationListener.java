@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,8 @@ import com.rvalerio.fgchecker.AppChecker;
 import java.util.Arrays;
 
 import static android.support.v4.app.NotificationCompat.EXTRA_TEXT_LINES;
+import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
+import static com.bluebulls.apps.whatsapputility.fragments.FragmentSettings.PREF_USER_KEY_FOR_ALL;
 import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
 import static com.bluebulls.apps.whatsapputility.util.SSBridge.STOP_SS_SERV;
 
@@ -36,11 +39,16 @@ public class CustomNotificationListener extends NotificationListenerService {
     private AppChecker appChecker = new AppChecker();
     public static String TAG = "Listener";
     private boolean isTargetActive = false, isChatHeadServiceStopped = false;
+    private SharedPreferences pref;
+
+    public static boolean forAll = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
         resetItself();
+        pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
+        forAll = pref.getBoolean(PREF_USER_KEY_FOR_ALL, false);
         handleStart();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -50,29 +58,33 @@ public class CustomNotificationListener extends NotificationListenerService {
         }, (60*1000)-500);
     }
 
-    private void handleStart(){
-        appChecker.when("com.whatsapp", new AppChecker.Listener() {
-            @Override
-            public void onForeground(String process) {
-                if(!isTargetActive){
-                    isTargetActive = true;
-                    isChatHeadServiceStopped = false;
-                    if(!ChatHeadService.isRunning) {
-                        startChatHead();
+    private void handleStart() {
+        if (forAll) {
+            startChatHead();
+        } else {
+            appChecker.when("com.whatsapp", new AppChecker.Listener() {
+                @Override
+                public void onForeground(String process) {
+                    if (!isTargetActive) {
+                        isTargetActive = true;
+                        isChatHeadServiceStopped = false;
+                        if (!ChatHeadService.isRunning) {
+                            startChatHead();
+                        }
                     }
                 }
-            }
 
-        }).other(new AppChecker.Listener() {
-            @Override
-            public void onForeground(String process) {
-                isTargetActive = false;
-                if(!isChatHeadServiceStopped) {
-                    isChatHeadServiceStopped = true;
-                    stopChatHead();
+            }).other(new AppChecker.Listener() {
+                @Override
+                public void onForeground(String process) {
+                    isTargetActive = false;
+                    if (!isChatHeadServiceStopped) {
+                        isChatHeadServiceStopped = true;
+                        stopChatHead();
+                    }
                 }
-            }
-        }).timeout(500).start(getApplicationContext());
+            }).timeout(500).start(getApplicationContext());
+        }
     }
 
     @Override
@@ -103,12 +115,12 @@ public class CustomNotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         String pack  = sbn.getPackageName();
-        //CharSequence ticker = sbn.getNotification().tickerText;
-        //Log.e(TAG,"ticker:"+ticker);
+        CharSequence ticker = sbn.getNotification().tickerText;
+        Log.e(TAG,"Ticker:"+ticker);
             if(pack.equals("com.whatsapp"))
             for (String key : sbn.getNotification().extras.keySet()) {
                 if (sbn.getNotification().extras.get(key)!=null) {
-                    //Log.i(TAG + ":"+ key, sbn.getNotification().extras.get(key).toString());
+                    Log.i(TAG + ":"+ key, sbn.getNotification().extras.get(key).toString());
                     if(key.equals(EXTRA_TEXT_LINES)){
                         CharSequence[] p = sbn.getNotification().extras.getCharSequenceArray(EXTRA_TEXT_LINES);
                         String[] res = new String[p.length];

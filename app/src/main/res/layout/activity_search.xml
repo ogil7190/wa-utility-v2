@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_layout_background"
-                android:text="You can also search Unknown Numbers\nTap the contacts button!"
+                android:text="Search anything on Google\nYou can also search Unknown Numbers\nTap the contacts button!"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18dp" />

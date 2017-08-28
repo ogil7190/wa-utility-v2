@@ -143,7 +143,7 @@ public class SearchActivity extends Activity {
         if(!query.equals("")) {
             webView.setVisibility(View.VISIBLE);
             progress.setVisibility(View.VISIBLE);
-
+            empty_search.setVisibility(View.GONE);
             webView.loadUrl("https://www.google.com/search?site=&source=hp&q=" + query);
         }
     }

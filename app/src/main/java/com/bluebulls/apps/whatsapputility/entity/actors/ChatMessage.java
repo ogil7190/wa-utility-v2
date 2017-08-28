@@ -8,18 +8,16 @@ public class ChatMessage {
 
     private String messageText;
     private String messageUser;
-    private boolean isMine;
     private int type;
-    public ChatMessage(String messageText, String messageUser, boolean isMine) {
+    public ChatMessage(String messageText, String messageUser) {
         this.messageText = messageText;
         this.messageUser = messageUser;
-        this.isMine = isMine;
+
     }
 
-    public ChatMessage(String messageText, String messageUser, boolean isMine, int type) {
+    public ChatMessage(String messageText, String messageUser, int type) {
         this.messageText = messageText;
         this.messageUser = messageUser;
-        this.isMine = isMine;
         this.type = type;
     }
 
@@ -48,12 +46,4 @@ return messageUser;
     public void setMessageUser(String messageUser) {
         this.messageUser = messageUser;
         }
-
-    public boolean isMine() {
-        return isMine;
-    }
-
-    public void setMine(boolean mine) {
-        isMine = mine;
-    }
 }

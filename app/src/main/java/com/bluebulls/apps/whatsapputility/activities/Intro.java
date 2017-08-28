@@ -95,7 +95,7 @@ public class Intro extends AppCompatActivity {
             public void onClick(View v) {
                 if(tnc.isChecked()){
                     if(name.getText().length()>3){
-                        saveUserName(name.getText().toString(), picker.getSelectedCountryCode()
+                        saveUserName(name.getText().toString(), picker.getSelectedCountryCodeWithPlus()
                                 ,radioGroup.getCheckedRadioButtonId()==id_male?"M":"F");
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }

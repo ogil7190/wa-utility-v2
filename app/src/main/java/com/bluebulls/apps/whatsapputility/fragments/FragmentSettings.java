@@ -1,6 +1,7 @@
 package com.bluebulls.apps.whatsapputility.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,9 +17,11 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.services.CustomNotificationListener;
 import com.wooplr.spotlight.SpotlightView;
 
 import java.io.File;
@@ -50,7 +54,8 @@ public class FragmentSettings extends Fragment {
     private ImageView image;
     private Bitmap bitmap;
     public static final String PREF_USER_CHAT_ICON ="imageUri";
-    TedBottomPicker tedBottomPicker;
+    private SwitchCompat forAll;
+    private TedBottomPicker tedBottomPicker;
     public static FragmentSettings newInstance(android.support.v4.app.FragmentManager man) {
         Bundle args = new Bundle();
         FragmentSettings fragment = new FragmentSettings();
@@ -58,6 +63,8 @@ public class FragmentSettings extends Fragment {
         manager=man;
         return fragment;
     }
+
+    public static final String PREF_USER_KEY_FOR_ALL = "for_all_bool";
 
     @Nullable
     @Override
@@ -72,6 +79,15 @@ public class FragmentSettings extends Fragment {
         LinearLayout l2=(LinearLayout)inflater.inflate(R.layout.custom_name_title,null);
         final EditText newName=(EditText)l.findViewById(R.id.newName);
         image=(ImageView)v.findViewById(R.id.icon);
+        forAll = (SwitchCompat) v.findViewById(R.id.for_all);
+        forAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                pref.edit().putBoolean(PREF_USER_KEY_FOR_ALL, isChecked).commit();
+                getContext().stopService(new Intent(getContext(), CustomNotificationListener.class));
+                getContext().startService(new Intent(getContext(), CustomNotificationListener.class));
+            }
+        });
         image.setImageURI(Uri.parse(pref.getString(PREF_USER_CHAT_ICON, "android.resource://com.bluebulls.apps.whatsapputility/drawable/icon")));
         SpotlightView spotlightView2 = new SpotlightView.Builder(getActivity())
                 .introAnimationDuration(400)
@@ -159,12 +175,10 @@ public class FragmentSettings extends Fragment {
                 e.printStackTrace();
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        if(getBitmap!=null)
-        {
+        if(getBitmap!=null) {
             getBitmap=Bitmap.createScaledBitmap(getBitmap,128,128,false);
         }
         return getBitmap;
@@ -204,7 +218,7 @@ public class FragmentSettings extends Fragment {
             File img=new File(folder,"chat_head_img.png");
             try {
                 FileOutputStream outputStream=new FileOutputStream(img);
-                bitmap.compress(Bitmap.CompressFormat.PNG,50,outputStream);
+                bitmap.compress(Bitmap.CompressFormat.PNG,40,outputStream);
                 outputStream.flush();
                 outputStream.close();
                 path=Uri.parse(img.toString()).toString();

@@ -4,34 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22dp"
-        android:layout_weight="1"
-        android:id="@+id/changeName"
-        android:text="Change Global Chat Name"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:layout_weight="3"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:id="@+id/currentName"
-        android:text="Ogil"/>
-
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="7">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/changeName"
+                android:text="Change Global Chat Name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:layout_marginLeft="5dp"
+                android:text="This is your global chat name"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_weight="3"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/currentName"
+            android:text="Ogil"/>
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:layout_marginBottom="20dp"
-        android:text="This is your global chat name"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,37 +50,74 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="7">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:textSize="22dp"
-        android:id="@+id/changeIcon"
-        android:text="Change Floating Icon"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:textSize="12dp"
-        android:layout_weight="1"
-        android:text="This is your floating icon on WhatsApp"/>
-        </LinearLayout>
-        <ImageView
-            android:layout_width="0dp"
-            android:id="@+id/icon"
-            android:layout_height="match_parent"
-            android:layout_weight="3" />
+                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:textSize="22dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/changeIcon"
+                android:text="Change Floating Icon"/>
+                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="This is your floating icon on WhatsApp"/>
+                </LinearLayout>
+                <ImageView
+                android:layout_width="0dp"
+                android:id="@+id/icon"
+                android:layout_height="match_parent"
+                android:layout_weight="3" />
     </LinearLayout>
-    <!--<View
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#d3d3d3">
-    </View>-->
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="7">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:id="@+id/changeTarget"
+                android:text="Enable for all apps"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="12dp"
+                android:layout_marginBottom="20dp"
+                android:text="This makes floating icon for all"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/for_all"
+            android:layout_width="0dp"
+            android:drawableTint="@color/colorPrimary"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:checked="false"
+            android:theme="@style/SCBSwitch" />
+
+    </LinearLayout>
 
     <TextView
-        android:layout_marginTop="150dp"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:text=" Tips: If floating icon is not showing,\nopen this app again.\nIn any other problem, try to\nclear app data and start over again!\n\nThis app might not work in some devices.\nWe are working on it, Stay Tuned! :)"
         android:textAlignment="center"
         android:textSize="16dp" />

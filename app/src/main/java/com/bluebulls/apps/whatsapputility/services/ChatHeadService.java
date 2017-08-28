@@ -92,7 +92,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     private RelativeLayout chatHeadView, removeView;
     private ImageView chatHead;
 
-    private CustomLayout options, chat;
+    private CustomLayout options;
     private LinearLayout txtView, txt_linearlayout, dateTimePicker;
     private TextView removeImg;
     private LinearLayout action_pol, action_eve, action_ss, action_rem,action_search, action_chat;
@@ -187,10 +187,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         setupReminder();
         reminder.setVisibility(View.GONE);
 
-        chat = (CustomLayout) inflater.inflate(R.layout.activity_chat, null);
-        chat.setBackButtonListener(this);
-        chat.setVisibility(View.GONE);
-        //setupChat();
         action_pol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,13 +241,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         action_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* if (chat.getVisibility() != View.VISIBLE) {
-                    options.setVisibility(View.GONE);
-                    chat.setVisibility(View.VISIBLE);
-                    chat.requestFocusFromTouch();
-                } else
-                    chat.setVisibility(View.GONE);
-                connectSocket();*/
                 startActivity(new Intent(getApplicationContext(), ChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK ));
             }
         });
@@ -637,152 +626,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             }
         });
         windowManager.addView(reminder, paramOptions);
-    }
-
-    private ChatAdapter adapter;
-    private ListView chatList;
-
-    private void setupChat(){
-        final WindowManager.LayoutParams paramOptions = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                PixelFormat.TRANSLUCENT);
-        paramOptions.gravity = Gravity.CENTER;
-        options.setVisibility(View.GONE);
-        chatList = (ListView) chat.findViewById(R.id.chat_list);
-        adapter = new ChatAdapter(mssgs, getApplicationContext());
-        chatList.setAdapter(adapter);
-        final EditText mssg = (EditText)chat.findViewById(R.id.mssg);
-        Button submit = (Button) chat.findViewById(R.id.sendbtn);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = mssg.getText().toString();
-                socket.emit("new_mssg", getMssg(message));
-                mssg.setText("");
-            }
-        });
-        windowManager.addView(chat, paramOptions);
-    }
-
-    private JSONObject getMssg(String message){
-        JSONObject o = new JSONObject();
-        try {
-            o.put("name", user);
-            o.put("mssg", message);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return o;
-    }
-
-    private Socket socket;
-    private void connectSocket(){
-        try{
-            socket = IO.socket("http://192.168.0.8:8080");
-            socket.connect();
-            socket.emit("data", getPlayerData());
-            handleSocketEvents();
-        }
-        catch (Exception e) {
-                System.out.println("Error:" + e);
-        }
-    }
-
-
-    private ArrayList<ChatUser> users = new ArrayList<>();
-    private ArrayList<ChatMessage> mssgs = new ArrayList<>();
-
-    private void handleSocketEvents(){
-        socket.on("data_join", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                JSONObject object = (JSONObject) args[0];
-                try {
-                    String socket_id = object.getString("id");
-                    String room = object.getString("room");
-                    JSONArray a = new JSONArray(object.getString("users"));
-                    for(int i=0; i<a.length(); i++){
-                        users.add(getUsers(a.getJSONObject(i)));
-                    }
-                    JSONArray m = new JSONArray(object.getString("mssgs"));
-
-                    for(int i=0; i<m.length(); i++){
-                        mssgs.add(getMessage(m.getJSONObject(i)));
-                    }
-                    adapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).on("new_user_join", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                JSONObject object = (JSONObject) args[0];
-                try {
-                    users.add(getUsers(object));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).on("new_mssg", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                try {
-                    mssgs.add(getMessage(new JSONObject((String)args[0])));
-                    if(mssgs.size()>50){
-                        mssgs.remove(0);
-                    }
-                    adapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).on("user_disconnected", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                JSONObject object = (JSONObject) args[0];
-                try {
-                    String socket_id = object.getString("id");
-                    for(ChatUser user : users){
-                        if(user.getSocket_id().equals(socket_id)){
-                            users.remove(user);
-                            break;
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private ChatUser getUsers(JSONObject object) throws  JSONException{
-        Log.d(LogTag, "USERS:"+object.toString());
-        String id = object.getString("id");
-        JSONObject data = object.getJSONObject("data");
-        String name = data.getString("name");
-        ChatUser user = new ChatUser(name, id);
-        return user;
-    }
-
-    private ChatMessage getMessage(JSONObject object) throws JSONException{
-        String name = String.valueOf(object.get("name"));
-        String mssg = String.valueOf(object.get("mssg"));
-        ChatMessage chatMessage = new ChatMessage(mssg, name, false);
-        return chatMessage;
-    }
-
-    private JSONObject getPlayerData(){
-        JSONObject o = new JSONObject();
-        try {
-            o.put("name", user);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return o;
     }
 
     private CustomLayout poll;
@@ -1396,11 +1239,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             if (chatHeadView != null) {
                 windowManager.removeView(chatHeadView);
             }
-            if(chat !=null){
-                chat.clearFocus();
-                //socket.disconnect();
-                windowManager.removeView(chat);
-            }
             if(event !=null){
                 event.clearFocus();
                 windowManager.removeView(event);
@@ -1441,11 +1279,6 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         if(reminder!=null){
             reminder.setVisibility(View.GONE);
             reminder.clearFocus();
-        }
-        if(chat!=null){
-            chat.setVisibility(View.GONE);
-            chat.clearFocus();
-            //socket.disconnect();
         }
     }
 
