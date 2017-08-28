@@ -6,7 +6,6 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +21,8 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -29,10 +30,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
-import com.bluebulls.apps.whatsapputility.util.OverlayUtil;
 import com.bluebulls.apps.whatsapputility.services.CustomNotificationListener;
-import com.bluebulls.apps.whatsapputility.services.PackageService;
 import com.bluebulls.apps.whatsapputility.services.RootService;
+import com.bluebulls.apps.whatsapputility.util.OverlayUtil;
 
 import java.util.List;
 
@@ -47,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
     TextView notify,overlay;
     Switch notifications,drawOvelay,ua;
     public static final String TAG = "WhatsApp Poll";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

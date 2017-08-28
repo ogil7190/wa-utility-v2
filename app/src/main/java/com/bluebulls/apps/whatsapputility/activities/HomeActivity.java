@@ -13,8 +13,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.AccordionTransformer;
@@ -123,6 +123,17 @@ public class HomeActivity extends AppCompatActivity {
     public static final String STR_POLL_ID = "poll_id";
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.credits:
+                credits();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void checkReply(){
         Intent intent = getIntent();
         fragmentManager=getSupportFragmentManager();
@@ -218,5 +229,10 @@ public class HomeActivity extends AppCompatActivity {
     private void clearNotification(){
         NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nMgr.cancelAll();
+    }
+    private void credits()
+    {
+        Intent i=new Intent(this,CreditsActivity.class);
+        startActivity(i);
     }
 }
