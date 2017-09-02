@@ -20,6 +20,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.activities.ChatActivity;
 import com.bluebulls.apps.whatsapputility.activities.HomeActivity;
 import com.bluebulls.apps.whatsapputility.util.ForAllBroadcast;
 import com.rvalerio.fgchecker.AppChecker;
@@ -44,6 +45,7 @@ public class CustomNotificationListener extends NotificationListenerService {
     private boolean isTargetActive = false, isChatHeadServiceStopped = false;
     private SharedPreferences pref;
     public static boolean forAll = true;
+    public static ChatActivity chatInstance;
 
     @Override
     public void onCreate() {
@@ -56,8 +58,12 @@ public class CustomNotificationListener extends NotificationListenerService {
             @Override
             public void run() {
                 stopSelf();
+                if(chatInstance!=null)
+                if(!chatInstance.isActive){
+                    chatInstance.finish();
+                }
             }
-        }, (60*1000)-500);
+        }, (60*500)-1000);
     }
 
     private void handleStart() {
@@ -99,7 +105,7 @@ public class CustomNotificationListener extends NotificationListenerService {
         Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
         PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7160, i, 0);
         AlarmManager alarm = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60*1000, pi);
+        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60*500, pi);
     }
 
     private void startChatHead(){

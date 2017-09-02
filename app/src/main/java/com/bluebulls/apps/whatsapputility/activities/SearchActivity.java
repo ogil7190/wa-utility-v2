@@ -71,8 +71,12 @@ public class SearchActivity extends Activity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(searchView.getQuery().length()>0)
-                    searchWeb(searchView.getQuery().toString());
+                if(!contacts.isChecked()) {
+                    if (searchView.getQuery().length() > 0)
+                        searchWeb(searchView.getQuery().toString());
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Contacts Saerch Coming Soon!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -112,18 +116,25 @@ public class SearchActivity extends Activity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchView.setQuery(query,false);
-                suggestionList.setVisibility(View.GONE);
-                progress.setVisibility(View.GONE);
-                empty_search.setText("Loading...");
-                searchWeb(query);
+                if(!contacts.isChecked()) {
+                    searchView.setQuery(query, false);
+                    suggestionList.setVisibility(View.GONE);
+                    progress.setVisibility(View.GONE);
+                    empty_search.setText("Loading...");
+                    searchWeb(query);
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Contacts Saerch Coming Soon!", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {
-                    suggestion(newText);
+                    if(contacts.isChecked())
+                        Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_SHORT).show();
+                    else
+                        suggestion(newText);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

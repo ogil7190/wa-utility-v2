@@ -15,7 +15,7 @@
             android:layout_height="70dp"
             android:layout_weight="2"
             android:id="@+id/vivekPic"
-            android:src="@drawable/ic_action_send_now"/>
+            android:src="@drawable/icon"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -28,6 +28,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:background="#ffffff"
+            android:scaleType="fitXY"
+            android:layout_weight="1"
+            android:id="@+id/vivekTwitter"
+            />
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -46,20 +54,12 @@
             android:src="@drawable/insta"/>
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="45dp"
             android:background="#ffffff"
             android:scaleType="fitXY"
             android:layout_weight="1"
-            android:id="@+id/vivekTwitter"
-            android:src="@drawable/twitter"/>
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:background="#ffffff"
-            android:scaleType="fitXY"
-            android:layout_weight="1"
-            android:id="@+id/vivekLinkedin"
-            android:src="@drawable/linkedin"/>
+            android:id="@+id/vivekLinkedin"/>
+
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
@@ -67,9 +67,9 @@
         android:textSize="28sp"
         android:textColor="#0000ff"
         android:id="@+id/vivekNumber"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:textAlignment="center"
-        android:text="xxxxxxxxxx"/>
+        android:text="androidrajpoot@gmail.com"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -133,10 +133,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:textSize="28sp"
+        android:textSize="25dp"
         android:textColor="#0000ff"
         android:id="@+id/ramanNumber"
         android:layout_marginBottom="5dp"
         android:textAlignment="center"
-        android:text="8802490598"/>
+        android:text="raman.kataria009@gmail.com"/>
 </LinearLayout>

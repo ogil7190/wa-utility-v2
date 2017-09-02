@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.ChatAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.ChatMessage;
 import com.bluebulls.apps.whatsapputility.entity.actors.ChatUser;
+import com.bluebulls.apps.whatsapputility.services.CustomNotificationListener;
 import com.bluebulls.apps.whatsapputility.util.ContextMenuLayout;
 import com.bluebulls.apps.whatsapputility.util.ContextMenuManager;
 import com.bluebulls.apps.whatsapputility.util.Inventory;
@@ -41,6 +43,7 @@ import io.socket.emitter.Emitter;
 
 import static com.bluebulls.apps.whatsapputility.activities.Intro.PREF_USER_KEY_GENDER;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
+import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER_KEY_PHONE;
 
 public class ChatActivity extends Activity {
 
@@ -53,19 +56,25 @@ public class ChatActivity extends Activity {
     public static final String PREF_USER_CHAT_NAME = "user_chat_name";
     private TextView chat_empty;
     private ImageButton closeChat;
+    public static boolean isActive = false;
+    private String myPhone;
+    private ChatActivity chatActivity;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         setTheme(R.style.Theme_SearchFloat);
         super.onCreate(savedInstanceState);
+        chatActivity = this;
+        CustomNotificationListener.chatInstance = chatActivity;
         setContentView(R.layout.activity_chat);
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
         user = pref.getString(PREF_USER_CHAT_NAME, "Chotu")+ "("+pref.getString(PREF_USER_KEY_GENDER,"0")+")";
+        myPhone = pref.getString(PREF_USER_KEY_PHONE, "sorry");
         connectSocket();
         chat_empty =(TextView)findViewById(R.id.emptyChat);
         listview = (ListView)  findViewById(R.id.chat_list);
         closeChat = (ImageButton) findViewById(R.id.closeChat);
-
+        isActive = true;
         closeChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,12 +88,13 @@ public class ChatActivity extends Activity {
         listview.setEmptyView(chat_empty);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
                 if (mssgs.get(position).getType() == 2) {
                     ContextMenuManager.getInstance().toggleContextMenuFromView(view, position, new ContextMenuLayout.OnFeedContextMenuItemClickListener() {
                         @Override
                         public void onSendRequestClick(int feedItem) {
-                            //sendRequest(users.get(position));
+                            sendRequest(mssgs.get(position).getMessageUser());
+                            ContextMenuManager.getInstance().hideContextMenu();
                         }
 
                         @Override
@@ -96,18 +106,6 @@ public class ChatActivity extends Activity {
             }
         });
 
-        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                ContextMenuManager.getInstance().hideContextMenu();
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-            }
-        });
-
         adapter = new ChatAdapter(mssgs, this);
         listview.setAdapter(adapter);
         msg = (EditText) findViewById(R.id.mssg);
@@ -116,9 +114,10 @@ public class ChatActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String message = msg.getText().toString();
+                user = pref.getString(PREF_USER_CHAT_NAME, "Chotu")+ "("+pref.getString(PREF_USER_KEY_GENDER,"0")+")";
                 if(message!=null && message.length()>0) {
                     socket.emit("new_mssg", getMssg(message));
-                    mssgs.add(new ChatMessage(message, user, 1));
+                    mssgs.add(new ChatMessage(message, new ChatUser(user, mySocketId), 1));
                     if (mssgs.size() > 50) {
                         mssgs.remove(0);
                     }
@@ -131,13 +130,26 @@ public class ChatActivity extends Activity {
     }
 
     private void sendRequest(ChatUser user){
-        Toast.makeText(getApplicationContext(), "Sending Request :"+user.getSocket_id(), Toast.LENGTH_SHORT).show();
+        socket.emit("chat_request", getChatRequestData(user));
+    }
+
+    private JSONObject getChatRequestData(ChatUser user){
+        JSONObject o = new JSONObject();
+        try {
+            o.put("socket_id", user.getSocket_id());
+            o.put("name", this.user);
+            o.put("phone", myPhone);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return o;
     }
 
     private JSONObject getMssg(String message){
         JSONObject o = new JSONObject();
         try {
             o.put("name", user);
+            o.put("socket_id", mySocketId);
             o.put("mssg", message);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -162,14 +174,14 @@ public class ChatActivity extends Activity {
 
     private ArrayList<ChatUser> users = new ArrayList<>();
     private ArrayList<ChatMessage> mssgs = new ArrayList<>();
-
+    private String mySocketId = "";
     private void handleSocketEvents(){
         socket.on("data_join", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject object = (JSONObject) args[0];
                 try {
-                    String socket_id = object.getString("id");
+                    mySocketId = object.getString("id");
                     String room = object.getString("room");
                     JSONArray a = new JSONArray(object.getString("users"));
                     for(int i=0; i<a.length(); i++){
@@ -183,7 +195,7 @@ public class ChatActivity extends Activity {
                             mssgs.remove(0);
                         }
                     }
-                    mssgs.add(new ChatMessage("Chat Room: "+room.toUpperCase(), "", 3));
+                    mssgs.add(new ChatMessage("Chat Room: "+room.toUpperCase(), new ChatUser("Join", ""), 3));
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -203,7 +215,7 @@ public class ChatActivity extends Activity {
                 try {
                     ChatUser user = getUsers(object);
                     users.add(user);
-                    mssgs.add(new ChatMessage(user.getName().toUpperCase()+" Connected", " ", 3));
+                    mssgs.add(new ChatMessage(user.getName().toUpperCase()+" Connected", new ChatUser("Join", ""), 3));
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -255,7 +267,7 @@ public class ChatActivity extends Activity {
                     for(ChatUser user : users){
                         if(user.getSocket_id().equals(socket_id)){
                             users.remove(user);
-                            mssgs.add(new ChatMessage(user.getName().toUpperCase() +" DisConnected", " ", 3));
+                            mssgs.add(new ChatMessage(user.getName().toUpperCase() +" DisConnected", new ChatUser("Join", ""), 3));
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -295,7 +307,8 @@ public class ChatActivity extends Activity {
     private ChatMessage getMessage(JSONObject object) throws JSONException{
         String name = String.valueOf(object.get("name"));
         String mssg = String.valueOf(object.get("mssg"));
-        ChatMessage chatMessage = new ChatMessage(mssg, name, 2);
+        String socketId = String.valueOf(object.get("socket_id"));
+        ChatMessage chatMessage = new ChatMessage(mssg, new ChatUser(name, socketId), 2);
         return chatMessage;
     }
 
@@ -310,9 +323,10 @@ public class ChatActivity extends Activity {
     }
     private int noti_id = 0;
     private void showNotification(String title, String text, String phone, String name){
+        Log.d("name", name);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.icon)
+                        .setSmallIcon(R.mipmap.ic_paradox_round)
                         .setContentTitle(title)
                         .setContentText(text);
         Intent resultIntent = new Intent(this, PendingChatRequest.class);
@@ -329,11 +343,14 @@ public class ChatActivity extends Activity {
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(++noti_id, mBuilder.build());
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(1000);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        isActive = true;
     }
 
     @Override
@@ -344,11 +361,13 @@ public class ChatActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        isActive = false;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isActive = false;
         if(socket!=null){
             socket.disconnect();
         }

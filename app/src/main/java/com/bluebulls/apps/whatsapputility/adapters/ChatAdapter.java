@@ -80,7 +80,7 @@ public class ChatAdapter extends BaseAdapter {
         v.setTag(viewHolder);
 
         viewHolder.mssg.setText(msg.getMessageText());
-        viewHolder.name.setText(msg.getMessageUser());
+        viewHolder.name.setText(msg.getMessageUser().getName());
 
         return v;
     }

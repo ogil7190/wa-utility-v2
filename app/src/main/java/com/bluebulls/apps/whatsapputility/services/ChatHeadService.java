@@ -1,7 +1,10 @@
 package com.bluebulls.apps.whatsapputility.services;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -1222,8 +1225,15 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
     @Override
     public void onDestroy() {
         destroy();
+        Intent i = new Intent(getApplicationContext(), CustomNotificationListener.class);
+        PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7180, i, 0);
+        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pi);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pi);
         super.onDestroy();
     }
+
+
 
     public void destroy() {
         try {

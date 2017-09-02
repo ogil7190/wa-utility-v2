@@ -56,13 +56,13 @@ public class SsCallActivity extends Activity {
                             @Override
                             public void onScreenshot(Bitmap bitmap) {
                                 File folder = new File(Environment.getExternalStorageDirectory() +
-                                        File.separator + "WA");
+                                        File.separator + "Paradox");
                                 boolean success = true;
                                 if (!folder.exists()) {
                                     success = folder.mkdirs();
                                 }
                                 if (success) {
-                                    File img = new File(folder,"wau-img-"+getDate()+"-"+getRandFileName()+".png.nomedia");
+                                    File img = new File(folder,"wau-img-"+getDate()+"-"+getRandFileName()+".png");
                                     try {
                                         FileOutputStream outputStream = new FileOutputStream(img);
                                         bitmap.compress(Bitmap.CompressFormat.PNG, 60, outputStream);

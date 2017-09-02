@@ -52,10 +52,7 @@ public class CreditsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.ramanNumber) {
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:8802490598"));
-            startActivity(i);
+
         }
         if(v.getId()==R.id.ramanFb)
         {
@@ -86,38 +83,20 @@ public class CreditsActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(i);
         }
         if(v.getId()==R.id.vivekNumber) {
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:"));
-            // TODO: 8/29/2017
-            startActivity(i);
+
         }
         if(v.getId()==R.id.vivekFb)
         {
             Intent i=new Intent();
             i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("https://www.facebook.com/raman.kataria.16"));
+            i.setData(Uri.parse("https://www.facebook.com/vivek.rajpoot.7190"));
             startActivity(i);
         }
         if(v.getId()==R.id.vivekInsta)
         {
             Intent i=new Intent();
             i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("https://www.facebook.com"));
-            startActivity(i);
-        }
-        if(v.getId()==R.id.vivekTwitter)
-        {
-            Intent i=new Intent();
-            i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("https://www.facebook.com"));
-            startActivity(i);
-        }
-        if(v.getId()==R.id.vivekLinkedin)
-        {
-            Intent i=new Intent();
-            i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("https://www.facebook.com"));
+            i.setData(Uri.parse("https://www.instagram.com/ogil7190"));
             startActivity(i);
         }
     }

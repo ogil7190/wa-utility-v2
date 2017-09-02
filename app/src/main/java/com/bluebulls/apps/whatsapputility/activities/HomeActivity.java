@@ -230,6 +230,7 @@ public class HomeActivity extends AppCompatActivity {
         NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nMgr.cancelAll();
     }
+
     private void credits()
     {
         Intent i=new Intent(this,CreditsActivity.class);

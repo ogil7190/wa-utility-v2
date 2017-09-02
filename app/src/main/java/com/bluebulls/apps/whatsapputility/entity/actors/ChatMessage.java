@@ -7,15 +7,15 @@ package com.bluebulls.apps.whatsapputility.entity.actors;
 public class ChatMessage {
 
     private String messageText;
-    private String messageUser;
+    private ChatUser messageUser;
     private int type;
-    public ChatMessage(String messageText, String messageUser) {
+    public ChatMessage(String messageText, ChatUser messageUser) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 
     }
 
-    public ChatMessage(String messageText, String messageUser, int type) {
+    public ChatMessage(String messageText, ChatUser messageUser, int type) {
         this.messageText = messageText;
         this.messageUser = messageUser;
         this.type = type;
@@ -39,11 +39,11 @@ return messageText;
 this.messageText = messageText;
 }
 
-    public String getMessageUser() {
+    public ChatUser getMessageUser() {
 return messageUser;
 }
 
-    public void setMessageUser(String messageUser) {
+    public void setMessageUser(ChatUser messageUser) {
         this.messageUser = messageUser;
         }
 }
