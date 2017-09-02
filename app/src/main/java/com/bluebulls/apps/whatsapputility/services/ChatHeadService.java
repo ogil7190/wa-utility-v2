@@ -144,6 +144,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
         if(pref.getString(PREF_USER_CHAT_ICON, null) != null ) {
             chatHead.setImageURI(Uri.parse(pref.getString(PREF_USER_CHAT_ICON, "")));
         }
+
         chatheadImg.setVisibility(View.GONE);
         options = (CustomLayout) inflater.inflate(R.layout.new_options, null);
 
@@ -243,7 +244,7 @@ public class ChatHeadService extends Service implements CustomLayout.BackButtonL
             @Override
             public void onClick(View v) {
                 options.setVisibility(View.GONE);
-                startActivity(new Intent(getApplicationContext(), ChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK ));
+                startActivity(new Intent(getApplicationContext(), ChatActivity.class).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK ));
             }
         });
 

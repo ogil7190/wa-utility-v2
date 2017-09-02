@@ -122,6 +122,8 @@ public class FragmentSettings extends Fragment {
                         bitmap=getCroppedBitmap(getBitmapFromUri(uri));
                         pref.edit().putString(PREF_USER_CHAT_ICON,saveChatHead(bitmap)).commit();
                         image.setImageBitmap(bitmap);
+                        getContext().stopService(new Intent(getContext(), CustomNotificationListener.class));
+                        getContext().startService(new Intent(getContext(), CustomNotificationListener.class));
                     }
                 })
                 .create();
@@ -219,10 +221,10 @@ public class FragmentSettings extends Fragment {
         }
         if(success)
         {
-            File img=new File(folder,"chat_head_img.png");
+            File img=new File(folder,"chat_head_img.png.nomedia");
             try {
                 FileOutputStream outputStream=new FileOutputStream(img);
-                bitmap.compress(Bitmap.CompressFormat.PNG,40,outputStream);
+                bitmap.compress(Bitmap.CompressFormat.PNG,50,outputStream);
                 outputStream.flush();
                 outputStream.close();
                 path=Uri.parse(img.toString()).toString();

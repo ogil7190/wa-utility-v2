@@ -62,7 +62,7 @@ public class SsCallActivity extends Activity {
                                     success = folder.mkdirs();
                                 }
                                 if (success) {
-                                    File img = new File(folder,"wau-img-"+getDate()+"-"+getRandFileName()+".png");
+                                    File img = new File(folder,"wau-img-"+getDate()+"-"+getRandFileName()+".png.nomedia");
                                     try {
                                         FileOutputStream outputStream = new FileOutputStream(img);
                                         bitmap.compress(Bitmap.CompressFormat.PNG, 60, outputStream);

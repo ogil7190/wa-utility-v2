@@ -8,4 +8,7 @@
     <color name="background_title_poll">#075e54</color>
     <color name="chat_me">#1cc6ff</color>
     <color name="chat_event">#5c5c5c</color>
+
+    <color name="btn_context_menu_normal">#075e54</color>
+    <color name="btn_context_menu_pressed">#053933</color>
 </resources>

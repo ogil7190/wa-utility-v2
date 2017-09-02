@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
@@ -25,6 +26,8 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -89,7 +92,8 @@ public class Intro extends AppCompatActivity {
         final RadioGroup radioGroup=(RadioGroup)view.findViewById(R.id.gender);
         //if(radioGroup.getCheckedRadioButtonId()==id_male)
         final CheckBox tnc = (CheckBox)view.findViewById(R.id.tnc);
-        tnc.setMovementMethod(LinkMovementMethod.getInstance());
+        final TextView tncText = (TextView) view.findViewById(R.id.tncText);
+        tncText.setMovementMethod(LinkMovementMethod.getInstance());
         final EditText name = (EditText)view.findViewById(R.id.et_login_name);
         Button phoneVer = (Button) view.findViewById(R.id.btn_phone_ver);
         phoneVer.setOnClickListener(new View.OnClickListener() {

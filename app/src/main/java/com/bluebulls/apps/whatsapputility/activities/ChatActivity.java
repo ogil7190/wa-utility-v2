@@ -10,21 +10,28 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
 import com.bluebulls.apps.whatsapputility.adapters.ChatAdapter;
 import com.bluebulls.apps.whatsapputility.entity.actors.ChatMessage;
 import com.bluebulls.apps.whatsapputility.entity.actors.ChatUser;
+import com.bluebulls.apps.whatsapputility.util.ContextMenuLayout;
+import com.bluebulls.apps.whatsapputility.util.ContextMenuManager;
+import com.bluebulls.apps.whatsapputility.util.Inventory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
@@ -45,6 +52,7 @@ public class ChatActivity extends Activity {
     private ChatAdapter adapter;
     public static final String PREF_USER_CHAT_NAME = "user_chat_name";
     private TextView chat_empty;
+    private ImageButton closeChat;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -54,13 +62,51 @@ public class ChatActivity extends Activity {
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
         user = pref.getString(PREF_USER_CHAT_NAME, "Chotu")+ "("+pref.getString(PREF_USER_KEY_GENDER,"0")+")";
         connectSocket();
-
         chat_empty =(TextView)findViewById(R.id.emptyChat);
         listview = (ListView)  findViewById(R.id.chat_list);
+        closeChat = (ImageButton) findViewById(R.id.closeChat);
+
+        closeChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveTaskToBack(true);
+            }
+        });
+
         listview.setDivider(null);
         listview.setDividerHeight(0);
         listview.setVerticalScrollBarEnabled(false);
         listview.setEmptyView(chat_empty);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                if (mssgs.get(position).getType() == 2) {
+                    ContextMenuManager.getInstance().toggleContextMenuFromView(view, position, new ContextMenuLayout.OnFeedContextMenuItemClickListener() {
+                        @Override
+                        public void onSendRequestClick(int feedItem) {
+                            //sendRequest(users.get(position));
+                        }
+
+                        @Override
+                        public void onCancelClick(int feedItem) {
+                            ContextMenuManager.getInstance().hideContextMenu();
+                        }
+                    });
+                }
+            }
+        });
+
+        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                ContextMenuManager.getInstance().hideContextMenu();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
 
         adapter = new ChatAdapter(mssgs, this);
         listview.setAdapter(adapter);
@@ -82,6 +128,10 @@ public class ChatActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void sendRequest(ChatUser user){
+        Toast.makeText(getApplicationContext(), "Sending Request :"+user.getSocket_id(), Toast.LENGTH_SHORT).show();
     }
 
     private JSONObject getMssg(String message){
@@ -133,7 +183,7 @@ public class ChatActivity extends Activity {
                             mssgs.remove(0);
                         }
                     }
-
+                    mssgs.add(new ChatMessage("Chat Room: "+room.toUpperCase(), "", 3));
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -282,6 +332,16 @@ public class ChatActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
     }
@@ -289,6 +349,8 @@ public class ChatActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.disconnect();
+        if(socket!=null){
+            socket.disconnect();
+        }
     }
 }

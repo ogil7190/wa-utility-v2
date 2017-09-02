@@ -50,7 +50,7 @@ public class CustomNotificationListener extends NotificationListenerService {
         super.onCreate();
         resetItself();
         pref = getSharedPreferences(PREF_USER, MODE_PRIVATE);
-        forAll = pref.getBoolean(PREF_USER_KEY_FOR_ALL, false);
+        forAll = pref.getBoolean(PREF_USER_KEY_FOR_ALL, true);
         handleStart();
         new Handler().postDelayed(new Runnable() {
             @Override
