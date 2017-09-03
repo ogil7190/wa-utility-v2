@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="boommenu-2.1.0">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/239bf1ad528bbb59c685c27d4c7ce1bde435cbf7/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/239bf1ad528bbb59c685c27d4c7ce1bde435cbf7/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/80feb64f437b8afa0fb48f892d04bd5099ae3939/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/80feb64f437b8afa0fb48f892d04bd5099ae3939/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

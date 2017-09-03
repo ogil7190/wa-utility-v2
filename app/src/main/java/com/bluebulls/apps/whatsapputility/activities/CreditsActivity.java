@@ -65,22 +65,16 @@ public class CreditsActivity extends AppCompatActivity implements View.OnClickLi
         {
             Intent i=new Intent();
             i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("https://www.facebook.com"));
+            i.setData(Uri.parse("https://www.instagram.com/raman.kataria.16"));
             startActivity(i);
         }
         if(v.getId()==R.id.ramanTwitter)
         {
-            Intent i=new Intent();
-            i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("https://www.facebook.com"));
-            startActivity(i);
+
         }
         if(v.getId()==R.id.ramanLinkedin)
         {
-            Intent i=new Intent();
-            i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("https://www.facebook.com"));
-            startActivity(i);
+
         }
         if(v.getId()==R.id.vivekNumber) {
 

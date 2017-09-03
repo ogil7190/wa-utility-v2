@@ -15,7 +15,7 @@
             android:layout_height="70dp"
             android:layout_weight="2"
             android:id="@+id/vivekPic"
-            android:src="@drawable/icon"/>
+            android:src="@drawable/vivek"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -63,7 +63,7 @@
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="32dp"
         android:textSize="28sp"
         android:textColor="#0000ff"
         android:id="@+id/vivekNumber"
@@ -100,6 +100,14 @@
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="80dp"
+            android:background="#ffffff"
+            android:scaleType="fitXY"
+            android:layout_weight="1"
+            android:id="@+id/ramanLinkedin" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="80dp"
             android:scaleType="fitXY"
             android:id="@+id/ramanFb"
             android:layout_weight="1"
@@ -111,28 +119,20 @@
             android:scaleType="fitXY"
             android:id="@+id/ramanInsta"
             android:background="#ffffff"
-            android:layout_weight="1"
-            android:src="@drawable/insta"/>
+            android:src="@drawable/insta"
+            android:layout_weight="1" />
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:scaleType="fitXY"
             android:layout_weight="1"
             android:background="#ffffff"
-            android:id="@+id/ramanTwitter"
-            android:src="@drawable/twitter"/>
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:background="#ffffff"
-            android:scaleType="fitXY"
-            android:layout_weight="1"
-            android:id="@+id/ramanLinkedin"
-            android:src="@drawable/linkedin"/>
+            android:id="@+id/ramanTwitter" />
+
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="32dp"
         android:textSize="25dp"
         android:textColor="#0000ff"
         android:id="@+id/ramanNumber"

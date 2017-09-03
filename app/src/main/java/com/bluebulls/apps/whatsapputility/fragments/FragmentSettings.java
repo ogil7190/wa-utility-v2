@@ -43,7 +43,6 @@ import gun0912.tedbottompicker.TedBottomPicker;
 import static android.content.Context.MODE_PRIVATE;
 import static com.bluebulls.apps.whatsapputility.activities.ChatActivity.PREF_USER_CHAT_NAME;
 import static com.bluebulls.apps.whatsapputility.activities.LoginActivity.PREF_USER;
-import static com.bluebulls.apps.whatsapputility.util.CustomBridge.STOP_SELF;
 
 /**
  * Created by dell on 8/20/2017.
@@ -75,6 +74,7 @@ public class FragmentSettings extends Fragment {
         pref = getContext().getSharedPreferences(PREF_USER, MODE_PRIVATE);
         View v=inflater.inflate(R.layout.settings_fragment,null);
         LinearLayout setImage=(LinearLayout)v.findViewById(R.id.setImage);
+        LinearLayout setName=(LinearLayout)v.findViewById(R.id.setName);
         TextView changeName=(TextView)v.findViewById(R.id.changeName);
         final TextView currentName = (TextView) v.findViewById(R.id.currentName);
         currentName.setText(pref.getString(PREF_USER_CHAT_NAME, "Chotu"));
@@ -160,7 +160,7 @@ public class FragmentSettings extends Fragment {
                         newName.setText("");
                     }
                 }).create();
-        changeName.setOnClickListener(new View.OnClickListener() {
+        setName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.show();
