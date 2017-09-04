@@ -1,20 +1,15 @@
 package com.bluebulls.apps.whatsapputility.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,8 +126,9 @@ public class SearchActivity extends Activity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {
-                    if(contacts.isChecked())
-                        Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_SHORT).show();
+                    if(contacts.isChecked()) {
+                       // Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_SHORT).show();
+                    }
                     else
                         suggestion(newText);
                 } catch (UnsupportedEncodingException e) {
