@@ -36,13 +36,15 @@
             </intent-filter>
         </activity>
 
-        <!--<service
+        <!--
+        <service
             android:name=".services.RootService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
-        </service>-->
+        </service>
+        -->
         <service
             android:name=".services.ChatHeadService"
             android:enabled="true" />
@@ -160,14 +162,15 @@
             android:theme="@android:style/Theme.Dialog"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:launchMode="singleInstance"
             android:name=".activities.ChatActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog"
             android:windowSoftInputMode="adjustPan" />
-
         <activity android:name=".activities.PendingChatRequest" />
-        <activity android:name=".activities.CreditsActivity"></activity>
+        <activity android:name=".activities.CreditsActivity" />
+        <activity android:name=".activities.TutorialActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"></activity>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluebulls.apps.whatsapputility.R;
+import com.bluebulls.apps.whatsapputility.activities.TutorialActivity;
 import com.bluebulls.apps.whatsapputility.services.CustomNotificationListener;
 import com.wooplr.spotlight.SpotlightView;
 
@@ -53,6 +55,7 @@ public class FragmentSettings extends Fragment {
     private SharedPreferences pref;
     private ImageView image;
     private Bitmap bitmap;
+    private Button tutorial;
     public static final String PREF_USER_CHAT_ICON ="imageUri";
     private SwitchCompat forAll;
     private TedBottomPicker tedBottomPicker;
@@ -76,6 +79,7 @@ public class FragmentSettings extends Fragment {
         LinearLayout setImage=(LinearLayout)v.findViewById(R.id.setImage);
         LinearLayout setName=(LinearLayout)v.findViewById(R.id.setName);
         TextView changeName=(TextView)v.findViewById(R.id.changeName);
+        tutorial=(Button)v.findViewById(R.id.tutorial);
         final TextView currentName = (TextView) v.findViewById(R.id.currentName);
         currentName.setText(pref.getString(PREF_USER_CHAT_NAME, "Chotu"));
         LinearLayout l=(LinearLayout)inflater.inflate(R.layout.new_name_dialog,null);
@@ -164,6 +168,13 @@ public class FragmentSettings extends Fragment {
             @Override
             public void onClick(View v) {
                 alertDialog.show();
+            }
+        });
+        tutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), TutorialActivity.class);
+                startActivity(intent);
             }
         });
         return v;

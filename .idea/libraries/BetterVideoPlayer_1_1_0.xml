@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="BetterVideoPlayer-1.1.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/7b86c10214e8d684485cb9805b4a81e3d392195d/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/7b86c10214e8d684485cb9805b4a81e3d392195d/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.halilozercan/BetterVideoPlayer/1.1.0/89854bf179436bfcbfeda0b9601cd1594834985d/BetterVideoPlayer-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
