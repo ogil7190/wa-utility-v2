@@ -3,57 +3,57 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\dell\.android\build-cache\89feee11ed3b560d7c25ab3e86256878e59c66ff\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="199c0e5931f8ac3410c749734a02856f18bf1207">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1d1900005c355ed5476321710c8a1c943d7bb483\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\dell\.android\build-cache\a0812bd74221e622804af9a48d9d653741299179\output\jars\classes.jar"
+        jar="/Users/ogil/.android/build-cache/e4014448eb6341c603c4c748c712ad10e733d450/output/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="7be042dd2aa8157a2b63934902f472952d2ea1fe">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_dd37d6d59ce656070949aefa057b7311a4756573\classes.dex" />
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_b2d004925b7acf6a8ee4819d2d2030bcf9e7c92b/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\dell\.android\build-cache\be9d528083da62c03df18ff05cd423239e3f8d91\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="21c0f1b0de29bfe601028757c5cb125c343f5164">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2c3de9485c81ae629f8b33e218c984011aaa6920\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\dell\.android\build-cache\7b86c10214e8d684485cb9805b4a81e3d392195d\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e05a02674f5f4061be2a07dcc15ce81b13ea006c">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_0fdc8bd0cc22fa8efe82cbaaf85f20c5d2d144ca\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\dell\.android\build-cache\f008d03edf91b4dc09afadf70740f35ad0df2228\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a43273baa0b17eb281b3a67250b071e80f463830">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_97a911de4fb98956871d8c293e6a4c0c06617b3e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\dell\.android\build-cache\67fa4d9bd958bdead6ae3855f71bb3ff3b135316\output\jars\classes.jar"
+        jar="/Users/ogil/.android/build-cache/2fc20a8ceb8a7091c3a325bc054ed2fcbeb6d83a/output/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="ab3193b438e37f7b0a634cc2dfebbf92892ea90c">
-        <dex dex="F:\wa-utility-v2\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_93e109533c5b10714076480786b79d75d695cb4e\classes.dex" />
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_f2edc2e295ff785c344c005a7616685f96ecfe8d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/ogil/.android/build-cache/546358978fad4a46533049e4dc9afe9940dbd665/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="21c0f1b0de29bfe601028757c5cb125c343f5164">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_f49a34b0ac3fb37f332f9dd61d79d11aa3bdda32/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/ogil/.android/build-cache/7f37b1291c1dc31a45d486b110b9ac8de09318e0/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="199c0e5931f8ac3410c749734a02856f18bf1207">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_ed0d1276ebc8b864e723fcc59f9685a03ca54b1b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/ogil/.android/build-cache/d349d3e3348bc699ab0f39f2651c8d344230ee07/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a43273baa0b17eb281b3a67250b071e80f463830">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c66eec3485dfe364eb036bf8e85258f3f794963f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/ogil/.android/build-cache/d10c401192dcae3b0aef34378a3d9b86e529e755/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e05a02674f5f4061be2a07dcc15ce81b13ea006c">
+        <dex dex="/Users/ogil/Ogil/WAU_V2/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_0258608ef364bfc7a756e6ce303c8078b78c2b3a/classes.dex" />
     </item>
 
 </items>

@@ -125,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static final String PREF_USER_KEY_FIRST_BOOL_TUT = "tut_shown";
+
     @Override
     protected void onResume() {
         checkPermissions();
@@ -165,8 +167,17 @@ public class MainActivity extends AppCompatActivity {
         }
         if(dr==true&&no==true&&us==true)
         {
-            gotoHome();
+            if(!pref.getBoolean(PREF_USER_KEY_FIRST_BOOL_TUT, false)) {
+                startTut();
+                pref.edit().putBoolean(PREF_USER_KEY_FIRST_BOOL_TUT, true).commit();
+            }
+            else
+                gotoHome();
         }
+    }
+
+    private void startTut(){
+        startActivity(new Intent(getApplicationContext(), TutorialActivity.class));
     }
 
     private void gotoHome(){
@@ -174,16 +185,6 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
-        AlarmManager alarm = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-
-        /*Intent i = new Intent(getApplicationContext(), PackageService.class);
-        PendingIntent pi = PendingIntent.getService(getApplicationContext(), 7190, i, 0);
-        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pi); */
-
-
-        /*Intent in = new Intent(getApplicationContext(), CustomNotificationListener.class);
-        PendingIntent p = PendingIntent.getService(getApplicationContext(), 7191, in, 0);
-        alarm.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), p); */
         Thread service = new Thread(new Runnable() {
             @Override
             public void run() {

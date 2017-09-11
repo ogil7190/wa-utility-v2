@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -115,16 +119,7 @@
         </RelativeLayout>
 
     </LinearLayout>
-<Button
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/tutorial"
-    android:text="Help"
-    android:textSize="24dp"
-    android:background="@color/colorPrimaryDark"
-    android:textStyle="bold"
-    android:textColor="#ffffff"
-    android:textAlignment="center"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -133,4 +128,18 @@
         android:text=" Tips: If floating icon is not showing,\nopen this app again.\n\nIn any other problem, try to\nclear app data and start over again!\n\nThis app might not work in some devices.\nWe are working on it, Stay Tuned! :)"
         android:textAlignment="center"
         android:textSize="16dp" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/tutorial"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:padding="5dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:text="View Tutorial"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="18dp" />
 </LinearLayout>
+    </ScrollView>

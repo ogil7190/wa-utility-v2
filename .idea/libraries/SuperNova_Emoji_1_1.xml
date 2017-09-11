@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="SuperNova-Emoji-1.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/7eefd7e126c227d0dd1924fb426befbc80d1d11c/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/7eefd7e126c227d0dd1924fb426befbc80d1d11c/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/bb1c9612cc277a90441037477080a3f4a17c6104/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/bb1c9612cc277a90441037477080a3f4a17c6104/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

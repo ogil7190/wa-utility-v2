@@ -15,8 +15,7 @@ BetterVideoPlayer player;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
-        Uri uri=Uri.parse("android.resource://com.bluebulls.apps.whatsapputility/"+R.raw.video);
-        //Uri uri=Uri.parse("https://www.bing.com/videos/search?q=video&view=detail&mid=815506C1A033A0CA3F66815506C1A033A0CA3F66&FORM=VIRE");
+        Uri uri=Uri.parse("http://syncx.16mb.com/android/whatsapp-utility/v1/doc/Tutorial%20Paradox%20%20How%20to%20use.mp4");
         player=(BetterVideoPlayer)findViewById(R.id.player);
         //textView=(TextView)findViewById(R.id.percent);
         //textView.setVisibility(View.GONE);
